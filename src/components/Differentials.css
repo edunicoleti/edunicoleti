@@ -1,0 +1,115 @@
+/* ---- Differentials ---- */
+.differentials {
+  padding: var(--section-padding);
+  background: var(--color-bg-alt);
+  border-top: 1px solid var(--color-border);
+}
+
+.differentials__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 3.5rem;
+}
+
+.differentials__heading {
+  font-size: clamp(1.75rem, 3vw, var(--text-3xl));
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.025em;
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+  max-width: 560px;
+}
+
+.differentials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+/* Card */
+.diff-card {
+  background: var(--color-surface);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: background var(--transition-base);
+}
+
+.diff-card:hover {
+  background: var(--color-bg);
+}
+
+.diff-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.diff-card__icon {
+  font-size: 1.5rem;
+  color: var(--color-accent);
+  display: block;
+  line-height: 1;
+  transition: transform var(--transition-base);
+}
+
+.diff-card:hover .diff-card__icon {
+  transform: scale(1.15) rotate(-8deg);
+}
+
+.diff-card__metric {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+}
+
+.diff-card__metric-value {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.diff-card__metric-label {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.diff-card__title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  line-height: var(--leading-snug);
+}
+
+.diff-card__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+@media (max-width: 900px) {
+  .differentials__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .differentials__grid {
+    grid-template-columns: 1fr;
+  }
+}

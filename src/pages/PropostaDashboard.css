@@ -1,0 +1,221 @@
+/* ---- Proposals Dashboard ---- */
+.dashboard {
+  min-height: 100vh;
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+}
+
+.dashboard__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.dashboard__header-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dashboard__logo {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+.dashboard__logo span {
+  color: var(--color-accent);
+}
+
+.dashboard__logo:hover {
+  opacity: 0.7;
+}
+
+.dashboard__back {
+  font-size: var(--text-sm);
+  padding: 0.5rem 1rem;
+}
+
+.dashboard__main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.dashboard__top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.dashboard__title {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.dashboard__sub {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* Grid */
+.dashboard__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+/* Proposal card */
+.prop-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.prop-card:hover {
+  border-color: var(--color-text);
+  box-shadow: var(--shadow-md);
+}
+
+.prop-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.prop-card__tags {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.prop-card__date {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.prop-card__title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.prop-card__client {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.prop-card__client strong {
+  color: var(--color-text);
+}
+
+.prop-card__meta {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+}
+
+.prop-card__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.prop-card__meta-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: var(--weight-medium);
+}
+
+.prop-card__meta-value {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.prop-card__actions {
+  display: flex;
+  gap: 0.625rem;
+  margin-top: 0.25rem;
+}
+
+.prop-card__view {
+  font-size: var(--text-sm);
+  padding: 0.6rem 1.25rem;
+}
+
+.prop-card__copy {
+  font-size: var(--text-sm);
+  padding: 0.6rem 1.25rem;
+}
+
+/* Help */
+.dashboard__help {
+  padding: 1.5rem;
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-light);
+}
+
+.dashboard__steps {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dashboard__steps li {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.dashboard__steps code {
+  font-family: 'Courier New', monospace;
+  background: var(--color-surface);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-border);
+}
+
+@media (max-width: 600px) {
+  .prop-card__meta {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .prop-card__actions {
+    flex-direction: column;
+  }
+
+  .prop-card__view,
+  .prop-card__copy {
+    justify-content: center;
+  }
+}

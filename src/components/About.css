@@ -1,0 +1,115 @@
+/* ---- About ---- */
+.about {
+  position: relative;
+  padding: var(--section-padding);
+  border-top: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.about::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(32, 71, 201, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.about__inner {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 4rem;
+  align-items: start;
+  position: relative;
+  z-index: 1;
+}
+
+.about__left {
+  padding-top: 0.35rem;
+}
+
+.about__right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about__heading {
+  font-size: clamp(1.75rem, 3vw, var(--text-3xl));
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  letter-spacing: -0.025em;
+  color: var(--color-text);
+}
+
+.about__text {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: 620px;
+}
+
+.about__text strong {
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+}
+
+.about__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+/* Social buttons */
+.about__social {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding-top: 0.25rem;
+}
+
+.about__social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  background: var(--color-surface);
+  transition: all var(--transition-base);
+}
+
+.about__social-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.about__social-btn--instagram:hover {
+  border-color: #E1306C;
+  color: #E1306C;
+  background: #FFF0F5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about__inner {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .about__text {
+    font-size: var(--text-base);
+  }
+}
