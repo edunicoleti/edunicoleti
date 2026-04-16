@@ -24,7 +24,19 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Test SSH with verbose output
+        env:
+          DEPLOY_HOST: ${{ secrets.FTP_SERVER }}
+          DEPLOY_USER: ${{ secrets.FTP_USERNAME }}
+          DEPLOY_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          DEPLOY_PORT: ${{ secrets.FTP_PORT }}
+        run: |
+          apt-get update -qq && apt-get install -qq -y sshpass > /dev/null 2>&1
+          echo "Teste 1: Conectar e executar um comando simples"
+          sshpass -p "$DEPLOY_PASSWORD" ssh -p $DEPLOY_PORT -o StrictHostKeyChecking=no -v $DEPLOY_USER@$DEPLOY_HOST "pwd" 2>&1 | tail -20
+
       - name: Deploy to Hostinger
+        if: false
         env:
           DEPLOY_HOST: ${{ secrets.FTP_SERVER }}
           DEPLOY_USER: ${{ secrets.FTP_USERNAME }}
