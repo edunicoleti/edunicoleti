@@ -24,21 +24,7 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Test SSH connection
-        env:
-          DEPLOY_HOST: ${{ secrets.FTP_SERVER }}
-          DEPLOY_USER: ${{ secrets.FTP_USERNAME }}
-          DEPLOY_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          DEPLOY_PORT: ${{ secrets.FTP_PORT }}
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan -p $DEPLOY_PORT $DEPLOY_HOST >> ~/.ssh/known_hosts 2>/dev/null || true
-          apt-get update -qq && apt-get install -qq -y sshpass > /dev/null 2>&1
-          echo "Testing SSH connection..."
-          sshpass -p "$DEPLOY_PASSWORD" ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "ls -la ${{ secrets.FTP_REMOTE_PATH }}" || echo "SSH test failed"
-
-      - name: Deploy to Hostinger via rsync
+      - name: Deploy to Hostinger
         env:
           DEPLOY_HOST: ${{ secrets.FTP_SERVER }}
           DEPLOY_USER: ${{ secrets.FTP_USERNAME }}
@@ -46,6 +32,7 @@ jobs:
           DEPLOY_PATH: ${{ secrets.FTP_REMOTE_PATH }}
           DEPLOY_PORT: ${{ secrets.FTP_PORT }}
         run: |
+          mkdir -p ~/.ssh
           apt-get update -qq && apt-get install -qq -y sshpass > /dev/null 2>&1
-          export SSHPASS="$DEPLOY_PASSWORD"
-          rsync -avz --delete -e "sshpass -e ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p $DEPLOY_PORT" dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+          ssh-keyscan -p $DEPLOY_PORT $DEPLOY_HOST >> ~/.ssh/known_hosts 2>/dev/null || true
+          cd dist && tar czf - . | sshpass -p "$DEPLOY_PASSWORD" ssh -p $DEPLOY_PORT -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && tar xzf -" && cd ..
