@@ -24,12 +24,15 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Deploy to Hostinger via SFTP
-        uses: ckpp/sftp-action@v1.2.0
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          port: ${{ secrets.FTP_PORT }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          localDir: dist
-          remoteDir: ${{ secrets.FTP_REMOTE_PATH }}
+      - name: Deploy to Hostinger via rsync
+        env:
+          DEPLOY_HOST: ${{ secrets.FTP_SERVER }}
+          DEPLOY_USER: ${{ secrets.FTP_USERNAME }}
+          DEPLOY_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          DEPLOY_PATH: ${{ secrets.FTP_REMOTE_PATH }}
+          DEPLOY_PORT: ${{ secrets.FTP_PORT }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p $DEPLOY_PORT $DEPLOY_HOST >> ~/.ssh/known_hosts 2>/dev/null || true
+          apt-get update -qq && apt-get install -qq -y sshpass
+          sshpass -p "$DEPLOY_PASSWORD" rsync -avz --delete -e "ssh -p $DEPLOY_PORT" dist/ $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/
