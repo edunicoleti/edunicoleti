@@ -24,12 +24,13 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Deploy to Hostinger via SFTP
-        uses: appleboy/scp-action@master
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.FTP_SERVER }}
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          source: "dist/"
-          target: ${{ secrets.FTP_REMOTE_PATH }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_REMOTE_PATH }}
+          state-name: .ftp-deploy-sync-state.json
+          dangerous-clean-slate: false
