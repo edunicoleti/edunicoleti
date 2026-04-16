@@ -24,27 +24,19 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Deploy to Hostinger
+      - name: Debug - List server directory structure
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.FTP_SERVER }}
           port: ${{ secrets.FTP_PORT }}
           username: ${{ secrets.FTP_USERNAME }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script_stop: true
           script: |
-            cd $HOME/public_html
-            rm -rf *
-            cd $HOME
-
-      - name: Upload files
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          port: ${{ secrets.FTP_PORT }}
-          username: ${{ secrets.FTP_USERNAME }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          source: "dist/*"
-          target: "$HOME/public_html"
-          strip_components: 1
-          overwrite: true
+            echo "=== HOME DIRECTORY ==="
+            pwd
+            echo ""
+            echo "=== LISTING HOME ==="
+            ls -lah
+            echo ""
+            echo "=== PUBLIC_HTML DETAILS ==="
+            ls -lah public_html 2>/dev/null || echo "public_html not found or no access"
