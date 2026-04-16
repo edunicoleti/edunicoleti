@@ -46,5 +46,6 @@ jobs:
           DEPLOY_PATH: ${{ secrets.FTP_REMOTE_PATH }}
           DEPLOY_PORT: ${{ secrets.FTP_PORT }}
         run: |
-          SSH_CMD="ssh -o StrictHostKeyChecking=no -p $DEPLOY_PORT"
-          sshpass -p "$DEPLOY_PASSWORD" rsync -avz --delete -e "$SSH_CMD" dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+          apt-get update -qq && apt-get install -qq -y sshpass > /dev/null 2>&1
+          export SSHPASS="$DEPLOY_PASSWORD"
+          rsync -avz --delete -e "sshpass -e ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p $DEPLOY_PORT" dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
