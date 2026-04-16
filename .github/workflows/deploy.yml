@@ -46,4 +46,5 @@ jobs:
           DEPLOY_PATH: ${{ secrets.FTP_REMOTE_PATH }}
           DEPLOY_PORT: ${{ secrets.FTP_PORT }}
         run: |
-          sshpass -p "$DEPLOY_PASSWORD" rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -p $DEPLOY_PORT" dist/ $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/
+          SSH_CMD="ssh -o StrictHostKeyChecking=no -p $DEPLOY_PORT"
+          sshpass -p "$DEPLOY_PASSWORD" rsync -avz --delete -e "$SSH_CMD" dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
