@@ -24,13 +24,13 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Deploy to Hostinger via SFTP
-        uses: Burnett01/rsync-deployer@master
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          switches: -avz --delete
-          path: ./dist/
-          remote_path: ${{ secrets.FTP_REMOTE_PATH }}
-          remote_host: ${{ secrets.FTP_SERVER }}
-          remote_port: ${{ secrets.FTP_PORT }}
-          remote_user: ${{ secrets.FTP_USERNAME }}
-          remote_password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_REMOTE_PATH }}
+          state-name: .ftp-deploy-sync-state.json
+          dangerous-clean-slate: false
