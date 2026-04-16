@@ -24,18 +24,20 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Deploy to Hostinger via SSH
+      - name: Deploy to Hostinger
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.FTP_SERVER }}
           port: ${{ secrets.FTP_PORT }}
           username: ${{ secrets.FTP_USERNAME }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script_stop: true
           script: |
-            rm -rf ~/public_html/*
-            cd ~/public_html
+            cd $HOME/public_html
+            rm -rf *
+            cd $HOME
 
-      - name: Upload files via SCP
+      - name: Upload files
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.FTP_SERVER }}
@@ -43,5 +45,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           source: "dist/*"
-          target: "~/public_html"
+          target: "$HOME/public_html"
           strip_components: 1
+          overwrite: true
