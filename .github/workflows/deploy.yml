@@ -24,7 +24,18 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Diagnose server paths
+      - name: Upload files via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          port: ${{ secrets.FTP_PORT }}
+          username: ${{ secrets.FTP_USERNAME }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: "dist/*"
+          target: "~/deploy_temp"
+          strip_components: 1
+
+      - name: Sync to correct web root via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.FTP_SERVER }}
@@ -32,11 +43,12 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            echo "=== HOME ==="
-            echo $HOME
-            echo "=== ls -la ~ ==="
-            ls -la ~
-            echo "=== ls -la ~/public_html ==="
-            ls -la ~/public_html || echo "public_html nao encontrado"
-            echo "=== ls -la ~/public_html/assets ==="
-            ls -la ~/public_html/assets || echo "assets nao encontrado"
+            WEBROOT=$(ls -d ~/domains/*/public_html 2>/dev/null | head -1)
+            if [ -z "$WEBROOT" ]; then
+              WEBROOT=~/public_html
+            fi
+            echo "Deploying to: $WEBROOT"
+            rsync -av --delete ~/deploy_temp/ "$WEBROOT"/
+            rm -rf ~/deploy_temp
+            echo "Done. Files in $WEBROOT:"
+            ls -la "$WEBROOT"
