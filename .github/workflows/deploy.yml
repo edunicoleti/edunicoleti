@@ -24,7 +24,7 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Deploy via SSH
+      - name: Upload files via SCP
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.FTP_SERVER }}
@@ -32,6 +32,16 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           source: "dist/*"
-          target: "public_html"
+          target: "~/deploy_temp"
           strip_components: 1
-          rm: true
+
+      - name: Sync to public_html via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          port: ${{ secrets.FTP_PORT }}
+          username: ${{ secrets.FTP_USERNAME }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            rsync -av --delete ~/deploy_temp/ ~/public_html/
+            rm -rf ~/deploy_temp
