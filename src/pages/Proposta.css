@@ -249,6 +249,19 @@
   font-weight: 700;
 }
 
+.proposta-step-card {
+  background: var(--color-bg-alt);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--color-border-light);
+}
+
+@media (max-width: 700px) {
+  .proposta-step-card {
+    padding: 1.5rem;
+  }
+}
+
 /* Observações */
 .proposta-obs__text {
   font-size: var(--text-sm);
@@ -377,6 +390,23 @@
   .proposta-page { max-width: 100%; padding: 0; }
   .proposta-header { margin-bottom: 1.5rem; }
   .proposta-cta { display: none; }
+
+  .proposta-section__title {
+    color: #444 !important;
+  }
+
+  .proposta-header__type,
+  .proposta-card__role,
+  .proposta-footer {
+    color: #555 !important;
+  }
+
+  .proposta-hero__desc,
+  .proposta-card__company,
+  .proposta-list__item--no,
+  .proposta-obs__text {
+    color: #555 !important;
+  }
 }
 
 /* Responsive */

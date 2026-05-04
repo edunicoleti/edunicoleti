@@ -30,6 +30,7 @@ export interface PropostaData {
   prazoEntrega: string
   valorTotal: number
   mensalidade?: number
+  opcoesHospedagem?: { titulo: string; valorFormatado: string; descricao?: string }[]
   pagamento: PropostaPagamento
   validade: string // ex: "30 dias"
   observacoes?: string

@@ -25,6 +25,7 @@ export default function Proposta() {
     prazoEntrega,
     valorTotal,
     mensalidade,
+    opcoesHospedagem,
     pagamento,
     validade,
     observacoes,
@@ -104,32 +105,76 @@ export default function Proposta() {
           <div className="proposta-invest">
             <h2 className="proposta-section__title" style={{ marginBottom: '1.5rem' }}>Investimento</h2>
             
-            <div className="proposta-invest__grid" style={{ display: 'grid', gap: '2rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                <span className="text-label" style={{ fontSize: '0.85rem' }}>Implantação do Projeto</span>
-                <span style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1 }}>{formatBRL(valorTotal)}</span>
-                
-                <ul className="proposta-invest__features">
-                  <li>Design UI/UX corporativo</li>
-                  <li>Desenvolvimento técnico (React) + SEO</li>
-                  <li>Configuração primária e integrações</li>
-                </ul>
-              </div>
+            <div className="proposta-invest__steps" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               
-              {mensalidade && mensalidade > 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                  <span className="text-label" style={{ fontSize: '0.85rem' }}>Manutenção e Hospedagem</span>
-                  <span style={{ display: 'flex', alignItems: 'baseline', gap: '0.25rem' }}>
-                    <span style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--color-accent)', lineHeight: 1 }}>{formatBRL(mensalidade)}</span>
-                    <span style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-secondary)' }}>/ mês</span>
-                  </span>
+              {/* PASSO 1 */}
+              <div className="proposta-step-card">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--color-accent)', color: 'var(--color-bg)', padding: '4px 10px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 700, width: 'fit-content', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Passo 1</div>
+                  <span className="text-label" style={{ fontSize: '1rem', marginTop: '0.5rem' }}>Implantação do Projeto</span>
+                  <span style={{ fontSize: 'clamp(2.25rem, 8vw, 3rem)', fontWeight: 800, color: 'var(--color-text)', lineHeight: 1 }}>{formatBRL(valorTotal)}</span>
+                  <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', marginTop: '0.5rem', maxWidth: '600px' }}>Pagamento fixo referente ao desenvolvimento e entrega integral do escopo listado.</p>
                   
-                  <ul className="proposta-invest__features">
-                    <li>Hospedagem Cloud premium (alta performance)</li>
-                    <li>Backups semanais blindados de segurança</li>
-                    <li>Atualizações preventivas de banco e suporte</li>
+                  <ul className="proposta-invest__features" style={{ marginTop: '1.5rem', display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+                    <li>Design UI/UX corporativo</li>
+                    <li>Desenvolvimento técnico (React) + SEO</li>
+                    <li>Configuração primária e integrações</li>
                   </ul>
                 </div>
+              </div>
+
+              {((mensalidade && mensalidade > 0) || opcoesHospedagem?.length) && (
+                <>
+                  <div style={{ textAlign: 'center', margin: '0.5rem 0' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'var(--color-bg-alt)', color: 'var(--color-text)', border: '1px solid var(--color-border-light)' }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                  </div>
+
+                  {/* PASSO 2 */}
+                  <div className="proposta-step-card">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--color-text)', color: 'var(--color-bg)', padding: '4px 10px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 700, width: 'fit-content', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Passo 2</div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem', marginTop: '0.5rem' }}>
+                        <div style={{ flex: '1 1 300px' }}>
+                          <span className="text-label" style={{ fontSize: '1rem' }}>Manutenção e Hospedagem</span>
+                          <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', marginTop: '0.5rem', maxWidth: '400px', lineHeight: 1.5 }}>
+                            Estão disponíveis os seguintes planos para garantir performance e segurança contínua para o seu site ao longo do tempo. Basta me informar sua escolha na aprovação!
+                          </p>
+                          <ul className="proposta-invest__features" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                            <li>Hospedagem Cloud premium de alta performance</li>
+                            <li>Backups semanais blindados de segurança</li>
+                            <li>Atualizações preventivas de banco e suporte técnico</li>
+                          </ul>
+                        </div>
+                        
+                        <div style={{ flex: '1 1 300px' }}>
+                          {opcoesHospedagem?.length ? (
+                            <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
+                              {opcoesHospedagem.map((op, idx) => (
+                                <div key={op.titulo} className="proposta-hosp-card" style={{ position: 'relative', background: idx === 1 ? 'var(--color-bg)' : 'transparent', border: idx === 1 ? '2px solid var(--color-accent)' : '1px solid var(--color-border)', borderRadius: '12px', padding: '1.75rem 1.25rem', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                  {idx === 1 && (
+                                    <span style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: 'var(--color-accent)', color: 'var(--color-bg)', fontSize: '0.7rem', fontWeight: 700, padding: '4px 10px', borderRadius: '100px', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>Mais escolhido</span>
+                                  )}
+                                  <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>{op.titulo}</div>
+                                  <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-text)' }}>{op.valorFormatado}</div>
+                                  {op.descricao && (
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginTop: '0.75rem', lineHeight: 1.4 }}>{op.descricao}</div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div style={{ background: 'var(--color-bg)', border: '2px solid var(--color-accent)', borderRadius: '12px', padding: '1.5rem', display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '0.25rem' }}>
+                              <span style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--color-text)', lineHeight: 1 }}>{formatBRL(mensalidade as number)}</span>
+                              <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>/ mês</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
             

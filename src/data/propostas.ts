@@ -39,8 +39,13 @@ export const propostaPreamar: PropostaData = {
 
   prazoEntrega: 'Cerca de 20 dias após etapa de briefing e receber arquivos e conteúdos da empresa',
   
-  valorTotal: 6000,
-  mensalidade: 280,
+  valorTotal: 3000,
+  mensalidade: 0,
+  opcoesHospedagem: [
+    { titulo: '1 Ano de Hospedagem', valorFormatado: 'R$ 650,00' },
+    { titulo: '2 Anos de Hospedagem', valorFormatado: 'R$ 1.000,00' },
+    { titulo: 'Sem hospedagem', valorFormatado: 'Isento', descricao: 'Você recebe os arquivos do site para hospedar por conta própria.' },
+  ],
 
   pagamento: {
     entrada: 0,
