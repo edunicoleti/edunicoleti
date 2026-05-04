@@ -35,7 +35,7 @@ jobs:
           target: "~/deploy_temp"
           strip_components: 1
 
-      - name: Sync to correct web root via SSH
+      - name: Sync to web root via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.FTP_SERVER }}
@@ -43,12 +43,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            WEBROOT=$(ls -d ~/domains/*/public_html 2>/dev/null | head -1)
-            if [ -z "$WEBROOT" ]; then
-              WEBROOT=~/public_html
-            fi
-            echo "Deploying to: $WEBROOT"
-            rsync -av --delete ~/deploy_temp/ "$WEBROOT"/
+            rsync -av --delete ~/deploy_temp/ ~/domains/edunicoleti.com.br/public_html/
             rm -rf ~/deploy_temp
-            echo "Done. Files in $WEBROOT:"
-            ls -la "$WEBROOT"
+            echo "Deploy concluido. Arquivos em public_html:"
+            ls -la ~/domains/edunicoleti.com.br/public_html/
