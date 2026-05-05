@@ -391,6 +391,7 @@
   .proposta-header { margin-bottom: 1.5rem; }
   .proposta-cta { display: none; }
 
+  /* Cores com contraste adequado no fundo branco */
   .proposta-section__title {
     color: #444 !important;
   }
@@ -406,6 +407,34 @@
   .proposta-list__item--no,
   .proposta-obs__text {
     color: #555 !important;
+  }
+
+  /* Evitar corte de conteúdo entre páginas */
+  .proposta-hero,
+  .proposta-section,
+  .proposta-card,
+  .proposta-invest,
+  .proposta-step-card,
+  .proposta-invest__card,
+  .proposta-invest__details,
+  .proposta-hosp-card,
+  .proposta-obs__text,
+  .proposta-footer {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Garantir que títulos de seção fiquem junto ao conteúdo seguinte */
+  .proposta-section__title,
+  .proposta-hero__title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Seções começam em nova página apenas quando necessário */
+  .proposta-section {
+    break-before: auto;
+    page-break-before: auto;
   }
 }
 
