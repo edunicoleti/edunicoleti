@@ -1,0 +1,481 @@
+/* ---- Proposta PDF Layout ---- */
+/* Projetado exclusivamente para impressão A4 */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #fff;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: #1a1a1a;
+}
+
+.pdf-page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 18mm 20mm 18mm 20mm;
+  background: #fff;
+  position: relative;
+}
+
+/* ---- Cabeçalho timbrado ---- */
+.pdf-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 10mm;
+  border-bottom: 2px solid #1a1a1a;
+  margin-bottom: 10mm;
+}
+
+.pdf-header__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+}
+
+.pdf-header__logo {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-family: 'Arial', sans-serif;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.pdf-header__logo span {
+  color: #16a34a;
+}
+
+.pdf-header__tagline {
+  font-size: 8pt;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: 'Arial', sans-serif;
+}
+
+.pdf-header__contact {
+  text-align: right;
+  font-size: 8.5pt;
+  color: #444;
+  line-height: 1.7;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ---- Título do documento ---- */
+.pdf-doc-title {
+  text-align: center;
+  margin-bottom: 10mm;
+}
+
+.pdf-doc-title__label {
+  font-size: 8pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #666;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 2mm;
+}
+
+.pdf-doc-title__main {
+  font-size: 18pt;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ---- Bloco destinatário + meta ---- */
+.pdf-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8mm;
+  margin-bottom: 10mm;
+  padding: 6mm 8mm;
+  background: #f7f7f7;
+  border-left: 3px solid #1a1a1a;
+}
+
+.pdf-meta__label {
+  font-size: 7.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #666;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 1.5mm;
+}
+
+.pdf-meta__value {
+  font-size: 10pt;
+  font-weight: 700;
+  color: #1a1a1a;
+  font-family: 'Arial', sans-serif;
+}
+
+.pdf-meta__sub {
+  font-size: 8.5pt;
+  color: #555;
+  font-family: 'Arial', sans-serif;
+  margin-top: 0.5mm;
+}
+
+.pdf-meta__right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ---- Descrição do projeto ---- */
+.pdf-desc {
+  font-size: 10pt;
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 10mm;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ---- Seções ---- */
+.pdf-section {
+  margin-bottom: 9mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pdf-section__title {
+  font-size: 8pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #1a1a1a;
+  font-family: 'Arial', sans-serif;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 2mm;
+  margin-bottom: 4mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* ---- Escopo ---- */
+.pdf-scope-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+}
+
+.pdf-scope-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 3mm;
+  font-size: 9.5pt;
+  color: #222;
+  line-height: 1.5;
+  font-family: 'Arial', sans-serif;
+}
+
+.pdf-scope-list li::before {
+  content: '✓';
+  color: #16a34a;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 0.5mm;
+}
+
+/* ---- Tags de tecnologia ---- */
+.pdf-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2mm;
+}
+
+.pdf-tag {
+  font-size: 8pt;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 1mm 3mm;
+  border-radius: 2px;
+}
+
+/* ---- Investimento ---- */
+.pdf-invest {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pdf-invest__step {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6mm;
+  margin-bottom: 4mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pdf-invest__step-label {
+  font-size: 7.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: #1a1a1a;
+  display: inline-block;
+  padding: 1mm 3mm;
+  border-radius: 2px;
+  margin-bottom: 3mm;
+  font-family: 'Arial', sans-serif;
+}
+
+.pdf-invest__step-label--accent {
+  background: #16a34a;
+}
+
+.pdf-invest__step-name {
+  font-size: 9.5pt;
+  font-weight: 700;
+  color: #1a1a1a;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 1.5mm;
+}
+
+.pdf-invest__step-value {
+  font-size: 20pt;
+  font-weight: 800;
+  color: #1a1a1a;
+  font-family: 'Arial', sans-serif;
+  line-height: 1;
+  margin-bottom: 2mm;
+}
+
+.pdf-invest__step-desc {
+  font-size: 8.5pt;
+  color: #555;
+  line-height: 1.5;
+  font-family: 'Arial', sans-serif;
+}
+
+.pdf-invest__step-features {
+  list-style: none;
+  margin-top: 3mm;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+}
+
+.pdf-invest__step-features li {
+  font-size: 8.5pt;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  align-items: flex-start;
+  gap: 2mm;
+}
+
+.pdf-invest__step-features li::before {
+  content: '✓';
+  color: #16a34a;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Hospedagem */
+.pdf-hosp-grid {
+  display: flex;
+  gap: 4mm;
+  margin-top: 4mm;
+  flex-wrap: wrap;
+}
+
+.pdf-hosp-card {
+  flex: 1;
+  min-width: 40mm;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4mm;
+  text-align: center;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pdf-hosp-card--featured {
+  border: 2px solid #16a34a;
+}
+
+.pdf-hosp-card__label {
+  font-size: 7.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #555;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 1.5mm;
+}
+
+.pdf-hosp-card__value {
+  font-size: 14pt;
+  font-weight: 800;
+  color: #1a1a1a;
+  font-family: 'Arial', sans-serif;
+}
+
+.pdf-hosp-card__desc {
+  font-size: 7.5pt;
+  color: #666;
+  margin-top: 1.5mm;
+  line-height: 1.4;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ---- Grid de detalhes ---- */
+.pdf-details-grid {
+  display: flex;
+  gap: 4mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pdf-details-grid__item {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4mm 5mm;
+}
+
+.pdf-details-grid__label {
+  font-size: 7.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #555;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 2mm;
+}
+
+.pdf-details-grid__value {
+  font-size: 9pt;
+  color: #222;
+  line-height: 1.5;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ---- Observações ---- */
+.pdf-obs {
+  font-size: 9pt;
+  color: #333;
+  line-height: 1.6;
+  padding: 4mm 5mm;
+  border-left: 3px solid #16a34a;
+  background: #f7f7f7;
+  font-family: 'Arial', sans-serif;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* ---- Validade ---- */
+.pdf-validity {
+  text-align: center;
+  font-size: 8pt;
+  color: #666;
+  font-family: 'Arial', sans-serif;
+  padding-top: 5mm;
+  border-top: 1px solid #ddd;
+  margin-top: 8mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* ---- Assinatura ---- */
+.pdf-sign {
+  display: flex;
+  justify-content: space-between;
+  gap: 10mm;
+  margin-top: 14mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pdf-sign__block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2mm;
+}
+
+.pdf-sign__line {
+  width: 100%;
+  border-bottom: 1px solid #999;
+}
+
+.pdf-sign__name {
+  font-size: 8pt;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+}
+
+.pdf-sign__role {
+  font-size: 7.5pt;
+  color: #888;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ---- Rodapé ---- */
+.pdf-footer {
+  position: fixed;
+  bottom: 10mm;
+  left: 20mm;
+  right: 20mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7.5pt;
+  color: #888;
+  font-family: 'Arial', sans-serif;
+  border-top: 1px solid #eee;
+  padding-top: 3mm;
+}
+
+/* ---- Botão de impressão (visível apenas na tela) ---- */
+.pdf-print-btn {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  z-index: 999;
+  transition: background 0.15s;
+}
+
+.pdf-print-btn:hover {
+  background: #333;
+}
+
+@media print {
+  .pdf-print-btn { display: none !important; }
+
+  body {
+    background: #fff;
+  }
+
+  .pdf-page {
+    width: 100%;
+    padding: 15mm 18mm;
+    margin: 0;
+  }
+}

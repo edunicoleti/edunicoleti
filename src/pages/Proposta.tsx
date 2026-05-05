@@ -1,10 +1,11 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { CheckCircle2 } from 'lucide-react'
 import { todasPropostas } from '../data/propostas'
 import './Proposta.css'
 
 export default function Proposta() {
   const { slug } = useParams<{ slug: string }>()
+  const navigate = useNavigate()
   const proposta = todasPropostas.find((p) => p.slug === slug)
 
   if (!proposta) {
@@ -222,7 +223,7 @@ export default function Proposta() {
             
             <div className="proposta-cta__actions" style={{ flex: '1 1 auto', justifyContent: 'flex-end', gap: '0.75rem' }}>
               <button
-                onClick={() => window.print()}
+                onClick={() => navigate(`/proposta/${slug}/pdf`)}
                 className="btn btn--outline proposta-cta__btn"
               >
                 Salvar proposta em PDF
