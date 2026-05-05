@@ -28,8 +28,7 @@ export const propostaPreamar: PropostaData = {
     { descricao: 'Desenvolvimento web completo do site institucional', incluido: true },
     { descricao: 'Botão flutuante de WhatsApp para contato instantâneo', incluido: true },
     { descricao: 'Otimização para os buscadores e recomendações de IA (SEO Técnico)', incluido: true },
-    { descricao: 'Hospedagem em servidor de alta performance (Cloud Hosting)', incluido: true },
-    { descricao: 'Rotinas semanais automáticas de Backup de Segurança', incluido: true },
+    { descricao: 'Hospedagem com rotinas de Backup de Segurança', incluido: true },
   ],
 
   tecnologias: ['React', 'Vite', 'Cloud Hosting', 'Infraestrutura Otimizada'],

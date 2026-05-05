@@ -215,13 +215,13 @@ export default function PropostaPDF() {
         {/* Assinaturas */}
         <div className="pdf-sign">
           <div className="pdf-sign__block">
-            <div style={{ height: '14mm' }} />
+            <div style={{ height: '10mm' }} />
             <div className="pdf-sign__line" />
             <div className="pdf-sign__name">Eduardo Nicoleti</div>
             <div className="pdf-sign__role">Desenvolvedor Web</div>
           </div>
           <div className="pdf-sign__block">
-            <div style={{ height: '14mm' }} />
+            <div style={{ height: '10mm' }} />
             <div className="pdf-sign__line" />
             <div className="pdf-sign__name">{cliente.nome}</div>
             <div className="pdf-sign__role">{cliente.empresa}</div>
