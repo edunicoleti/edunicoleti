@@ -165,7 +165,7 @@ export default function PropostaPDF() {
                       >
                         {idx === 1 && (
                           <div style={{ fontSize: '7pt', color: '#16a34a', fontWeight: 700, marginBottom: '1mm', fontFamily: 'Arial, sans-serif', textTransform: 'uppercase' }}>
-                            Mais escolhido
+                            Recomendado
                           </div>
                         )}
                         <div className="pdf-hosp-card__label">{op.titulo}</div>

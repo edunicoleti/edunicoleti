@@ -25,14 +25,11 @@ export const propostaPreamar: PropostaData = {
   },
 
   escopo: [
-    { descricao: 'Webdesign estrutural responsivo', incluido: true },
-    { descricao: 'Desenvolvimento Front-end e Back-end veloz (React/Vite)', incluido: true },
+    { descricao: 'Desenvolvimento web completo do site institucional', incluido: true },
     { descricao: 'Botão flutuante de WhatsApp para contato instantâneo', incluido: true },
-    { descricao: 'Otimização avançada para os buscadores (SEO Técnico)', incluido: true },
+    { descricao: 'Otimização para os buscadores e recomendações de IA (SEO Técnico)', incluido: true },
     { descricao: 'Hospedagem em servidor de alta performance (Cloud Hosting)', incluido: true },
     { descricao: 'Rotinas semanais automáticas de Backup de Segurança', incluido: true },
-    { descricao: 'Atualizações técnicas preventivas (Plugins, dependências e SSL)', incluido: true },
-    { descricao: 'Solicitações de atualizações simples de conteúdo do site', incluido: true },
   ],
 
   tecnologias: ['React', 'Vite', 'Cloud Hosting', 'Infraestrutura Otimizada'],

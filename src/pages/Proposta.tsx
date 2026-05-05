@@ -155,7 +155,7 @@ export default function Proposta() {
                               {opcoesHospedagem.map((op, idx) => (
                                 <div key={op.titulo} className="proposta-hosp-card" style={{ position: 'relative', background: idx === 1 ? 'var(--color-bg)' : 'transparent', border: idx === 1 ? '2px solid var(--color-accent)' : '1px solid var(--color-border)', borderRadius: '12px', padding: '1.75rem 1.25rem', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                                   {idx === 1 && (
-                                    <span style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: 'var(--color-accent)', color: 'var(--color-bg)', fontSize: '0.7rem', fontWeight: 700, padding: '4px 10px', borderRadius: '100px', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>Mais escolhido</span>
+                                    <span style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: 'var(--color-accent)', color: 'var(--color-bg)', fontSize: '0.7rem', fontWeight: 700, padding: '4px 10px', borderRadius: '100px', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>Recomendado</span>
                                   )}
                                   <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>{op.titulo}</div>
                                   <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-text)' }}>{op.valorFormatado}</div>
