@@ -43,7 +43,13 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            rsync -av --delete ~/deploy_temp/ ~/domains/edunicoleti.com.br/public_html/
+            TARGET=~/domains/edunicoleti.com.br/public_html
+
+            if [ ! -d "$TARGET" ]; then
+              echo "ERRO: diretorio alvo nao encontrado: $TARGET"
+              exit 1
+            fi
+
+            rsync -av --delete ~/deploy_temp/ "$TARGET"/
             rm -rf ~/deploy_temp
-            echo "Deploy concluido. Arquivos em public_html:"
-            ls -la ~/domains/edunicoleti.com.br/public_html/
+            echo "Deploy concluido em: $TARGET"
