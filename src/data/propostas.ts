@@ -50,7 +50,7 @@ export const propostaPreamar: PropostaData = {
   pagamento: {
     entrada: 0,
     saldo: 0,
-    descricao: 'Parcelamento em até 4x no cartão de crédito ou débito. A manutenção e hospedagem inicia somente com o projeto concluído, ao publicar o site.',
+    descricao: 'Parcelamento em 4x — fatura gerada automaticamente todo dia 10 de cada mês. A manutenção e hospedagem inicia somente com o projeto concluído, ao publicar o site.',
   },
 
   validade: '30 dias',
