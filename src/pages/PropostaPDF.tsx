@@ -28,9 +28,11 @@ export default function PropostaPDF() {
     projeto,
     escopo,
     tecnologias,
+    tecnologiasTitulo,
     prazoEntrega,
     valorTotal,
     mensalidade,
+    investimento,
     opcoesHospedagem,
     pagamento,
     validade,
@@ -51,6 +53,15 @@ export default function PropostaPDF() {
 
   const itensSim = escopo.filter((i) => i.incluido)
   const temPasso2 = (mensalidade && mensalidade > 0) || (opcoesHospedagem && opcoesHospedagem.length > 0)
+  const investimentoTitulo = investimento?.titulo ?? 'Implantação do Projeto'
+  const investimentoDescricao =
+    investimento?.descricao ?? 'Pagamento fixo referente ao desenvolvimento e entrega integral do escopo listado.'
+  const investimentoRecursos =
+    investimento?.recursos ?? [
+      'Design UI/UX corporativo',
+      'Desenvolvimento técnico (React) + SEO',
+      'Configuração primária e integrações',
+    ]
 
   return (
     <>
@@ -114,7 +125,7 @@ export default function PropostaPDF() {
 
         {/* Tecnologias */}
         <div className="pdf-section">
-          <div className="pdf-section__title">Tecnologias Utilizadas</div>
+          <div className="pdf-section__title">{tecnologiasTitulo ?? 'Tecnologias Utilizadas'}</div>
           <div className="pdf-tags">
             {tecnologias.map((t) => (
               <span className="pdf-tag" key={t}>{t}</span>
@@ -130,15 +141,15 @@ export default function PropostaPDF() {
             {/* Passo 1 */}
             <div className="pdf-invest__step">
               <div className="pdf-invest__step-label pdf-invest__step-label--accent">Passo 1</div>
-              <div className="pdf-invest__step-name">Implantação do Projeto</div>
+              <div className="pdf-invest__step-name">{investimentoTitulo}</div>
               <div className="pdf-invest__step-value">{formatBRL(valorTotal)}</div>
               <div className="pdf-invest__step-desc">
-                Pagamento fixo referente ao desenvolvimento e entrega integral do escopo listado.
+                {investimentoDescricao}
               </div>
               <ul className="pdf-invest__step-features">
-                <li>Design UI/UX corporativo</li>
-                <li>Desenvolvimento técnico (React) + SEO</li>
-                <li>Configuração primária e integrações</li>
+                {investimentoRecursos.map((recurso) => (
+                  <li key={recurso}>{recurso}</li>
+                ))}
               </ul>
             </div>
 

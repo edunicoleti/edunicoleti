@@ -10,6 +10,12 @@ export interface PropostaPagamento {
   descricao: string
 }
 
+export interface PropostaInvestimento {
+  titulo?: string
+  descricao?: string
+  recursos?: string[]
+}
+
 export interface PropostaData {
   slug: string
   cliente: {
@@ -27,9 +33,11 @@ export interface PropostaData {
   }
   escopo: PropostaItem[]
   tecnologias: string[]
+  tecnologiasTitulo?: string
   prazoEntrega: string
   valorTotal: number
   mensalidade?: number
+  investimento?: PropostaInvestimento
   opcoesHospedagem?: { titulo: string; valorFormatado: string; descricao?: string }[]
   pagamento: PropostaPagamento
   validade: string // ex: "30 dias"

@@ -23,9 +23,11 @@ export default function Proposta() {
     projeto,
     escopo,
     tecnologias,
+    tecnologiasTitulo,
     prazoEntrega,
     valorTotal,
     mensalidade,
+    investimento,
     opcoesHospedagem,
     pagamento,
     validade,
@@ -39,6 +41,15 @@ export default function Proposta() {
       : 'A confirmar'
 
   const itensSim = escopo.filter((i) => i.incluido)
+  const investimentoTitulo = investimento?.titulo ?? 'Implantação do Projeto'
+  const investimentoDescricao =
+    investimento?.descricao ?? 'Pagamento fixo referente ao desenvolvimento e entrega integral do escopo listado.'
+  const investimentoRecursos =
+    investimento?.recursos ?? [
+      'Design UI/UX corporativo',
+      'Desenvolvimento técnico (React) + SEO',
+      'Configuração primária e integrações',
+    ]
 
   return (
     <div className="proposta-page" id="proposta-page">
@@ -93,7 +104,7 @@ export default function Proposta() {
 
         {/* Tecnologias */}
         <section className="proposta-section" aria-label="Tecnologias">
-          <h2 className="proposta-section__title">Tecnologias utilizadas</h2>
+          <h2 className="proposta-section__title">{tecnologiasTitulo ?? 'Tecnologias utilizadas'}</h2>
           <div className="proposta-tags">
             {tecnologias.map((t) => (
               <span className="tag" key={t}>{t}</span>
@@ -112,14 +123,14 @@ export default function Proposta() {
               <div className="proposta-step-card">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--color-accent)', color: 'var(--color-bg)', padding: '4px 10px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 700, width: 'fit-content', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Passo 1</div>
-                  <span className="text-label" style={{ fontSize: '1rem', marginTop: '0.5rem' }}>Implantação do Projeto</span>
+                  <span className="text-label" style={{ fontSize: '1rem', marginTop: '0.5rem' }}>{investimentoTitulo}</span>
                   <span style={{ fontSize: 'clamp(2.25rem, 8vw, 3rem)', fontWeight: 800, color: 'var(--color-text)', lineHeight: 1 }}>{formatBRL(valorTotal)}</span>
-                  <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', marginTop: '0.5rem', maxWidth: '600px' }}>Pagamento fixo referente ao desenvolvimento e entrega integral do escopo listado.</p>
+                  <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', marginTop: '0.5rem', maxWidth: '600px' }}>{investimentoDescricao}</p>
                   
                   <ul className="proposta-invest__features" style={{ marginTop: '1.5rem', display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
-                    <li>Design UI/UX corporativo</li>
-                    <li>Desenvolvimento técnico (React) + SEO</li>
-                    <li>Configuração primária e integrações</li>
+                    {investimentoRecursos.map((recurso) => (
+                      <li key={recurso}>{recurso}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
