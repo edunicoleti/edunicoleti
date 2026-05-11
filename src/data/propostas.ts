@@ -71,21 +71,22 @@ export const propostaAudioTao: PropostaData = {
     titulo: 'Gestão de Tráfego Pago para a AudioTao',
     tipo: 'Google Ads + Meta Ads',
     descricao:
-      'A AudioTao já tem uma base importante pronta: campanha ativa no Google Ads, painel do Meta Ads organizado e Pixel configurado no site. A próxima etapa é transformar essa estrutura em campanhas mais direcionadas, com foco em WhatsApp, agendamentos e oportunidades reais para aparelhos auditivos, avaliação auditiva e terapia para zumbido.',
+      'A AudioTao já tem uma base importante pronta: campanha ativa no Google Ads, painel do Meta Ads organizado e Pixel configurado no site. Hoje, a campanha do Google está em uma configuração mais automática. A próxima etapa é criar campanhas mais segmentadas, com páginas de conversão e foco em WhatsApp, agendamentos e oportunidades reais para aparelhos auditivos, avaliação auditiva e terapia para zumbido.',
     tags: ['Google Ads', 'Meta Ads', 'WhatsApp', 'Chapecó e região'],
   },
 
   escopo: [
-    { descricao: 'Revisar a campanha atual do Google Ads e reorganizar a estrutura por serviço e intenção de busca', incluido: true },
+    { descricao: 'Revisar a campanha automática atual do Google Ads e reorganizar a estrutura por serviço e intenção de busca', incluido: true },
     { descricao: 'Criar campanhas para aparelhos auditivos, terapia de zumbido e buscas locais em Chapecó e região', incluido: true },
     { descricao: 'Ajustar palavras-chave, termos de pesquisa, palavras negativas e textos dos anúncios', incluido: true },
+    { descricao: 'Gerenciar o site e criar landing pages de conversão para as campanhas', incluido: true },
     { descricao: 'Usar o Pixel da Meta para públicos, remarketing e análise do comportamento no site', incluido: true },
     { descricao: 'Configurar campanhas no Facebook e Instagram com foco em WhatsApp e geração de contatos', incluido: true },
     { descricao: 'Acompanhar resultados e fazer otimizações mensais para melhorar o custo por contato qualificado', incluido: true },
   ],
 
   tecnologiasTitulo: 'Canais e ferramentas',
-  tecnologias: ['Google Ads', 'Meta Ads', 'Pixel da Meta', 'WhatsApp', 'Site da clínica', 'Relatórios de desempenho'],
+  tecnologias: ['Google Ads', 'Meta Ads', 'Pixel da Meta', 'WhatsApp', 'Landing pages', 'Relatórios de desempenho'],
 
   prazoEntrega: 'Organização inicial em até 7 dias úteis após aprovação e acessos liberados',
 
@@ -98,6 +99,7 @@ export const propostaAudioTao: PropostaData = {
       'Mensalidade de R$ 1.200,00 para gestão, acompanhamento e otimização das campanhas no Google Ads e Meta Ads. A recomendação é manter o trabalho por pelo menos 3 meses para ter volume de dados, testar campanhas e buscar um resultado mais consistente.',
     recursos: [
       'Gestão mensal em Google Ads e Meta Ads',
+      'Gestão do site e landing pages para campanhas',
       'Período mínimo recomendado de 3 meses',
       'Relatório mensal de acessos, conversões e desempenho das campanhas',
     ],
@@ -112,7 +114,7 @@ export const propostaAudioTao: PropostaData = {
   validade: '30 dias',
 
   observacoes:
-    'Hoje a estrutura já tem um bom ponto de partida. O foco da gestão será organizar melhor as campanhas, medir quais anúncios geram contatos pelo WhatsApp e direcionar o investimento para pessoas com maior chance de agendar uma consulta.',
+    'Hoje a estrutura já tem um bom ponto de partida. O foco da gestão será sair de uma campanha mais automática para campanhas segmentadas, medir quais anúncios e páginas geram contatos pelo WhatsApp e direcionar o investimento para pessoas com maior chance de agendar uma consulta.',
 
   criadoEm: '2026-05-11T12:00:00-03:00',
 }
