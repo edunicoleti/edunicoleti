@@ -88,6 +88,68 @@ export const propostaAudioTao: PropostaData = {
   tecnologiasTitulo: 'Canais e ferramentas',
   tecnologias: ['Google Ads', 'Meta Ads', 'Pixel da Meta', 'WhatsApp', 'Landing pages', 'Relatórios de desempenho'],
 
+  planejamentoVisual: {
+    situacaoAtual: [
+      {
+        titulo: 'Google Ads ativo',
+        descricao: 'A conta já gera cliques para o site, mas ainda trabalha em uma lógica mais automática.',
+      },
+      {
+        titulo: 'Meta Ads organizado',
+        descricao: 'O painel está estruturado para iniciar campanhas com mais controle e leitura dos resultados.',
+      },
+      {
+        titulo: 'Pixel configurado',
+        descricao: 'A base de rastreamento já permite criar públicos e acompanhar o comportamento no site.',
+      },
+      {
+        titulo: 'Site como apoio',
+        descricao: 'As campanhas podem ganhar páginas mais focadas para transformar acessos em contatos.',
+      },
+    ],
+    fluxo: [
+      'Campanha automática',
+      'Campanhas segmentadas',
+      'Landing pages',
+      'Conversões medidas',
+      'Otimização mensal',
+    ],
+    roadmap: [
+      {
+        titulo: 'Mês 1',
+        descricao: 'Organizar Google Ads, estruturar Meta Ads e criar as primeiras campanhas e páginas de conversão.',
+      },
+      {
+        titulo: 'Mês 2',
+        descricao: 'Analisar acessos, contatos pelo WhatsApp, termos de busca e comportamento nas páginas.',
+      },
+      {
+        titulo: 'Mês 3',
+        descricao: 'Concentrar investimento no que trouxe melhores sinais e ajustar campanhas para consistência.',
+      },
+    ],
+    cenarios: [
+      {
+        titulo: 'Conservador',
+        destaque: 'Aprendizado inicial',
+        descricao: 'As campanhas começam a gerar dados, mas os contatos ainda podem vir de forma irregular enquanto os ajustes acontecem.',
+        nivel: 'conservador',
+      },
+      {
+        titulo: 'Realista',
+        destaque: 'Mais clareza e contatos melhores',
+        descricao: 'Com campanhas segmentadas e páginas focadas, fica mais fácil entender quais serviços atraem contatos com maior intenção.',
+        nivel: 'realista',
+      },
+      {
+        titulo: 'Otimista',
+        destaque: 'Campanhas com bons sinais',
+        descricao: 'Os anúncios e landing pages encontram combinações mais eficientes, aumentando conversas qualificadas pelo WhatsApp.',
+        nivel: 'otimista',
+      },
+    ],
+  },
+
   prazoEntrega: 'Organização inicial em até 7 dias úteis após aprovação e acessos liberados',
 
   valorTotal: 1200,

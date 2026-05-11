@@ -136,6 +136,216 @@
   margin-top: 0.25rem;
 }
 
+/* Visual planning */
+.proposta-visual-plan {
+  gap: 1rem;
+}
+
+.proposta-infographic {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, rgba(32, 71, 201, 0.05), transparent 42%),
+    var(--color-surface);
+}
+
+.proposta-infographic--compact {
+  padding-bottom: 1.25rem;
+}
+
+.proposta-infographic__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.proposta-infographic__heading p {
+  max-width: 520px;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.proposta-status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.proposta-status-card {
+  min-height: 160px;
+  padding: 1rem;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.72);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.proposta-status-card__index {
+  width: fit-content;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+  background: var(--color-bg-alt);
+  color: var(--color-accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.proposta-status-card h3 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.proposta-status-card p {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+}
+
+.proposta-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+}
+
+.proposta-flow__step {
+  position: relative;
+  min-height: 104px;
+  padding: 0.9rem;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: 0.84rem;
+  font-weight: 650;
+  color: var(--color-text);
+}
+
+.proposta-flow__step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -0.52rem;
+  width: 0.52rem;
+  height: 2px;
+  background: var(--color-border);
+}
+
+.proposta-flow__dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-text);
+  color: var(--color-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.proposta-roadmap {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.proposta-roadmap__item {
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  padding: 1.1rem;
+  min-height: 142px;
+}
+
+.proposta-roadmap__item span {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: var(--color-accent);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.proposta-roadmap__item p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.proposta-scenarios {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.proposta-scenario {
+  padding: 1rem;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  min-height: 160px;
+}
+
+.proposta-scenario__top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+}
+
+.proposta-scenario__top span {
+  width: fit-content;
+  padding: 0.22rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.proposta-scenario__top strong {
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.proposta-scenario p {
+  font-size: 0.86rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.proposta-scenario--conservador .proposta-scenario__top span {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.proposta-scenario--realista {
+  border-color: rgba(32, 71, 201, 0.26);
+  box-shadow: 0 10px 32px rgba(32, 71, 201, 0.08);
+}
+
+.proposta-scenario--realista .proposta-scenario__top span {
+  background: rgba(32, 71, 201, 0.1);
+  color: var(--color-accent);
+}
+
+.proposta-scenario--otimista .proposta-scenario__top span {
+  background: #DCFCE7;
+  color: #166534;
+}
+
 /* Section */
 .proposta-section {
   display: flex;
@@ -469,6 +679,34 @@
 
   .proposta-escopo {
     grid-template-columns: 1fr;
+  }
+
+  .proposta-infographic__heading {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .proposta-status-grid,
+  .proposta-roadmap,
+  .proposta-scenarios {
+    grid-template-columns: 1fr;
+  }
+
+  .proposta-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .proposta-flow__step {
+    min-height: auto;
+  }
+
+  .proposta-flow__step:not(:last-child)::after {
+    top: auto;
+    right: auto;
+    bottom: -0.55rem;
+    left: 1.75rem;
+    width: 2px;
+    height: 0.55rem;
   }
 
   .proposta-cta__inner {

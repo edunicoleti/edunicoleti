@@ -29,6 +29,7 @@ export default function PropostaPDF() {
     escopo,
     tecnologias,
     tecnologiasTitulo,
+    planejamentoVisual,
     prazoEntrega,
     valorTotal,
     mensalidade,
@@ -112,6 +113,70 @@ export default function PropostaPDF() {
 
         {/* Descrição */}
         <p className="pdf-desc">{projeto.descricao}</p>
+
+        {/* Planejamento visual */}
+        {planejamentoVisual && (
+          <div className="pdf-section">
+            <div className="pdf-section__title">Planejamento Visual</div>
+
+            {planejamentoVisual.situacaoAtual && (
+              <div className="pdf-visual-block">
+                <div className="pdf-visual-block__label">Situação atual</div>
+                <div className="pdf-mini-grid">
+                  {planejamentoVisual.situacaoAtual.map((item) => (
+                    <div className="pdf-mini-card" key={item.titulo}>
+                      <strong>{item.titulo}</strong>
+                      <span>{item.descricao}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {planejamentoVisual.fluxo && (
+              <div className="pdf-visual-block">
+                <div className="pdf-visual-block__label">Como vamos evoluir</div>
+                <div className="pdf-flow">
+                  {planejamentoVisual.fluxo.map((etapa, index) => (
+                    <div className="pdf-flow__step" key={etapa}>
+                      <strong>{index + 1}</strong>
+                      <span>{etapa}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {planejamentoVisual.roadmap && (
+              <div className="pdf-visual-block">
+                <div className="pdf-visual-block__label">Planejamento inicial</div>
+                <div className="pdf-mini-grid pdf-mini-grid--three">
+                  {planejamentoVisual.roadmap.map((item) => (
+                    <div className="pdf-mini-card pdf-mini-card--accent" key={item.titulo}>
+                      <strong>{item.titulo}</strong>
+                      <span>{item.descricao}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {planejamentoVisual.cenarios && (
+              <div className="pdf-visual-block">
+                <div className="pdf-visual-block__label">Cenários esperados</div>
+                <div className="pdf-mini-grid pdf-mini-grid--three">
+                  {planejamentoVisual.cenarios.map((cenario) => (
+                    <div className={`pdf-scenario pdf-scenario--${cenario.nivel}`} key={cenario.titulo}>
+                      <strong>{cenario.titulo}</strong>
+                      <em>{cenario.destaque}</em>
+                      <span>{cenario.descricao}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Escopo */}
         <div className="pdf-section">

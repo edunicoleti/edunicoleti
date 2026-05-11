@@ -16,6 +16,25 @@ export interface PropostaInvestimento {
   recursos?: string[]
 }
 
+export interface PropostaVisualItem {
+  titulo: string
+  descricao: string
+}
+
+export interface PropostaCenario {
+  titulo: string
+  destaque: string
+  descricao: string
+  nivel: 'conservador' | 'realista' | 'otimista'
+}
+
+export interface PropostaPlanejamentoVisual {
+  situacaoAtual?: PropostaVisualItem[]
+  fluxo?: string[]
+  roadmap?: PropostaVisualItem[]
+  cenarios?: PropostaCenario[]
+}
+
 export interface PropostaData {
   slug: string
   cliente: {
@@ -34,6 +53,7 @@ export interface PropostaData {
   escopo: PropostaItem[]
   tecnologias: string[]
   tecnologiasTitulo?: string
+  planejamentoVisual?: PropostaPlanejamentoVisual
   prazoEntrega: string
   valorTotal: number
   mensalidade?: number

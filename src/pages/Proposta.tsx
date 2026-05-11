@@ -24,6 +24,7 @@ export default function Proposta() {
     escopo,
     tecnologias,
     tecnologiasTitulo,
+    planejamentoVisual,
     prazoEntrega,
     valorTotal,
     mensalidade,
@@ -86,6 +87,82 @@ export default function Proposta() {
             </div>
           </div>
         </section>
+
+        {/* Planejamento visual */}
+        {planejamentoVisual && (
+          <section className="proposta-section proposta-visual-plan" aria-label="Planejamento visual">
+            {planejamentoVisual.situacaoAtual && (
+              <div className="proposta-infographic">
+                <div className="proposta-infographic__heading">
+                  <span className="proposta-section__title">Situação atual</span>
+                  <p>O ponto de partida já existe. O trabalho agora é organizar melhor a estrutura e medir o que realmente vira contato.</p>
+                </div>
+                <div className="proposta-status-grid">
+                  {planejamentoVisual.situacaoAtual.map((item, index) => (
+                    <article className="proposta-status-card" key={item.titulo}>
+                      <span className="proposta-status-card__index">{String(index + 1).padStart(2, '0')}</span>
+                      <h3>{item.titulo}</h3>
+                      <p>{item.descricao}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {planejamentoVisual.fluxo && (
+              <div className="proposta-infographic proposta-infographic--compact">
+                <div className="proposta-infographic__heading">
+                  <span className="proposta-section__title">Como vamos evoluir</span>
+                </div>
+                <ol className="proposta-flow" aria-label="Fluxo de evolução das campanhas">
+                  {planejamentoVisual.fluxo.map((etapa, index) => (
+                    <li className="proposta-flow__step" key={etapa}>
+                      <span className="proposta-flow__dot">{index + 1}</span>
+                      <span>{etapa}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            {planejamentoVisual.roadmap && (
+              <div className="proposta-infographic">
+                <div className="proposta-infographic__heading">
+                  <span className="proposta-section__title">Planejamento inicial</span>
+                  <p>O período de 3 meses ajuda a sair da configuração inicial, testar hipóteses e tomar decisões com dados.</p>
+                </div>
+                <div className="proposta-roadmap">
+                  {planejamentoVisual.roadmap.map((item) => (
+                    <article className="proposta-roadmap__item" key={item.titulo}>
+                      <span>{item.titulo}</span>
+                      <p>{item.descricao}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {planejamentoVisual.cenarios && (
+              <div className="proposta-infographic">
+                <div className="proposta-infographic__heading">
+                  <span className="proposta-section__title">Cenários esperados</span>
+                  <p>Os cenários abaixo são uma leitura realista do processo. Resultado depende de verba, busca local, oferta, página e velocidade no atendimento.</p>
+                </div>
+                <div className="proposta-scenarios">
+                  {planejamentoVisual.cenarios.map((cenario) => (
+                    <article className={`proposta-scenario proposta-scenario--${cenario.nivel}`} key={cenario.titulo}>
+                      <div className="proposta-scenario__top">
+                        <span>{cenario.titulo}</span>
+                        <strong>{cenario.destaque}</strong>
+                      </div>
+                      <p>{cenario.descricao}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* Escopo */}
         <section className="proposta-section" aria-label="Escopo do projeto">
