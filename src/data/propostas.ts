@@ -99,7 +99,7 @@ export const propostaAudioTao: PropostaData = {
     recursos: [
       'Gestão mensal em Google Ads e Meta Ads',
       'Período mínimo recomendado de 3 meses',
-      'Verba de mídia paga separadamente nas plataformas',
+      'Relatório mensal de acessos, conversões e desempenho das campanhas',
     ],
   },
 
