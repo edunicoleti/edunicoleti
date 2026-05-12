@@ -38,6 +38,7 @@ export default function PropostaPDF() {
     pagamento,
     validade,
     observacoes,
+    mostrarDetalhesComerciais = true,
     criadoEm,
   } = proposta
 
@@ -135,7 +136,7 @@ export default function PropostaPDF() {
 
             {planejamentoVisual.roadmap && (
               <div className="pdf-visual-block">
-                <div className="pdf-visual-block__label">Plano dos 3 meses</div>
+                <div className="pdf-visual-block__label">Plano de execução</div>
                 <div className="pdf-mini-grid pdf-mini-grid--three">
                   {planejamentoVisual.roadmap.map((item) => (
                     <div className="pdf-mini-card pdf-mini-card--accent" key={item.titulo}>
@@ -147,32 +148,47 @@ export default function PropostaPDF() {
               </div>
             )}
 
-            {planejamentoVisual.cenarios && (
-              <div className="pdf-visual-block">
-                <div className="pdf-visual-block__label">O que deve ficar funcionando</div>
-                <div className="pdf-mini-grid pdf-mini-grid--three">
-                  {planejamentoVisual.cenarios.map((cenario) => (
-                    <div className={`pdf-scenario pdf-scenario--${cenario.nivel}`} key={cenario.titulo}>
-                      <strong>{cenario.titulo}</strong>
-                      <em>{cenario.destaque}</em>
-                      <span>{cenario.descricao}</span>
-                    </div>
-                  ))}
+            <div className="pdf-visual-block">
+              <div className="pdf-execution-grid">
+                <div>
+                  <div className="pdf-visual-block__label">O que será realizado</div>
+                  <ul className="pdf-compact-list">
+                    {itensSim.map((item) => (
+                      <li key={item.descricao}>{item.descricao}</li>
+                    ))}
+                  </ul>
                 </div>
+
+                {planejamentoVisual.cenarios && (
+                  <div>
+                    <div className="pdf-visual-block__label">O que deve ficar funcionando</div>
+                    <div className="pdf-outcomes">
+                      {planejamentoVisual.cenarios.map((cenario) => (
+                        <div className={`pdf-scenario pdf-scenario--${cenario.nivel}`} key={cenario.titulo}>
+                          <strong>{cenario.titulo}</strong>
+                          <em>{cenario.destaque}</em>
+                          <span>{cenario.descricao}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         )}
 
         {/* Escopo */}
-        <div className="pdf-section">
+        {!planejamentoVisual && (
+          <div className="pdf-section">
           <div className="pdf-section__title">Escopo do Projeto</div>
           <ul className="pdf-scope-list">
             {itensSim.map((item) => (
               <li key={item.descricao}>{item.descricao}</li>
             ))}
           </ul>
-        </div>
+          </div>
+        )}
 
         {/* Tecnologias */}
         <div className="pdf-section">
@@ -247,7 +263,8 @@ export default function PropostaPDF() {
         </div>
 
         {/* Detalhes: pagamento + prazo */}
-        <div className="pdf-section">
+        {mostrarDetalhesComerciais && (
+          <div className="pdf-section">
           <div className="pdf-section__title">Condições Comerciais</div>
           <div className="pdf-details-grid">
             <div className="pdf-details-grid__item">
@@ -259,7 +276,8 @@ export default function PropostaPDF() {
               <div className="pdf-details-grid__value">{prazoEntrega}</div>
             </div>
           </div>
-        </div>
+          </div>
+        )}
 
         {/* Observações */}
         {observacoes && (

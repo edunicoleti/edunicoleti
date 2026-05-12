@@ -60,9 +60,9 @@ export const propostaAudioTao: PropostaData = {
   slug: 'audiotao',
 
   cliente: {
-    nome: 'Dra. Maristela Montagner',
-    empresa: 'AudioTao',
-    cargo: 'Responsável',
+    nome: 'Maristela Montagner',
+    empresa: 'Clínica Fonoaudiologia Avançada',
+    cargo: '',
     email: '',
     telefone: '',
   },
@@ -71,8 +71,8 @@ export const propostaAudioTao: PropostaData = {
     titulo: 'Gestão de Tráfego Pago para a AudioTao',
     tipo: 'Google Ads + Meta Ads',
     descricao:
-      'A AudioTao já tem uma base importante pronta: campanha ativa no Google Ads, painel do Meta Ads organizado e Pixel configurado no site. Hoje, a campanha do Google está em uma configuração mais automática. A próxima etapa é criar campanhas mais segmentadas, com páginas de conversão e foco em WhatsApp, agendamentos e oportunidades reais para aparelhos auditivos, avaliação auditiva e terapia para zumbido.',
-    tags: ['Google Ads', 'Meta Ads', 'WhatsApp', 'Chapecó e região'],
+      'A AudioTao já tem uma base importante pronta: campanha ativa no Google Ads, painel do Meta Ads organizado e Pixel configurado no site. Hoje, a campanha do Google está em uma configuração mais automática. A próxima etapa é criar campanhas mais segmentadas, com páginas de conversão e foco em agendamentos e oportunidades reais para aparelhos auditivos, avaliação auditiva, terapia para zumbido e CPAP.',
+    tags: ['Google Ads', 'Meta Ads', 'Landing Pages', 'Leads qualificados'],
   },
 
   escopo: [
@@ -110,15 +110,15 @@ export const propostaAudioTao: PropostaData = {
     roadmap: [
       {
         titulo: 'Mês 1',
-        descricao: 'Reorganizar o Google Ads, criar campanhas segmentadas por serviço e preparar páginas de conversão.',
+        descricao: 'Reorganizar Google Ads, criar campanhas por serviço e preparar landing pages para aparelhos auditivos, zumbido, avaliação auditiva e CPAP.',
       },
       {
         titulo: 'Mês 2',
-        descricao: 'Acompanhar termos de busca, acessos, WhatsApp e qualidade dos contatos gerados.',
+        descricao: 'Acompanhar termos de busca, acessos, conversões e qualidade dos leads que chegam para atendimento comercial.',
       },
       {
         titulo: 'Mês 3',
-        descricao: 'Direcionar verba para campanhas com melhores sinais e melhorar o custo por oportunidade.',
+        descricao: 'Direcionar verba para campanhas com melhores sinais e melhorar o volume de oportunidades de agendamento.',
       },
     ],
     cenarios: [
@@ -145,17 +145,18 @@ export const propostaAudioTao: PropostaData = {
 
   prazoEntrega: 'Organização inicial em até 7 dias úteis após aprovação e acessos liberados',
 
-  valorTotal: 1200,
+  valorTotal: 800,
   mensalidade: 0,
 
   investimento: {
     titulo: 'Mensalidade de gestão',
     descricao:
-      'Mensalidade de R$ 1.200,00 para gestão, acompanhamento e otimização das campanhas no Google Ads e Meta Ads. A recomendação é manter o trabalho por pelo menos 3 meses para ter volume de dados, testar campanhas e buscar um resultado mais consistente.',
+      'Mensalidade de R$ 800,00 para gestão, acompanhamento e otimização das campanhas no Google Ads, Meta Ads e landing pages. A recomendação é manter o trabalho por pelo menos 3 meses para ter volume de dados, testar campanhas e buscar um resultado mais consistente.',
     recursos: [
       'Gestão mensal em Google Ads e Meta Ads',
       'Gestão do site e landing pages para campanhas',
       'Período mínimo recomendado de 3 meses',
+      'Verba patrocinada recomendada de pelo menos R$ 1.000,00 por mês, depositada direto nas contas de anúncio',
       'Relatório mensal de acessos, conversões e desempenho das campanhas',
     ],
   },
@@ -163,13 +164,13 @@ export const propostaAudioTao: PropostaData = {
   pagamento: {
     entrada: 0,
     saldo: 0,
-    descricao: 'Mensalidade de R$ 1.200,00, com período mínimo recomendado de 3 meses. A verba dos anúncios é paga separadamente e diretamente nas plataformas.',
+    descricao: 'Mensalidade de R$ 800,00, com período mínimo recomendado de 3 meses. Recomendo pelo menos R$ 1.000,00 mensais de verba patrocinada, depositada diretamente nas contas de anúncio.',
   },
 
   validade: '30 dias',
 
-  observacoes:
-    'Hoje a estrutura já tem um bom ponto de partida. O foco da gestão será sair de uma campanha mais automática para campanhas segmentadas, medir quais anúncios e páginas geram contatos pelo WhatsApp e direcionar o investimento para pessoas com maior chance de agendar uma consulta.',
+  observacoes: '',
+  mostrarDetalhesComerciais: false,
 
   criadoEm: '2026-05-11T12:00:00-03:00',
 }

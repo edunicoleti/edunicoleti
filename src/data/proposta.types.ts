@@ -61,5 +61,6 @@ export interface PropostaData {
   pagamento: PropostaPagamento
   validade: string // ex: "30 dias"
   observacoes?: string
+  mostrarDetalhesComerciais?: boolean
   criadoEm: string // ISO date string
 }

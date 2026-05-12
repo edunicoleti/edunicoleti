@@ -216,6 +216,45 @@ body {
   color: #555;
 }
 
+.pdf-execution-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 4mm;
+}
+
+.pdf-compact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6mm;
+}
+
+.pdf-compact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 2mm;
+  font-size: 8pt;
+  color: #333;
+  line-height: 1.4;
+  font-family: 'Arial', sans-serif;
+}
+
+.pdf-compact-list li::before {
+  content: '';
+  width: 2mm;
+  height: 2mm;
+  border-radius: 50%;
+  background: #16a34a;
+  flex-shrink: 0;
+  margin-top: 1.5mm;
+}
+
+.pdf-outcomes {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+}
+
 .pdf-scenario em {
   display: block;
   font-style: normal;

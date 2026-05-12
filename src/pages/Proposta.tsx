@@ -33,6 +33,7 @@ export default function Proposta() {
     pagamento,
     validade,
     observacoes,
+    mostrarDetalhesComerciais = true,
     criadoEm,
   } = proposta
 
@@ -109,39 +110,49 @@ export default function Proposta() {
               </div>
             )}
 
-            {planejamentoVisual.roadmap && (
+            {(planejamentoVisual.roadmap || planejamentoVisual.cenarios) && (
               <div className="proposta-infographic">
                 <div className="proposta-infographic__heading">
-                  <span className="proposta-section__title">Plano dos 3 meses</span>
-                  <p>Um ciclo curto para sair da configuração automática, segmentar campanhas e medir o que gera contato comercial.</p>
+                  <span className="proposta-section__title">Plano de execução</span>
+                  <p>O trabalho será organizado em 3 meses para sair da configuração automática, segmentar campanhas e gerar contatos com maior intenção de atendimento.</p>
                 </div>
-                <div className="proposta-roadmap">
-                  {planejamentoVisual.roadmap.map((item) => (
-                    <article className="proposta-roadmap__item" key={item.titulo}>
-                      <span>{item.titulo}</span>
-                      <p>{item.descricao}</p>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            )}
+                <div className="proposta-execution">
+                  {planejamentoVisual.roadmap && (
+                    <div className="proposta-roadmap">
+                      {planejamentoVisual.roadmap.map((item) => (
+                        <article className="proposta-roadmap__item" key={item.titulo}>
+                          <span>{item.titulo}</span>
+                          <p>{item.descricao}</p>
+                        </article>
+                      ))}
+                    </div>
+                  )}
 
-            {planejamentoVisual.cenarios && (
-              <div className="proposta-infographic">
-                <div className="proposta-infographic__heading">
-                  <span className="proposta-section__title">O que deve ficar funcionando</span>
-                  <p>A proposta é deixar a estrutura mais preparada para gerar contatos com intenção de atendimento, não apenas cliques no site.</p>
-                </div>
-                <div className="proposta-scenarios">
-                  {planejamentoVisual.cenarios.map((cenario) => (
-                    <article className={`proposta-scenario proposta-scenario--${cenario.nivel}`} key={cenario.titulo}>
-                      <div className="proposta-scenario__top">
-                        <span>{cenario.titulo}</span>
-                        <strong>{cenario.destaque}</strong>
+                  <div className="proposta-execution__details">
+                    <div className="proposta-execution__panel">
+                      <h3>O que será realizado</h3>
+                      <ul className="proposta-compact-list">
+                        {itensSim.map((item) => (
+                          <li key={item.descricao}>{item.descricao}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {planejamentoVisual.cenarios && (
+                      <div className="proposta-execution__panel">
+                        <h3>O que deve ficar funcionando</h3>
+                        <div className="proposta-outcomes">
+                          {planejamentoVisual.cenarios.map((cenario) => (
+                            <article className={`proposta-outcome proposta-outcome--${cenario.nivel}`} key={cenario.titulo}>
+                              <strong>{cenario.titulo}</strong>
+                              <span>{cenario.destaque}</span>
+                              <p>{cenario.descricao}</p>
+                            </article>
+                          ))}
+                        </div>
                       </div>
-                      <p>{cenario.descricao}</p>
-                    </article>
-                  ))}
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -149,7 +160,8 @@ export default function Proposta() {
         )}
 
         {/* Escopo */}
-        <section className="proposta-section" aria-label="Escopo do projeto">
+        {!planejamentoVisual && (
+          <section className="proposta-section" aria-label="Escopo do projeto">
           <h2 className="proposta-section__title">O que está incluso</h2>
           <div className="proposta-escopo">
             <ul className="proposta-list proposta-list--yes">
@@ -161,7 +173,8 @@ export default function Proposta() {
               ))}
             </ul>
           </div>
-        </section>
+          </section>
+        )}
 
         {/* Tecnologias */}
         <section className="proposta-section" aria-label="Tecnologias">
@@ -251,7 +264,8 @@ export default function Proposta() {
               )}
             </div>
             
-            <div className="proposta-invest__details" style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginTop: '2.5rem' }}>
+            {mostrarDetalhesComerciais && (
+              <div className="proposta-invest__details" style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginTop: '2.5rem' }}>
               <div className="proposta-invest__card" style={{ background: 'var(--color-bg-alt)', borderRadius: '12px', padding: '1.25rem', border: '1px solid var(--color-border-light)' }}>
                 <h3 style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-text)' }}>
                   <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> 
@@ -267,7 +281,8 @@ export default function Proposta() {
                 </h3>
                 <p style={{ fontSize: '0.95rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, fontWeight: 500 }}>{prazoEntrega}</p>
               </div>
-            </div>
+              </div>
+            )}
             
             <div style={{ marginTop: '2.5rem', textAlign: 'center', fontSize: '0.85rem', color: 'var(--color-text-muted)', borderTop: '1px solid var(--color-border-light)', paddingTop: '1.5rem' }}>
               Emitida em {new Date(criadoEm).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })} • Válida por {validade}
