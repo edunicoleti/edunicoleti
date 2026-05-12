@@ -30,7 +30,6 @@ export interface PropostaCenario {
 
 export interface PropostaPlanejamentoVisual {
   situacaoAtual?: PropostaVisualItem[]
-  fluxo?: string[]
   roadmap?: PropostaVisualItem[]
   cenarios?: PropostaCenario[]
 }

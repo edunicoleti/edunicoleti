@@ -133,23 +133,9 @@ export default function PropostaPDF() {
               </div>
             )}
 
-            {planejamentoVisual.fluxo && (
-              <div className="pdf-visual-block">
-                <div className="pdf-visual-block__label">Como vamos evoluir</div>
-                <div className="pdf-flow">
-                  {planejamentoVisual.fluxo.map((etapa, index) => (
-                    <div className="pdf-flow__step" key={etapa}>
-                      <strong>{index + 1}</strong>
-                      <span>{etapa}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {planejamentoVisual.roadmap && (
               <div className="pdf-visual-block">
-                <div className="pdf-visual-block__label">Planejamento inicial</div>
+                <div className="pdf-visual-block__label">Plano dos 3 meses</div>
                 <div className="pdf-mini-grid pdf-mini-grid--three">
                   {planejamentoVisual.roadmap.map((item) => (
                     <div className="pdf-mini-card pdf-mini-card--accent" key={item.titulo}>
@@ -163,7 +149,7 @@ export default function PropostaPDF() {
 
             {planejamentoVisual.cenarios && (
               <div className="pdf-visual-block">
-                <div className="pdf-visual-block__label">Cenários esperados</div>
+                <div className="pdf-visual-block__label">O que deve ficar funcionando</div>
                 <div className="pdf-mini-grid pdf-mini-grid--three">
                   {planejamentoVisual.cenarios.map((cenario) => (
                     <div className={`pdf-scenario pdf-scenario--${cenario.nivel}`} key={cenario.titulo}>

@@ -109,27 +109,11 @@ export default function Proposta() {
               </div>
             )}
 
-            {planejamentoVisual.fluxo && (
-              <div className="proposta-infographic proposta-infographic--compact">
-                <div className="proposta-infographic__heading">
-                  <span className="proposta-section__title">Como vamos evoluir</span>
-                </div>
-                <ol className="proposta-flow" aria-label="Fluxo de evolução das campanhas">
-                  {planejamentoVisual.fluxo.map((etapa, index) => (
-                    <li className="proposta-flow__step" key={etapa}>
-                      <span className="proposta-flow__dot">{index + 1}</span>
-                      <span>{etapa}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            )}
-
             {planejamentoVisual.roadmap && (
               <div className="proposta-infographic">
                 <div className="proposta-infographic__heading">
-                  <span className="proposta-section__title">Planejamento inicial</span>
-                  <p>O período de 3 meses ajuda a sair da configuração inicial, testar hipóteses e tomar decisões com dados.</p>
+                  <span className="proposta-section__title">Plano dos 3 meses</span>
+                  <p>Um ciclo curto para sair da configuração automática, segmentar campanhas e medir o que gera contato comercial.</p>
                 </div>
                 <div className="proposta-roadmap">
                   {planejamentoVisual.roadmap.map((item) => (
@@ -145,8 +129,8 @@ export default function Proposta() {
             {planejamentoVisual.cenarios && (
               <div className="proposta-infographic">
                 <div className="proposta-infographic__heading">
-                  <span className="proposta-section__title">Cenários esperados</span>
-                  <p>Os cenários abaixo são uma leitura realista do processo. Resultado depende de verba, busca local, oferta, página e velocidade no atendimento.</p>
+                  <span className="proposta-section__title">O que deve ficar funcionando</span>
+                  <p>A proposta é deixar a estrutura mais preparada para gerar contatos com intenção de atendimento, não apenas cliques no site.</p>
                 </div>
                 <div className="proposta-scenarios">
                   {planejamentoVisual.cenarios.map((cenario) => (
