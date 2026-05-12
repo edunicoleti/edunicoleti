@@ -76,13 +76,12 @@ export const propostaAudioTao: PropostaData = {
   },
 
   escopo: [
-    { descricao: 'Revisar a campanha automática atual do Google Ads e reorganizar a estrutura por serviço e intenção de busca', incluido: true },
-    { descricao: 'Criar campanhas para aparelhos auditivos, terapia de zumbido e buscas locais em Chapecó e região', incluido: true },
-    { descricao: 'Ajustar palavras-chave, termos de pesquisa, palavras negativas e textos dos anúncios', incluido: true },
-    { descricao: 'Gerenciar o site e criar landing pages de conversão para as campanhas', incluido: true },
-    { descricao: 'Usar o Pixel da Meta para públicos, remarketing e análise do comportamento no site', incluido: true },
-    { descricao: 'Configurar campanhas no Facebook e Instagram com foco em WhatsApp e geração de contatos', incluido: true },
-    { descricao: 'Acompanhar resultados e fazer otimizações mensais para melhorar o custo por contato qualificado', incluido: true },
+    { descricao: 'Criar landing pages para os principais serviços: aparelhos auditivos, terapia de zumbido, CPAP e avaliação auditiva', incluido: true },
+    { descricao: 'Criar campanhas específicas no Google Ads para pessoas que já estão buscando solução no momento', incluido: true },
+    { descricao: 'Separar campanhas, palavras-chave e anúncios por serviço para aumentar a intenção de conversão', incluido: true },
+    { descricao: 'Criar campanhas na Meta para qualificação de leads, geração de mensagens e remarketing', incluido: true },
+    { descricao: 'Configurar públicos e acompanhamento pelo Pixel da Meta para medir acessos e conversões', incluido: true },
+    { descricao: 'Acompanhar leads, mensagens e oportunidades de agendamento para orientar as otimizações mensais', incluido: true },
   ],
 
   tecnologiasTitulo: 'Canais e ferramentas',
@@ -110,34 +109,34 @@ export const propostaAudioTao: PropostaData = {
     roadmap: [
       {
         titulo: 'Mês 1',
-        descricao: 'Reorganizar Google Ads, criar campanhas por serviço e preparar landing pages para aparelhos auditivos, zumbido, avaliação auditiva e CPAP.',
+        descricao: 'Criar landing pages dos serviços principais e estruturar campanhas específicas no Google Ads para buscas com intenção imediata.',
       },
       {
         titulo: 'Mês 2',
-        descricao: 'Acompanhar termos de busca, acessos, conversões e qualidade dos leads que chegam para atendimento comercial.',
+        descricao: 'Ativar campanhas na Meta para qualificar leads, gerar mensagens e criar públicos de remarketing com base nos acessos.',
       },
       {
         titulo: 'Mês 3',
-        descricao: 'Direcionar verba para campanhas com melhores sinais e melhorar o volume de oportunidades de agendamento.',
+        descricao: 'Otimizar termos de busca, anúncios, páginas e públicos para melhorar a qualidade dos contatos e oportunidades de agendamento.',
       },
     ],
     cenarios: [
       {
-        titulo: 'Campanhas por serviço',
-        destaque: 'Mais controle sobre a procura',
-        descricao: 'Anúncios separados para aparelhos auditivos, terapia de zumbido e buscas locais, com mensagens alinhadas à intenção de cada pessoa.',
+        titulo: 'Landing pages por serviço',
+        destaque: 'Páginas focadas em conversão',
+        descricao: 'Cada serviço principal terá uma página direcionada para explicar a solução, orientar o contato e facilitar o agendamento.',
         nivel: 'conservador',
       },
       {
-        titulo: 'Leads mais qualificados',
-        destaque: 'Menos clique solto, mais conversa útil',
-        descricao: 'Páginas e anúncios focados em levar para o WhatsApp pessoas com maior chance de interesse real nos serviços da clínica.',
+        titulo: 'Google Ads segmentado',
+        destaque: 'Demanda de quem está buscando agora',
+        descricao: 'Campanhas separadas por serviço para atrair pessoas que pesquisam por aparelhos auditivos, zumbido, CPAP ou avaliação auditiva.',
         nivel: 'realista',
       },
       {
-        titulo: 'Mais agendamentos',
-        destaque: 'Oportunidades para o comercial',
-        descricao: 'Com rastreamento e otimização mensal, a meta é transformar campanhas em contatos que possam virar avaliações e consultas.',
+        titulo: 'Meta Ads e remarketing',
+        destaque: 'Mensagens de interessados qualificados',
+        descricao: 'Campanhas para qualificar leads, gerar mensagens de interessados com potencial de agendamento e reimpactar pessoas que acessaram as páginas dos serviços.',
         nivel: 'otimista',
       },
     ],
