@@ -36,6 +36,12 @@ export interface PropostaPlanejamentoVisual {
   cenarios?: PropostaCenario[]
 }
 
+export interface PropostaMensalidadeInfo {
+  titulo?: string
+  descricao?: string
+  recursos?: string[]
+}
+
 export interface PropostaData {
   slug: string
   cliente: {
@@ -58,6 +64,7 @@ export interface PropostaData {
   prazoEntrega: string
   valorTotal: number
   mensalidade?: number
+  mensalidadeInfo?: PropostaMensalidadeInfo
   investimento?: PropostaInvestimento
   opcoesHospedagem?: { titulo: string; valorFormatado: string; descricao?: string }[]
   pagamento: PropostaPagamento

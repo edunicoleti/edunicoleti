@@ -167,9 +167,32 @@
 
 .proposta-status-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.75rem;
 }
+
+.proposta-outcomes--full {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.proposta-outcomes--full .proposta-outcome {
+  border-left: none;
+  padding: 1.1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--color-border-light);
+  border-top: 3px solid var(--color-border);
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.proposta-outcomes--full .proposta-outcome--conservador { border-top-color: #f59e0b; }
+.proposta-outcomes--full .proposta-outcome--realista    { border-top-color: var(--color-accent); }
+.proposta-outcomes--full .proposta-outcome--otimista    { border-top-color: #16a34a; }
 
 .proposta-status-card {
   min-height: 160px;
@@ -672,7 +695,8 @@
 
   .proposta-status-grid,
   .proposta-roadmap,
-  .proposta-execution__details {
+  .proposta-execution__details,
+  .proposta-outcomes--full {
     grid-template-columns: 1fr;
   }
 

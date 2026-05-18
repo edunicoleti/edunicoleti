@@ -28,6 +28,7 @@ export default function Proposta() {
     prazoEntrega,
     valorTotal,
     mensalidade,
+    mensalidadeInfo,
     investimento,
     opcoesHospedagem,
     pagamento,
@@ -36,6 +37,14 @@ export default function Proposta() {
     mostrarDetalhesComerciais = true,
     criadoEm,
   } = proposta
+
+  const mensalidadeTitulo = mensalidadeInfo?.titulo ?? 'Manutenção e Hospedagem'
+  const mensalidadeDescricao = mensalidadeInfo?.descricao ?? 'Estão disponíveis os seguintes planos para garantir performance e segurança contínua para o seu site ao longo do tempo. Basta me informar sua escolha na aprovação!'
+  const mensalidadeRecursos = mensalidadeInfo?.recursos ?? [
+    'Hospedagem Cloud premium de alta performance',
+    'Backups semanais blindados de segurança',
+    'Atualizações preventivas de banco e suporte técnico',
+  ]
 
   const formatBRL = (val: number) =>
     val > 0
@@ -96,7 +105,9 @@ export default function Proposta() {
               <div className="proposta-infographic">
                 <div className="proposta-infographic__heading">
                   <span className="proposta-section__title">Situação atual</span>
-                  <p>{planejamentoVisual.situacaoAtualDescricao ?? 'O ponto de partida já existe. O trabalho agora é organizar melhor a estrutura e medir o que realmente vira contato.'}</p>
+                  {planejamentoVisual.situacaoAtualDescricao && (
+                    <p>{planejamentoVisual.situacaoAtualDescricao}</p>
+                  )}
                 </div>
                 <div className="proposta-status-grid">
                   {planejamentoVisual.situacaoAtual.map((item, index) => (
@@ -114,10 +125,13 @@ export default function Proposta() {
               <div className="proposta-infographic">
                 <div className="proposta-infographic__heading">
                   <span className="proposta-section__title">Plano de execução</span>
-                  <p>{planejamentoVisual.planoExecucaoDescricao ?? 'O trabalho será organizado em 3 meses para sair da configuração automática, segmentar campanhas e gerar contatos com maior intenção de atendimento.'}</p>
+                  {planejamentoVisual.planoExecucaoDescricao && (
+                    <p>{planejamentoVisual.planoExecucaoDescricao}</p>
+                  )}
                 </div>
-                <div className="proposta-execution">
-                  {planejamentoVisual.roadmap && (
+
+                {planejamentoVisual.roadmap ? (
+                  <div className="proposta-execution">
                     <div className="proposta-roadmap">
                       {planejamentoVisual.roadmap.map((item) => (
                         <article className="proposta-roadmap__item" key={item.titulo}>
@@ -126,34 +140,54 @@ export default function Proposta() {
                         </article>
                       ))}
                     </div>
-                  )}
-
-                  <div className="proposta-execution__details">
+                    <div className="proposta-execution__details">
+                      <div className="proposta-execution__panel">
+                        <h3>O que será realizado</h3>
+                        <ul className="proposta-compact-list">
+                          {itensSim.map((item) => (
+                            <li key={item.descricao}>{item.descricao}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      {planejamentoVisual.cenarios && (
+                        <div className="proposta-execution__panel">
+                          <h3>O que deve ficar funcionando</h3>
+                          <div className="proposta-outcomes">
+                            {planejamentoVisual.cenarios.map((cenario) => (
+                              <article className={`proposta-outcome proposta-outcome--${cenario.nivel}`} key={cenario.titulo}>
+                                <strong>{cenario.titulo}</strong>
+                                <span>{cenario.destaque}</span>
+                                <p>{cenario.descricao}</p>
+                              </article>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {planejamentoVisual.cenarios && (
+                      <div className="proposta-outcomes proposta-outcomes--full">
+                        {planejamentoVisual.cenarios.map((cenario) => (
+                          <article className={`proposta-outcome proposta-outcome--${cenario.nivel}`} key={cenario.titulo}>
+                            <strong>{cenario.titulo}</strong>
+                            <span>{cenario.destaque}</span>
+                            <p>{cenario.descricao}</p>
+                          </article>
+                        ))}
+                      </div>
+                    )}
                     <div className="proposta-execution__panel">
-                      <h3>O que será realizado</h3>
+                      <h3>O que está incluído</h3>
                       <ul className="proposta-compact-list">
                         {itensSim.map((item) => (
                           <li key={item.descricao}>{item.descricao}</li>
                         ))}
                       </ul>
                     </div>
-
-                    {planejamentoVisual.cenarios && (
-                      <div className="proposta-execution__panel">
-                        <h3>O que deve ficar funcionando</h3>
-                        <div className="proposta-outcomes">
-                          {planejamentoVisual.cenarios.map((cenario) => (
-                            <article className={`proposta-outcome proposta-outcome--${cenario.nivel}`} key={cenario.titulo}>
-                              <strong>{cenario.titulo}</strong>
-                              <span>{cenario.destaque}</span>
-                              <p>{cenario.descricao}</p>
-                            </article>
-                          ))}
-                        </div>
-                      </div>
-                    )}
                   </div>
-                </div>
+                )}
               </div>
             )}
           </section>
@@ -223,14 +257,12 @@ export default function Proposta() {
                       <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--color-text)', color: 'var(--color-bg)', padding: '4px 10px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 700, width: 'fit-content', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Passo 2</div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem', marginTop: '0.5rem' }}>
                         <div style={{ flex: '1 1 300px' }}>
-                          <span className="text-label" style={{ fontSize: '1rem' }}>Manutenção e Hospedagem</span>
+                          <span className="text-label" style={{ fontSize: '1rem' }}>{mensalidadeTitulo}</span>
                           <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem', marginTop: '0.5rem', maxWidth: '400px', lineHeight: 1.5 }}>
-                            Estão disponíveis os seguintes planos para garantir performance e segurança contínua para o seu site ao longo do tempo. Basta me informar sua escolha na aprovação!
+                            {mensalidadeDescricao}
                           </p>
                           <ul className="proposta-invest__features" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            <li>Hospedagem Cloud premium de alta performance</li>
-                            <li>Backups semanais blindados de segurança</li>
-                            <li>Atualizações preventivas de banco e suporte técnico</li>
+                            {mensalidadeRecursos.map((r) => <li key={r}>{r}</li>)}
                           </ul>
                         </div>
                         
