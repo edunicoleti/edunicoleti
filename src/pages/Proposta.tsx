@@ -96,7 +96,7 @@ export default function Proposta() {
               <div className="proposta-infographic">
                 <div className="proposta-infographic__heading">
                   <span className="proposta-section__title">Situação atual</span>
-                  <p>O ponto de partida já existe. O trabalho agora é organizar melhor a estrutura e medir o que realmente vira contato.</p>
+                  <p>{planejamentoVisual.situacaoAtualDescricao ?? 'O ponto de partida já existe. O trabalho agora é organizar melhor a estrutura e medir o que realmente vira contato.'}</p>
                 </div>
                 <div className="proposta-status-grid">
                   {planejamentoVisual.situacaoAtual.map((item, index) => (
@@ -114,7 +114,7 @@ export default function Proposta() {
               <div className="proposta-infographic">
                 <div className="proposta-infographic__heading">
                   <span className="proposta-section__title">Plano de execução</span>
-                  <p>O trabalho será organizado em 3 meses para sair da configuração automática, segmentar campanhas e gerar contatos com maior intenção de atendimento.</p>
+                  <p>{planejamentoVisual.planoExecucaoDescricao ?? 'O trabalho será organizado em 3 meses para sair da configuração automática, segmentar campanhas e gerar contatos com maior intenção de atendimento.'}</p>
                 </div>
                 <div className="proposta-execution">
                   {planejamentoVisual.roadmap && (
