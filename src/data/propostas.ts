@@ -186,10 +186,10 @@ export const propostaLucia: PropostaData = {
   },
 
   projeto: {
-    titulo: 'Cardápios: Um Livro Vivo — Produto Completo',
+    titulo: 'Cardápios: Um Livro Vivo, o Produto Completo',
     tipo: 'Meta Ads + Conteúdo + Plataforma de Cursos',
     descricao:
-      'O Cardápios: Um Livro Vivo ganha uma nova dimensão — agora com cursos em vídeo da Lucia, onde o Livro Vivo funciona como o material de referência permanente e sempre atualizado. Nutricionistas aprendem com as aulas e consultam o livro no dia a dia. Para colocar esse produto no mercado, a proposta inclui a estruturação da plataforma de cursos, tráfego pago no Meta Ads para gerar vendas consistentes e presença semanal no Instagram.',
+      'O Cardápios: Um Livro Vivo ganha uma nova dimensão com os cursos em vídeo da Lucia, onde o Livro Vivo funciona como o material de referência permanente e sempre atualizado. Nutricionistas aprendem com as aulas e consultam o livro no dia a dia. Para colocar esse produto no mercado, a proposta inclui a estruturação da plataforma de cursos, tráfego pago no Meta Ads para gerar vendas consistentes e presença semanal no Instagram.',
     tags: ['Meta Ads', 'Conteúdo Orgânico', 'Plataforma de Cursos', 'Edição de Vídeos'],
   },
 
@@ -218,7 +218,7 @@ export const propostaLucia: PropostaData = {
       },
       {
         titulo: 'Sem tráfego pago ainda',
-        descricao: 'Todas as vendas dependem do alcance orgânico. Nenhuma campanha paga foi rodada — é onde está o maior espaço para crescer.',
+        descricao: 'Todas as vendas dependem do alcance orgânico. Nenhuma campanha paga foi rodada, e é aí que está o maior espaço para crescer.',
       },
     ],
     cenarios: [
@@ -245,13 +245,13 @@ export const propostaLucia: PropostaData = {
 
   prazoEntrega: '1 mês de implantação após aprovação e acessos liberados',
 
-  valorTotal: 800,
-  mensalidade: 1300,
+  valorTotal: 1500,
+  mensalidade: 1200,
 
   investimento: {
-    titulo: 'Implantação',
+    titulo: 'Implantação (Mês 1)',
     descricao:
-      'Valor único cobrado na aprovação, referente ao setup completo: criação da plataforma de cursos, configuração do painel Meta Ads e elaboração dos criativos iniciais das campanhas. Entrega em até 30 dias.',
+      'Cobrado na aprovação e executado ao longo do primeiro mês. Inclui a criação da plataforma de cursos, configuração do painel Meta Ads e elaboração dos criativos das campanhas.',
     recursos: [
       'Estruturação da plataforma de cursos em vídeo',
       'Criação e configuração do painel Meta Ads',
@@ -262,9 +262,9 @@ export const propostaLucia: PropostaData = {
   },
 
   mensalidadeInfo: {
-    titulo: 'Gestão Mensal',
+    titulo: 'Gestão Mensal (a partir do Mês 2)',
     descricao:
-      'Com a plataforma de cursos pronta e os anúncios no ar, inicia o contrato de gestão. Mínimo de 3 meses com renovação automática por mais 3 meses — tempo suficiente para acumular dados, otimizar campanhas e gerar resultado consistente.',
+      'Inicia no segundo mês, após a conclusão da implantação, com a plataforma de cursos pronta e os anúncios no ar. Contrato mínimo de 3 meses com renovação automática por mais 3 meses, tempo suficiente para acumular dados, otimizar campanhas e gerar resultado consistente.',
     recursos: [
       'Gestão e otimização das campanhas Meta Ads',
       '1 post semanal no Instagram (@cardapioslivrovivo)',
@@ -278,13 +278,13 @@ export const propostaLucia: PropostaData = {
     entrada: 0,
     saldo: 0,
     descricao:
-      'Implantação de R$ 800,00 na aprovação, com entrega em até 30 dias. Gestão mensal de R$ 1.300,00 a partir do segundo mês, com contrato de 3 meses + renovação automática por mais 3 meses. Verba de anúncios de pelo menos R$ 500,00/mês depositada diretamente na conta Meta Ads — valor separado da mensalidade.',
+      'Implantação de R$ 1.500,00 cobrada na aprovação, com entrega ao longo do primeiro mês. Gestão mensal de R$ 1.200,00 a partir do segundo mês, com contrato de 3 meses e renovação automática por mais 3 meses. Verba de anúncios de pelo menos R$ 500,00/mês depositada diretamente na conta Meta Ads, valor separado da mensalidade.',
   },
 
   validade: '30 dias',
 
   observacoes: '',
-  mostrarDetalhesComerciais: true,
+  mostrarDetalhesComerciais: false,
 
   criadoEm: '2026-05-17T12:00:00-03:00',
 }
