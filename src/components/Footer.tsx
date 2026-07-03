@@ -1,7 +1,19 @@
+import { useNavigate } from 'react-router-dom'
 import './Footer.css'
 
 export default function Footer() {
   const year = new Date().getFullYear()
+  const navigate = useNavigate()
+
+  const handleAnchorClick = (href: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    const target = document.querySelector(href)
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      window.location.href = '/' + href
+    }
+  }
 
   return (
     <footer className="footer" role="contentinfo">
@@ -17,18 +29,13 @@ export default function Footer() {
           </div>
 
           <div className="footer__links">
-            <a href="#servicos" className="footer__link" onClick={(e) => {
+            <a href="#servicos" className="footer__link" onClick={handleAnchorClick('#servicos')}>Serviços</a>
+            <a href="#metodologia" className="footer__link" onClick={handleAnchorClick('#metodologia')}>Metodologia</a>
+            <a href="/mentoria" className="footer__link" onClick={(e) => {
               e.preventDefault()
-              document.querySelector('#servicos')?.scrollIntoView({ behavior: 'smooth' })
-            }}>Serviços</a>
-            <a href="#metodologia" className="footer__link" onClick={(e) => {
-              e.preventDefault()
-              document.querySelector('#metodologia')?.scrollIntoView({ behavior: 'smooth' })
-            }}>Metodologia</a>
-            <a href="#contato" className="footer__link" onClick={(e) => {
-              e.preventDefault()
-              document.querySelector('#contato')?.scrollIntoView({ behavior: 'smooth' })
-            }}>Contato</a>
+              navigate('/mentoria')
+            }}>Mentoria</a>
+            <a href="#contato" className="footer__link" onClick={handleAnchorClick('#contato')}>Contato</a>
           </div>
 
           <div className="footer__contact">

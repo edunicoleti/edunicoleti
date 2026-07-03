@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Header.css'
 
 const navLinks = [
   { href: '#servicos', label: 'Serviços' },
   { href: '#metodologia', label: 'Metodologia' },
+  { href: '/mentoria', label: 'Mentoria' },
   { href: '#contato', label: 'Contato' },
 ]
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40)
@@ -21,10 +24,21 @@ export default function Header() {
     e.preventDefault()
     const href = e.currentTarget.getAttribute('href')
     if (!href) return
+
+    // Rotas internas (ex.: /mentoria) navegam via SPA
+    if (!href.startsWith('#')) {
+      navigate(href)
+      setMenuOpen(false)
+      return
+    }
+
     const target = document.querySelector(href)
     if (target) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' })
       setMenuOpen(false)
+    } else {
+      // Âncora não existe nesta página: volta pra Home com a âncora
+      window.location.href = '/' + href
     }
   }
 

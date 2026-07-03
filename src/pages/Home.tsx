@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import Header from '../components/Header'
 import Hero from '../components/Hero'
 import Services from '../components/Services'
+import MentoriaCallout from '../components/MentoriaCallout'
 import Methodology from '../components/Methodology'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
@@ -25,6 +26,11 @@ export default function Home() {
       observerRef.current?.observe(el)
     })
 
+    // Rola até a âncora quando a Home é aberta com hash (ex.: /#servicos vindo de outra página)
+    if (window.location.hash) {
+      document.querySelector(window.location.hash)?.scrollIntoView()
+    }
+
     return () => observerRef.current?.disconnect()
   }, [])
 
@@ -34,6 +40,7 @@ export default function Home() {
       <main>
         <Hero />
         <Services />
+        <MentoriaCallout />
         <Methodology />
         <Contact />
       </main>
