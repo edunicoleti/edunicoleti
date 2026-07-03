@@ -109,19 +109,18 @@ const faqs = [
 ]
 
 /* ---- Terminal com digitação ao vivo ---- */
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 function LiveTerminal() {
-  const [cmd, setCmd] = useState('')
-  const [lines, setLines] = useState<string[]>([])
-  const [done, setDone] = useState(false)
+  // Com reduced-motion, mostra o primeiro cenário estático em vez de animar
+  const [cmd, setCmd] = useState(() => (prefersReducedMotion() ? scenarios[0].cmd : ''))
+  const [lines, setLines] = useState<string[]>(() => (prefersReducedMotion() ? scenarios[0].out : []))
+  const [done, setDone] = useState(() => prefersReducedMotion())
 
   useEffect(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduced) {
-      setCmd(scenarios[0].cmd)
-      setLines(scenarios[0].out)
-      setDone(true)
-      return
-    }
+    if (prefersReducedMotion()) return
 
     let cancelled = false
     const timers: ReturnType<typeof setTimeout>[] = []
