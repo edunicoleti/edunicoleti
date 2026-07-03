@@ -1,14 +1,6 @@
-import { useEffect, useRef } from 'react'
-import {
-  Search,
-  Layers,
-  Wrench,
-  Check,
-  ArrowRight,
-  MessageCircle,
-} from 'lucide-react'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import './Mentoria.css'
 
 /*
@@ -22,119 +14,189 @@ const WHATSAPP_URL =
 
 const agendaHref = SCHEDULING_URL || WHATSAPP_URL
 
-const momentos = [
-  'Já usa o Claude no dia a dia, mas tudo vive no chat. Nada vira um processo que roda sem você.',
-  'Sabe que dá pra fazer muito mais, mas não sabe o que priorizar nem em que ordem.',
-  'Suas automações funcionam às vezes, e você não consegue explicar por quê.',
-  'Quer conectar a IA aos sistemas reais da empresa, com segurança.',
-  'Está resolvendo na tentativa e erro o que um bom mapa encurtaria em semanas.',
-]
-
-const pilares = [
+/* ---- Terminal: cenários que digitam em loop ---- */
+const scenarios = [
   {
-    id: 'diagnostico',
-    Icon: Search,
-    title: 'Diagnóstico do que já existe',
-    description:
-      'Revisão do seu uso atual de Claude Code: o que manter, o que refazer e o que priorizar primeiro.',
+    cmd: 'Gere o relatório semanal e envie pra diretoria',
+    out: ['Lendo planilha de vendas', 'Montando indicadores', 'E-mail enviado · 3 destinatários'],
   },
   {
-    id: 'infra',
-    Icon: Layers,
-    title: 'Estruturação da infra',
-    description:
-      'Projetos organizados, automações que rodam sozinhas e integrações com os sistemas que sua empresa já usa.',
+    cmd: 'Monte a proposta do cliente novo no nosso padrão',
+    out: ['Buscando dados no CRM', 'Aplicando template da empresa', 'Proposta pronta · PDF gerado'],
   },
   {
-    id: 'solucoes',
-    Icon: Wrench,
-    title: 'Soluções sob medida',
-    description:
-      'Construção guiada das ferramentas que o seu negócio realmente precisa, do rascunho ao uso diário.',
+    cmd: 'Concilie os pagamentos e me avise das pendências',
+    out: ['Cruzando extrato com contas a receber', '2 pendências encontradas', 'Resumo enviado no WhatsApp'],
   },
 ]
 
-const saltos = [
+const marqueeItems = [
+  'Relatórios automáticos',
+  'Propostas em minutos',
+  'CRM conectado',
+  'Agentes de IA',
+  'MCPs',
+  'Rotinas agendadas',
+  'Planilhas que se atualizam',
+  'Follow-up sem esquecer',
+]
+
+const dores = [
+  'Tudo vive no chat. Nada roda sozinho.',
+  'Você sabe que dá pra fazer mais. Não sabe por onde.',
+  'Suas automações funcionam… às vezes.',
+  'Conectar a IA nos sistemas reais dá medo.',
+  'Tentativa e erro está comendo suas semanas.',
+]
+
+const diffs = [
+  { antes: 'Pede o relatório toda segunda', depois: 'O relatório chega sozinho, 07h00' },
+  { antes: 'Cola dados do cliente no chat', depois: 'CRM e planilhas conectados' },
+  { antes: 'Cada proposta, um prompt novo', depois: 'Propostas no padrão, em minutos' },
+  { antes: 'Prompts espalhados em 40 conversas', depois: 'Sistema que a equipe inteira usa' },
+]
+
+const movimentos = [
   {
-    antes: 'Peço um relatório no chat toda segunda',
-    depois: 'O relatório chega pronto no seu e-mail, toda segunda, sozinho',
+    num: '01',
+    title: 'Diagnóstico',
+    desc: 'Reviso o que você já montou. O que fica, o que sai, o que vem primeiro.',
   },
   {
-    antes: 'Colo dados do cliente na conversa',
-    depois: 'Claude conectado ao seu CRM e planilhas, com contexto permanente',
+    num: '02',
+    title: 'Infraestrutura',
+    desc: 'Automações que rodam sozinhas, conectadas aos sistemas da sua empresa.',
   },
   {
-    antes: 'Cada proposta é um prompt novo',
-    depois: 'Sistema de propostas no padrão da empresa, gerado em minutos',
-  },
-  {
-    antes: 'Arquivos e prompts espalhados',
-    depois: 'Projetos organizados que qualquer pessoa da equipe consegue usar',
+    num: '03',
+    title: 'Autonomia',
+    desc: 'Você sai operando e evoluindo tudo sem depender de mim.',
   },
 ]
 
 const passos = [
-  {
-    number: '01',
-    title: 'Diagnóstico gratuito',
-    description:
-      '30 minutos no Meet. Você me mostra como usa Claude Code hoje e eu já aponto os primeiros destravamentos na própria conversa.',
-  },
-  {
-    number: '02',
-    title: 'Plano personalizado',
-    description:
-      'Definimos juntos os desafios prioritários e o que vamos construir, na ordem que gera resultado mais rápido.',
-  },
-  {
-    number: '03',
-    title: 'Sessões de mentoria',
-    description:
-      'Encontros individuais via Meet, mão na massa, dentro do contexto real da sua empresa.',
-  },
-  {
-    number: '04',
-    title: 'Suporte entre sessões',
-    description:
-      'Canal direto comigo no WhatsApp pra destravar dúvidas sem esperar o próximo encontro.',
-  },
+  { num: '01', title: 'Diagnóstico gratuito', desc: '30 min no Meet. Você mostra, eu destravo na hora.' },
+  { num: '02', title: 'Plano', desc: 'Prioridades definidas. Sem enrolação.' },
+  { num: '03', title: 'Sessões 1:1', desc: 'Mão na massa, no seu contexto real.' },
+  { num: '04', title: 'Suporte direto', desc: 'WhatsApp aberto entre as sessões.' },
 ]
 
 const faqs = [
   {
-    q: 'Já uso Claude Code no dia a dia. O que a mentoria acrescenta?',
-    a: 'Direção e estrutura. Você deixa de aprender por tentativa e erro: eu reviso o que você já montou, mostro o que priorizar e como transformar usos pontuais em processos que rodam sozinhos.',
+    q: 'Já uso Claude Code todo dia. O que a mentoria acrescenta?',
+    a: 'Direção. Eu reviso o que você montou, aponto o que priorizar e transformo usos pontuais em processos que rodam sozinhos.',
   },
   {
-    q: 'Você faz por mim ou me ensina a fazer?',
-    a: 'Os dois, na medida certa. Construímos juntos dentro do seu contexto, e o objetivo final é a sua autonomia: você sai operando e evoluindo as próprias soluções.',
+    q: 'Você faz por mim ou me ensina?',
+    a: 'Os dois. Construímos juntos, no seu contexto. O objetivo final é você operar tudo sem mim.',
   },
   {
-    q: 'Funciona com os sistemas que já uso, como ERP, CRM e planilhas?',
-    a: 'Sim. Parte do trabalho é justamente conectar o Claude Code com segurança às ferramentas que sua empresa já usa no dia a dia.',
+    q: 'Funciona com ERP, CRM e planilhas que já uso?',
+    a: 'Sim. Conectar o Claude Code com segurança aos seus sistemas é parte central do trabalho.',
   },
   {
     q: 'Quanto tempo até ver resultado?',
-    a: 'O primeiro destravamento acontece já na conversa de diagnóstico. Nas primeiras sessões o foco é colocar uma automação real pra rodar, pra você sentir o ganho logo no início.',
+    a: 'O primeiro destravamento acontece no próprio diagnóstico. A primeira automação real, nas primeiras sessões.',
   },
   {
     q: 'Quanto custa?',
-    a: 'O investimento depende do formato e da profundidade do acompanhamento. Na conversa de diagnóstico eu apresento as opções, sem compromisso.',
+    a: 'Depende do formato e da profundidade. Apresento as opções no diagnóstico, sem compromisso.',
   },
   {
-    q: 'Qual plano do Claude eu preciso ter?',
-    a: 'Um plano pago da Anthropic que dê acesso ao Claude Code. Na primeira conversa eu te oriento sobre qual faz mais sentido pro seu volume de uso.',
+    q: 'Qual plano do Claude eu preciso?',
+    a: 'Um plano pago com acesso ao Claude Code. Te oriento sobre qual, no seu volume de uso.',
   },
 ]
 
-const pills = [
-  'Claude Code',
-  'Agentes de IA',
-  'MCPs e integrações',
-  'Automações',
-  'UX/UI Design',
-  'Produtos digitais',
-]
+/* ---- Terminal com digitação ao vivo ---- */
+function LiveTerminal() {
+  const [cmd, setCmd] = useState('')
+  const [lines, setLines] = useState<string[]>([])
+  const [done, setDone] = useState(false)
+
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduced) {
+      setCmd(scenarios[0].cmd)
+      setLines(scenarios[0].out)
+      setDone(true)
+      return
+    }
+
+    let cancelled = false
+    const timers: ReturnType<typeof setTimeout>[] = []
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timers.push(setTimeout(resolve, ms))
+      })
+
+    async function run() {
+      let i = 0
+      while (!cancelled) {
+        const s = scenarios[i % scenarios.length]
+        setCmd('')
+        setLines([])
+        setDone(false)
+        await wait(600)
+
+        for (let c = 1; c <= s.cmd.length; c++) {
+          if (cancelled) return
+          setCmd(s.cmd.slice(0, c))
+          await wait(34)
+        }
+        await wait(500)
+
+        for (const line of s.out) {
+          if (cancelled) return
+          setLines((prev) => [...prev, line])
+          await wait(520)
+        }
+
+        if (cancelled) return
+        setDone(true)
+        await wait(3000)
+        i++
+      }
+    }
+
+    run()
+    return () => {
+      cancelled = true
+      timers.forEach(clearTimeout)
+    }
+  }, [])
+
+  return (
+    <div className="mt-terminal" aria-hidden="true">
+      <div className="mt-terminal__bar">
+        <div className="mt-terminal__dots"><span /><span /><span /></div>
+        <span className="mt-terminal__title">claude · sua-empresa</span>
+        <span className="mt-terminal__live">
+          <span className="mt-terminal__live-dot" /> rodando
+        </span>
+      </div>
+      <div className="mt-terminal__body">
+        <p className="mt-terminal__cmd">
+          <span className="mt-terminal__caret">&gt;</span>
+          <span>
+            {cmd}
+            <span className="mt-terminal__cursor" />
+          </span>
+        </p>
+        <div className="mt-terminal__out">
+          {lines.map((line, i) => (
+            <p className="mt-terminal__line" key={i}>
+              <span className="mt-terminal__check">✓</span> {line}
+            </p>
+          ))}
+          {done && (
+            <p className="mt-terminal__done">concluído · sem intervenção manual</p>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function useMeta() {
   useEffect(() => {
@@ -145,7 +207,7 @@ function useMeta() {
     document.title = 'Mentoria de Claude Code para Empreendedores | Eduardo Nicoleti'
     metaDesc?.setAttribute(
       'content',
-      'Mentoria individual para empreendedores que já usam Claude Code e querem ir além: automações que rodam sozinhas, infraestrutura organizada e soluções sob medida. Diagnóstico gratuito via Meet.'
+      'Mentoria individual para empreendedores que já usam Claude Code: automações que rodam sozinhas, sistemas conectados e soluções sob medida. Diagnóstico gratuito via Meet.'
     )
 
     return () => {
@@ -158,229 +220,204 @@ function useMeta() {
 export default function Mentoria() {
   useMeta()
   const observerRef = useRef<IntersectionObserver | null>(null)
+  const [navSolid, setNavSolid] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
+
+    const onScroll = () => setNavSolid(window.scrollY > 60)
+    window.addEventListener('scroll', onScroll, { passive: true })
 
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
+            entry.target.classList.add('in')
+            observerRef.current?.unobserve(entry.target)
           }
         })
       },
-      { threshold: 0.08, rootMargin: '0px 0px -50px 0px' }
+      { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
     )
 
-    document.querySelectorAll('.reveal').forEach((el) => {
+    document.querySelectorAll('.mr').forEach((el) => {
       observerRef.current?.observe(el)
     })
 
-    return () => observerRef.current?.disconnect()
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      observerRef.current?.disconnect()
+    }
   }, [])
 
-  const scrollTo = (selector: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const scrollToAgendar = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
-    document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' })
+    document.querySelector('#agendar')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <>
-      <Header />
-      <main className="mentoria">
-        {/* ---- Hero ---- */}
-        <section className="m-hero" id="inicio" aria-label="Mentoria de Claude Code">
-          <div className="ambient-orbs" aria-hidden="true">
-            <div className="orb orb--blue" />
-            <div className="orb orb--indigo" />
-            <div className="orb orb--teal" />
+    <div className="mentoria">
+      <div className="mentoria__grain" aria-hidden="true" />
+
+      {/* ---- Nav ---- */}
+      <nav className={`mt-nav ${navSolid ? 'mt-nav--solid' : ''}`}>
+        <div className="mt-container mt-nav__inner">
+          <Link to="/" className="mt-nav__logo">
+            edunicoleti<span>.</span>
+          </Link>
+          <div className="mt-nav__right">
+            <span className="mt-nav__tag">mentoria de claude code</span>
+            <a
+              href="#agendar"
+              onClick={scrollToAgendar}
+              className="mt-btn mt-btn--sm"
+              id="mentoria-nav-agendar-btn"
+            >
+              Agendar
+            </a>
           </div>
-          <div className="grid-lines" aria-hidden="true" />
+        </div>
+      </nav>
 
-          <div className="container m-hero__container">
-            <div className="m-hero__content">
-              <div className="m-hero__badge reveal">
-                <span className="m-hero__dot" aria-hidden="true" />
-                <span className="text-label">Mentoria individual · Online via Meet</span>
-              </div>
-
-              <h1 className="m-hero__heading reveal">
-                Você já usa Claude Code. Agora faça ele{' '}
-                <span className="text-serif" style={{ fontStyle: 'italic' }}>
-                  rodar a sua empresa.
-                </span>
-              </h1>
-
-              <p className="m-hero__sub reveal">
-                Mentoria individual para empreendedores que já estão aplicando Claude Code
-                e querem ir além: automações que rodam sozinhas, infraestrutura organizada
-                e soluções sob medida para o negócio.
-              </p>
-
-              <div className="m-hero__actions reveal">
-                <a
-                  href={agendaHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn--accent m-hero__btn"
-                  id="mentoria-hero-agendar-btn"
-                >
-                  Agendar diagnóstico gratuito
-                </a>
-                <a
-                  href="#como-funciona"
-                  className="btn btn--outline"
-                  id="mentoria-hero-como-btn"
-                  onClick={scrollTo('#como-funciona')}
-                >
-                  Como funciona
-                </a>
-              </div>
-
-              <p className="m-hero__note reveal">
-                Primeira conversa gratuita, 30 minutos, sem compromisso.
-              </p>
+      <main>
+        {/* ---- Hero ---- */}
+        <section className="mt-hero" aria-label="Mentoria de Claude Code">
+          <div className="mt-hero__glow" aria-hidden="true" />
+          <div className="mt-container mt-hero__inner">
+            <div className="mt-hero__eyebrow mt-load" style={{ animationDelay: '0.05s' }}>
+              <span className="mt-mono">mentoria 1:1 · online via meet</span>
+              <span className="mt-hero__avail">
+                <span className="mt-hero__avail-dot" /> vagas abertas
+              </span>
             </div>
 
-            {/* Terminal visual */}
-            <div className="m-hero__visual reveal" aria-hidden="true">
-              <div className="m-terminal">
-                <div className="m-terminal__bar">
-                  <div className="m-terminal__dots">
-                    <span /><span /><span />
-                  </div>
-                  <span className="m-terminal__title">claude code · sua-empresa</span>
-                </div>
-                <div className="m-terminal__body">
-                  <p className="m-terminal__line m-terminal__line--prompt">
-                    <span className="m-terminal__caret">&gt;</span>
-                    Gere o relatório semanal de vendas e envie para a diretoria
-                  </p>
-                  <p className="m-terminal__line">
-                    <span className="m-terminal__check">✓</span> Lendo planilha de vendas
-                  </p>
-                  <p className="m-terminal__line">
-                    <span className="m-terminal__check">✓</span> Montando relatório com indicadores
-                  </p>
-                  <p className="m-terminal__line">
-                    <span className="m-terminal__check">✓</span> E-mail enviado para 3 destinatários
-                  </p>
-                  <p className="m-terminal__line m-terminal__line--muted">
-                    Concluído em 42s · sem intervenção manual
-                  </p>
+            <h1 className="mt-hero__heading">
+              <span className="mt-hero__line">
+                <span className="mt-load" style={{ animationDelay: '0.15s' }}>Você já usa</span>
+              </span>
+              <span className="mt-hero__line">
+                <span className="mt-load" style={{ animationDelay: '0.25s' }}>Claude Code.</span>
+              </span>
+              <span className="mt-hero__line mt-hero__line--serif">
+                <span className="mt-load" style={{ animationDelay: '0.38s' }}>
+                  Agora faça ele rodar<br />a sua empresa.
+                </span>
+              </span>
+            </h1>
+
+            <div className="mt-hero__bottom">
+              <div className="mt-hero__cta mt-load" style={{ animationDelay: '0.55s' }}>
+                <p className="mt-hero__sub">
+                  Mentoria individual pra transformar o chat em operação:
+                  automações, integrações e soluções sob medida.
+                </p>
+                <div className="mt-hero__actions">
+                  <a
+                    href={agendaHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-btn"
+                    id="mentoria-hero-agendar-btn"
+                  >
+                    Agendar diagnóstico gratuito
+                    <ArrowRight size={18} strokeWidth={2} />
+                  </a>
+                  <span className="mt-mono mt-hero__note">30 min · gratuito · sem compromisso</span>
                 </div>
               </div>
 
-              <div className="m-hero__chip m-hero__chip--schedule">
-                <span className="m-hero__chip-dot" />
-                Toda segunda, 07h00 · automático
-              </div>
-              <div className="m-hero__chip m-hero__chip--mcp">
-                MCP · CRM + planilhas conectados
+              <div className="mt-hero__terminal mt-load" style={{ animationDelay: '0.7s' }}>
+                <LiveTerminal />
               </div>
             </div>
           </div>
         </section>
 
-        {/* ---- Identificação ---- */}
-        <section className="m-momento" id="momento" aria-label="Para quem é a mentoria">
-          <div className="container">
-            <div className="m-section-header reveal">
-              <p className="text-label">Pra quem é</p>
-              <h2 className="m-section-heading">
-                Você provavelmente{' '}
-                <span className="text-serif" style={{ fontStyle: 'italic' }}>está aqui.</span>
+        {/* ---- Marquee ---- */}
+        <div className="mt-marquee" aria-hidden="true">
+          <div className="mt-marquee__track">
+            {[0, 1].map((dup) => (
+              <div className="mt-marquee__group" key={dup}>
+                {marqueeItems.map((item) => (
+                  <span className="mt-marquee__item" key={item}>
+                    {item} <span className="mt-marquee__star">✦</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ---- Dores ---- */}
+        <section className="mt-dores" id="momento" aria-label="Te parece familiar">
+          <div className="mt-container">
+            <div className="mt-section-head mr">
+              <span className="mt-mono mt-kicker">01 — o travamento</span>
+              <h2 className="mt-h2">
+                Te parece <em>familiar?</em>
               </h2>
             </div>
 
-            <ul className="m-momento__list" role="list">
-              {momentos.map((item, i) => (
-                <li
-                  className="m-momento__item reveal"
-                  key={i}
-                  style={{ transitionDelay: `${i * 70}ms` }}
-                >
-                  <span className="m-momento__icon" aria-hidden="true">
-                    <Check size={16} strokeWidth={2.5} />
-                  </span>
-                  <p>{item}</p>
-                </li>
+            <div className="mt-dores__list">
+              {dores.map((d, i) => (
+                <div className="mt-dor mr" key={i} style={{ transitionDelay: `${i * 60}ms` }}>
+                  <span className="mt-dor__num mt-mono">0{i + 1}</span>
+                  <p className="mt-dor__text">{d}</p>
+                </div>
               ))}
-            </ul>
+            </div>
 
-            <p className="m-momento__closing reveal">
-              Se você se reconheceu em dois ou mais itens, a mentoria foi desenhada pra você.
+            <p className="mt-dores__closing mr">
+              Se você assentiu duas vezes, <em>continua lendo.</em>
             </p>
           </div>
         </section>
 
-        {/* ---- A mentoria ---- */}
-        <section className="m-pilares" id="mentoria-formato" aria-label="Como a mentoria funciona">
-          <div className="container">
-            <div className="m-section-header reveal">
-              <p className="text-label">A mentoria</p>
-              <h2 className="m-section-heading">
-                Um facilitador,{' '}
-                <span className="text-serif" style={{ fontStyle: 'italic' }}>não um curso.</span>
+        {/* ---- Diff: do chat à operação ---- */}
+        <section className="mt-diff" id="salto" aria-label="Do chat à operação">
+          <div className="mt-container">
+            <div className="mt-section-head mr">
+              <span className="mt-mono mt-kicker">02 — o salto</span>
+              <h2 className="mt-h2">
+                Do chat <em>à operação.</em>
               </h2>
-              <p className="m-section-sub">
-                Nada de aulas gravadas nem introdução à ferramenta. Eu entro no contexto real
-                da sua empresa, entendo seus objetivos e acelero o que você já começou.
-              </p>
             </div>
 
-            <div className="m-pilares__grid">
-              {pilares.map((p, i) => (
-                <article
-                  className="m-pilar reveal"
-                  key={p.id}
-                  id={`mentoria-pilar-${p.id}`}
-                  style={{ transitionDelay: `${i * 80}ms` }}
-                >
-                  <div className="m-pilar__icon" aria-hidden="true">
-                    <p.Icon size={24} strokeWidth={1.5} />
-                  </div>
-                  <h3 className="m-pilar__title">{p.title}</h3>
-                  <p className="m-pilar__desc">{p.description}</p>
-                </article>
+            <div className="mt-diff__card mr">
+              <div className="mt-diff__bar">
+                <span className="mt-mono">sua-empresa.diff</span>
+              </div>
+              {diffs.map((d, i) => (
+                <div className="mt-diff__pair mr" key={i} style={{ transitionDelay: `${i * 70}ms` }}>
+                  <p className="mt-diff__row mt-diff__row--del">
+                    <span className="mt-diff__sign">−</span> {d.antes}
+                  </p>
+                  <p className="mt-diff__row mt-diff__row--add">
+                    <span className="mt-diff__sign">+</span> {d.depois}
+                  </p>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ---- Do chat à infraestrutura ---- */}
-        <section className="m-salto" id="salto" aria-label="Do chat à infraestrutura">
-          <div className="container">
-            <div className="m-section-header reveal">
-              <p className="text-label">O salto</p>
-              <h2 className="m-section-heading">
-                Do chat à{' '}
-                <span className="text-serif" style={{ fontStyle: 'italic' }}>infraestrutura.</span>
+        {/* ---- Movimentos ---- */}
+        <section className="mt-mov" id="mentoria-formato" aria-label="A mentoria">
+          <div className="mt-container">
+            <div className="mt-section-head mr">
+              <span className="mt-mono mt-kicker">03 — a mentoria</span>
+              <h2 className="mt-h2">
+                Não é curso. É um facilitador<br />
+                <em>dentro da sua operação.</em>
               </h2>
-              <p className="m-section-sub">
-                A diferença entre usar Claude Code e operar a empresa com ele.
-              </p>
             </div>
 
-            <div className="m-salto__rows">
-              {saltos.map((s, i) => (
-                <div
-                  className="m-salto__row reveal"
-                  key={i}
-                  style={{ transitionDelay: `${i * 70}ms` }}
-                >
-                  <div className="m-salto__cell m-salto__cell--antes">
-                    <span className="m-salto__tag">Hoje</span>
-                    <p>{s.antes}</p>
-                  </div>
-                  <span className="m-salto__arrow" aria-hidden="true">
-                    <ArrowRight size={18} strokeWidth={2} />
-                  </span>
-                  <div className="m-salto__cell m-salto__cell--depois">
-                    <span className="m-salto__tag m-salto__tag--depois">Com a mentoria</span>
-                    <p>{s.depois}</p>
-                  </div>
+            <div className="mt-mov__grid">
+              {movimentos.map((m, i) => (
+                <div className="mt-mov__item mr" key={m.num} style={{ transitionDelay: `${i * 80}ms` }}>
+                  <span className="mt-mono mt-mov__num">{m.num}</span>
+                  <h3 className="mt-mov__title">{m.title}</h3>
+                  <p className="mt-mov__desc">{m.desc}</p>
                 </div>
               ))}
             </div>
@@ -388,129 +425,90 @@ export default function Mentoria() {
         </section>
 
         {/* ---- Mentor ---- */}
-        <section className="m-mentor" id="mentor" aria-label="Sobre Eduardo Nicoleti">
-          <div className="container">
-            <div className="m-mentor__inner">
-              <div className="m-mentor__left reveal">
-                <div className="m-mentor__avatar-wrap">
-                  <img
-                    src="/memoji.png"
-                    alt="Eduardo Nicoleti"
-                    className="m-mentor__avatar"
-                    width={180}
-                    height={180}
-                  />
-                </div>
-                <div className="m-mentor__stats">
-                  <div className="m-mentor__stat">
-                    <span className="m-mentor__stat-value">10+</span>
-                    <span className="m-mentor__stat-label">Anos em produtos digitais</span>
-                  </div>
-                  <div className="m-mentor__stat">
-                    <span className="m-mentor__stat-value">50+</span>
-                    <span className="m-mentor__stat-label">Projetos entregues</span>
-                  </div>
-                </div>
+        <section className="mt-mentor" id="mentor" aria-label="Sobre Eduardo Nicoleti">
+          <div className="mt-container mt-mentor__inner">
+            <div className="mt-mentor__left mr">
+              <div className="mt-mentor__avatar-wrap">
+                <img
+                  src="/memoji.png"
+                  alt="Eduardo Nicoleti"
+                  className="mt-mentor__avatar"
+                  width={160}
+                  height={160}
+                />
               </div>
+            </div>
 
-              <div className="m-mentor__right">
-                <p className="text-label reveal">Seu mentor</p>
-                <h2 className="m-section-heading reveal">
-                  Quem vai te{' '}
-                  <span className="text-serif" style={{ fontStyle: 'italic' }}>acompanhar.</span>
-                </h2>
-
-                <p className="m-mentor__text reveal">
-                  Sou <strong>Eduardo Nicoleti</strong>, webdesigner e especialista em UX/UI e
-                  produtos digitais há mais de 10 anos. Uso Claude Code todos os dias na minha
-                  própria operação: agentes, MCPs, automações agendadas e integrações com os
-                  sistemas que sustentam o meu negócio.
-                </p>
-
-                <p className="m-mentor__text reveal">
-                  Também sou empresário. Participo da JCI e de Associações Comerciais, e conheço
-                  de perto a rotina de quem toca uma empresa. Já percorri o caminho que você está
-                  tentando percorrer, e é exatamente isso que encurta o seu.
-                </p>
-
-                <div className="m-mentor__pills reveal">
-                  {pills.map((skill) => (
-                    <span className="tag" key={skill}>{skill}</span>
-                  ))}
-                </div>
-
-                <div className="m-mentor__social reveal">
-                  <a
-                    href="https://www.linkedin.com/in/edunicoleti/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn--outline"
-                    id="mentoria-linkedin-btn"
-                  >
-                    Ver LinkedIn
-                  </a>
-                </div>
+            <div className="mt-mentor__right">
+              <span className="mt-mono mt-kicker mr">04 — seu mentor</span>
+              <blockquote className="mt-mentor__quote mr">
+                “Eu já percorri o caminho que você está <em>tentando percorrer.</em>”
+              </blockquote>
+              <p className="mt-mentor__bio mr">
+                <strong>Eduardo Nicoleti.</strong> 10+ anos criando produtos digitais.
+                Claude Code todos os dias na própria operação: agentes, MCPs, automações
+                e integrações. Empresário, membro da JCI e de Associações Comerciais.
+              </p>
+              <div className="mt-mentor__meta mr">
+                <span className="mt-mono">10+ anos</span>
+                <span className="mt-mentor__sep">·</span>
+                <span className="mt-mono">50+ projetos</span>
+                <span className="mt-mentor__sep">·</span>
+                <span className="mt-mono">claude code diário</span>
               </div>
+              <a
+                href="https://www.linkedin.com/in/edunicoleti/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-link mr"
+                id="mentoria-linkedin-btn"
+              >
+                Ver LinkedIn <ArrowUpRight size={16} strokeWidth={2} />
+              </a>
             </div>
           </div>
         </section>
 
         {/* ---- Como funciona ---- */}
-        <section className="m-passos" id="como-funciona" aria-label="Como funciona a mentoria">
-          <div className="container">
-            <div className="m-section-header reveal">
-              <p className="text-label">Como funciona</p>
-              <h2 className="m-section-heading">
-                Simples, direto e{' '}
-                <span className="text-serif" style={{ fontStyle: 'italic' }}>no seu contexto.</span>
+        <section className="mt-passos" id="como-funciona" aria-label="Como funciona">
+          <div className="mt-container">
+            <div className="mt-section-head mr">
+              <span className="mt-mono mt-kicker">05 — como funciona</span>
+              <h2 className="mt-h2">
+                Simples, direto, <em>no seu contexto.</em>
               </h2>
             </div>
 
-            <div className="m-passos__grid" role="list">
-              {passos.map((step, i) => (
-                <div
-                  className="m-passo reveal"
-                  key={step.number}
-                  role="listitem"
-                  id={`mentoria-passo-${step.number}`}
-                  style={{ transitionDelay: `${i * 80}ms` }}
-                >
-                  <span className="m-passo__num">{step.number}</span>
-                  <h3 className="m-passo__title">{step.title}</h3>
-                  <p className="m-passo__desc">{step.description}</p>
+            <div className="mt-passos__grid">
+              {passos.map((p, i) => (
+                <div className="mt-passo mr" key={p.num} style={{ transitionDelay: `${i * 70}ms` }}>
+                  <span className="mt-mono mt-passo__num">{p.num}</span>
+                  <h3 className="mt-passo__title">{p.title}</h3>
+                  <p className="mt-passo__desc">{p.desc}</p>
                 </div>
               ))}
             </div>
-
-            <p className="m-passos__note reveal">
-              Mentoria individual, 100% online, com agenda flexível.
-            </p>
           </div>
         </section>
 
         {/* ---- FAQ ---- */}
-        <section className="m-faq" id="faq" aria-label="Perguntas frequentes">
-          <div className="container">
-            <div className="m-section-header reveal">
-              <p className="text-label">Dúvidas</p>
-              <h2 className="m-section-heading">
-                Perguntas{' '}
-                <span className="text-serif" style={{ fontStyle: 'italic' }}>frequentes.</span>
+        <section className="mt-faq" id="faq" aria-label="Perguntas frequentes">
+          <div className="mt-container">
+            <div className="mt-section-head mr">
+              <span className="mt-mono mt-kicker">06 — dúvidas</span>
+              <h2 className="mt-h2">
+                Perguntas <em>frequentes.</em>
               </h2>
             </div>
 
-            <div className="m-faq__list">
+            <div className="mt-faq__list">
               {faqs.map((f, i) => (
-                <details
-                  className="m-faq__item reveal"
-                  key={i}
-                  style={{ transitionDelay: `${i * 50}ms` }}
-                >
-                  <summary className="m-faq__question">
+                <details className="mt-faq__item mr" key={i} style={{ transitionDelay: `${i * 40}ms` }}>
+                  <summary className="mt-faq__q">
                     {f.q}
-                    <span className="m-faq__marker" aria-hidden="true" />
+                    <span className="mt-faq__marker" aria-hidden="true" />
                   </summary>
-                  <p className="m-faq__answer">{f.a}</p>
+                  <p className="mt-faq__a">{f.a}</p>
                 </details>
               ))}
             </div>
@@ -518,49 +516,72 @@ export default function Mentoria() {
         </section>
 
         {/* ---- CTA final ---- */}
-        <section className="m-cta" id="agendar" aria-label="Agendar diagnóstico">
-          <div className="container">
-            <div className="m-cta__inner reveal">
-              <div className="m-cta__text">
-                <p className="text-label" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                  Diagnóstico gratuito
-                </p>
-                <h2 className="m-cta__heading">
-                  Me mostre como você usa Claude Code{' '}
-                  <span className="text-serif" style={{ fontStyle: 'italic' }}>hoje.</span>
-                </h2>
-                <p className="m-cta__sub">
-                  Em 30 minutos no Meet, eu te mostro o que dá pra destravar.
-                  Conversa gratuita e sem compromisso.
-                </p>
-              </div>
-
-              <div className="m-cta__actions">
-                <a
-                  href={agendaHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn--accent m-cta__btn"
-                  id="mentoria-cta-agendar-btn"
-                >
-                  Agendar diagnóstico
-                </a>
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn m-cta__btn m-cta__btn--wa"
-                  id="mentoria-cta-whatsapp-btn"
-                >
-                  <MessageCircle size={18} strokeWidth={2} />
-                  Chamar no WhatsApp
-                </a>
-              </div>
+        <section className="mt-cta" id="agendar" aria-label="Agendar diagnóstico">
+          <div className="mt-container">
+            <span className="mt-mono mt-kicker mr">diagnóstico gratuito</span>
+            <h2 className="mt-cta__heading mr">
+              Me mostre como você usa Claude Code <em>hoje.</em>
+            </h2>
+            <p className="mt-cta__sub mr">
+              30 minutos no Meet. Eu te mostro o que dá pra destravar.
+            </p>
+            <div className="mt-cta__actions mr">
+              <a
+                href={agendaHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-btn mt-btn--lg"
+                id="mentoria-cta-agendar-btn"
+              >
+                Agendar diagnóstico
+                <ArrowRight size={20} strokeWidth={2} />
+              </a>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-link"
+                id="mentoria-cta-whatsapp-btn"
+              >
+                ou chama no WhatsApp <ArrowUpRight size={16} strokeWidth={2} />
+              </a>
             </div>
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+
+      {/* ---- Footer ---- */}
+      <footer className="mt-footer">
+        <div className="mt-container mt-footer__inner">
+          <Link to="/" className="mt-footer__logo">
+            edunicoleti<span>.</span>
+          </Link>
+          <span className="mt-mono mt-footer__copy">
+            © {new Date().getFullYear()} eduardo nicoleti
+          </span>
+          <div className="mt-footer__links">
+            <a
+              href="https://www.linkedin.com/in/edunicoleti/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-footer__link"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://www.instagram.com/edunicoleti/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-footer__link"
+            >
+              Instagram
+            </a>
+            <Link to="/" className="mt-footer__link">
+              Portfólio
+            </Link>
+          </div>
+        </div>
+      </footer>
+    </div>
   )
 }
