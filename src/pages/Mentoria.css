@@ -1,20 +1,32 @@
 /* ====================================
    MENTORIA DE CLAUDE CODE — /mentoria
-   Dark editorial · terminal-native
+   Editorial claro · confiável · terminal como prova técnica
    ==================================== */
 
 .mentoria {
-  --mt-bg: #0D0C09;
-  --mt-raised: #14130E;
-  --mt-line: rgba(244, 241, 232, 0.1);
-  --mt-line-soft: rgba(244, 241, 232, 0.06);
-  --mt-text: #F4F1E8;
-  --mt-dim: rgba(244, 241, 232, 0.58);
-  --mt-faint: rgba(244, 241, 232, 0.34);
-  --mt-accent: #E07B54;
-  --mt-accent-soft: rgba(224, 123, 84, 0.14);
-  --mt-green: #3ECF8E;
+  --mt-bg: #F8F4EA;
+  --mt-surface: #FFFFFF;
+  --mt-surface-alt: #F1EBDC;
+  --mt-line: rgba(26, 23, 15, 0.13);
+  --mt-line-soft: rgba(26, 23, 15, 0.07);
+  --mt-text: #1C1913;
+  --mt-dim: rgba(28, 25, 19, 0.66);
+  --mt-faint: rgba(28, 25, 19, 0.42);
+  --mt-accent: #9C4A22;
+  --mt-accent-soft: rgba(156, 74, 34, 0.1);
+  --mt-green: #1E8F5E;
   --mt-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Superfície escura reservada (terminal, diff, CTA final) */
+  --mtd-bg: #17150F;
+  --mtd-raised: #1E1B14;
+  --mtd-line: rgba(244, 241, 232, 0.12);
+  --mtd-line-soft: rgba(244, 241, 232, 0.07);
+  --mtd-text: #F4F1E8;
+  --mtd-dim: rgba(244, 241, 232, 0.62);
+  --mtd-faint: rgba(244, 241, 232, 0.36);
+  --mtd-accent: #E8845F;
+  --mtd-green: #3ECF8E;
 
   background: var(--mt-bg);
   color: var(--mt-text);
@@ -25,7 +37,7 @@
 
 .mentoria ::selection {
   background: var(--mt-accent);
-  color: var(--mt-bg);
+  color: #FFFBF3;
 }
 
 .mt-container {
@@ -46,19 +58,24 @@
   display: block;
 }
 
+.mt-kicker--dark {
+  color: var(--mtd-accent);
+}
+
 .mentoria em {
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: inherit;
 }
 
-/* ---- Grain overlay ---- */
+/* ---- Grain overlay (textura sutil de papel) ---- */
 .mentoria__grain {
   position: fixed;
   inset: 0;
   z-index: 200;
   pointer-events: none;
-  opacity: 0.06;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 240px 240px;
 }
@@ -70,8 +87,8 @@
   gap: 0.625rem;
   padding: 1rem 1.75rem;
   border-radius: var(--radius-full);
-  background: var(--mt-accent);
-  color: #16130E;
+  background: var(--mt-text);
+  color: var(--mt-bg);
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   letter-spacing: 0.01em;
@@ -79,9 +96,9 @@
 }
 
 .mt-btn:hover {
-  background: #EC8E68;
+  background: #322D22;
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(224, 123, 84, 0.35);
+  box-shadow: 0 14px 36px rgba(28, 25, 19, 0.25);
 }
 
 .mt-btn--sm {
@@ -92,6 +109,16 @@
 .mt-btn--lg {
   padding: 1.25rem 2.25rem;
   font-size: var(--text-base);
+}
+
+.mt-btn--onDark {
+  background: var(--mtd-accent);
+  color: #1A1108;
+}
+
+.mt-btn--onDark:hover {
+  background: #F0996E;
+  box-shadow: 0 14px 36px rgba(232, 132, 95, 0.35);
 }
 
 .mt-link {
@@ -109,6 +136,16 @@
 .mt-link:hover {
   color: var(--mt-text);
   border-color: var(--mt-accent);
+}
+
+.mt-link--onDark {
+  color: var(--mtd-dim);
+  border-color: var(--mtd-line);
+}
+
+.mt-link--onDark:hover {
+  color: var(--mtd-text);
+  border-color: var(--mtd-accent);
 }
 
 /* ---- Reveals ---- */
@@ -156,7 +193,7 @@
 
 .mt-nav--solid {
   padding: 0.75rem 0;
-  background: rgba(13, 12, 9, 0.82);
+  background: rgba(248, 244, 234, 0.86);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom-color: var(--mt-line-soft);
@@ -206,15 +243,17 @@
 
 .mt-hero__glow {
   position: absolute;
-  top: -30%;
-  left: -15%;
-  width: 70vw;
-  height: 70vw;
-  max-width: 900px;
-  max-height: 900px;
-  background: radial-gradient(circle, rgba(224, 123, 84, 0.13) 0%, rgba(224, 123, 84, 0.04) 40%, transparent 70%);
+  top: -25%;
+  left: -12%;
+  width: 65vw;
+  height: 65vw;
+  max-width: 800px;
+  max-height: 800px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(156, 74, 34, 0.09) 0%, transparent 55%),
+    radial-gradient(circle at 65% 65%, rgba(30, 143, 94, 0.06) 0%, transparent 60%);
   pointer-events: none;
-  filter: blur(20px);
+  filter: blur(10px);
 }
 
 .mt-hero__inner {
@@ -233,7 +272,7 @@
   gap: 1rem;
   color: var(--mt-faint);
   padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--mt-line-soft);
+  border-bottom: 1px solid var(--mt-line);
 }
 
 .mt-hero__avail {
@@ -252,7 +291,7 @@
   height: 7px;
   border-radius: 50%;
   background: var(--mt-green);
-  box-shadow: 0 0 12px rgba(62, 207, 142, 0.8);
+  box-shadow: 0 0 10px rgba(30, 143, 94, 0.5);
   animation: mtPulse 2.2s ease-in-out infinite;
 }
 
@@ -267,6 +306,7 @@
   letter-spacing: -0.04em;
   line-height: 0.98;
   text-transform: none;
+  color: var(--mt-text);
 }
 
 .mt-hero__line {
@@ -321,13 +361,13 @@
   color: var(--mt-faint);
 }
 
-/* ---- Terminal ---- */
+/* ---- Terminal (único elemento escuro: prova técnica) ---- */
 .mt-terminal {
-  background: var(--mt-raised);
-  border: 1px solid var(--mt-line);
+  background: var(--mtd-bg);
+  border: 1px solid rgba(26, 23, 15, 0.06);
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 24px 60px rgba(28, 25, 19, 0.18), 0 6px 18px rgba(28, 25, 19, 0.1);
 }
 
 .mt-terminal__bar {
@@ -335,7 +375,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.7rem 1rem;
-  border-bottom: 1px solid var(--mt-line-soft);
+  border-bottom: 1px solid var(--mtd-line-soft);
 }
 
 .mt-terminal__dots {
@@ -357,7 +397,7 @@
   font-family: var(--mt-mono);
   font-size: 0.6875rem;
   letter-spacing: 0.05em;
-  color: var(--mt-faint);
+  color: var(--mtd-faint);
 }
 
 .mt-terminal__live {
@@ -369,14 +409,14 @@
   font-size: 0.625rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--mt-green);
+  color: var(--mtd-green);
 }
 
 .mt-terminal__live-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--mt-green);
+  background: var(--mtd-green);
   animation: mtPulse 1.6s ease-in-out infinite;
 }
 
@@ -391,12 +431,12 @@
   font-family: var(--mt-mono);
   font-size: 0.8125rem;
   line-height: 1.6;
-  color: var(--mt-text);
+  color: var(--mtd-text);
   min-height: 2.6em;
 }
 
 .mt-terminal__caret {
-  color: var(--mt-accent);
+  color: var(--mtd-accent);
   flex-shrink: 0;
 }
 
@@ -404,7 +444,7 @@
   display: inline-block;
   width: 8px;
   height: 1.05em;
-  background: var(--mt-accent);
+  background: var(--mtd-accent);
   vertical-align: text-bottom;
   margin-left: 2px;
   animation: mtBlink 1s steps(1) infinite;
@@ -424,7 +464,7 @@
 .mt-terminal__line {
   font-family: var(--mt-mono);
   font-size: 0.775rem;
-  color: var(--mt-dim);
+  color: var(--mtd-dim);
   animation: mtLineIn 0.4s ease both;
 }
 
@@ -434,7 +474,7 @@
 }
 
 .mt-terminal__check {
-  color: var(--mt-green);
+  color: var(--mtd-green);
 }
 
 .mt-terminal__done {
@@ -442,17 +482,18 @@
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--mt-faint);
+  color: var(--mtd-faint);
   margin-top: 0.5rem;
   animation: mtLineIn 0.4s ease both;
 }
 
 /* ---- Marquee ---- */
 .mt-marquee {
-  border-top: 1px solid var(--mt-line-soft);
-  border-bottom: 1px solid var(--mt-line-soft);
+  border-top: 1px solid var(--mt-line);
+  border-bottom: 1px solid var(--mt-line);
   padding: 1.1rem 0;
   overflow: hidden;
+  background: var(--mt-surface-alt);
 }
 
 .mt-marquee__track {
@@ -505,6 +546,7 @@
   font-weight: var(--weight-bold);
   letter-spacing: -0.03em;
   line-height: 1.05;
+  color: var(--mt-text);
 }
 
 .mt-h2 em {
@@ -531,7 +573,7 @@
 }
 
 .mt-dor:hover {
-  background: rgba(244, 241, 232, 0.02);
+  background: rgba(28, 25, 19, 0.03);
 }
 
 .mt-dor__num {
@@ -562,27 +604,28 @@
   color: var(--mt-accent);
 }
 
-/* ---- Diff ---- */
+/* ---- Diff (cartão escuro: prova técnica) ---- */
 .mt-diff {
   padding: 4rem 0 9rem;
 }
 
 .mt-diff__card {
   max-width: 780px;
-  background: var(--mt-raised);
-  border: 1px solid var(--mt-line);
+  background: var(--mtd-bg);
+  border: 1px solid rgba(26, 23, 15, 0.06);
   border-radius: var(--radius-md);
   overflow: hidden;
+  box-shadow: 0 20px 50px rgba(28, 25, 19, 0.14);
 }
 
 .mt-diff__bar {
   padding: 0.7rem 1.25rem;
-  border-bottom: 1px solid var(--mt-line-soft);
-  color: var(--mt-faint);
+  border-bottom: 1px solid var(--mtd-line-soft);
+  color: var(--mtd-faint);
 }
 
 .mt-diff__pair {
-  border-bottom: 1px solid var(--mt-line-soft);
+  border-bottom: 1px solid var(--mtd-line-soft);
 }
 
 .mt-diff__pair:last-child {
@@ -605,7 +648,7 @@
 
 .mt-diff__row--del {
   color: rgba(244, 241, 232, 0.38);
-  background: rgba(255, 95, 87, 0.05);
+  background: rgba(255, 95, 87, 0.07);
   text-decoration: line-through;
   text-decoration-color: rgba(255, 95, 87, 0.4);
   text-decoration-thickness: 1px;
@@ -616,12 +659,12 @@
 }
 
 .mt-diff__row--add {
-  color: var(--mt-text);
-  background: rgba(62, 207, 142, 0.06);
+  color: var(--mtd-text);
+  background: rgba(62, 207, 142, 0.09);
 }
 
 .mt-diff__row--add .mt-diff__sign {
-  color: var(--mt-green);
+  color: var(--mtd-green);
 }
 
 /* ---- Movimentos ---- */
@@ -654,6 +697,7 @@
   font-weight: var(--weight-regular);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   letter-spacing: -0.02em;
+  color: var(--mt-text);
 }
 
 .mt-mov__desc {
@@ -667,6 +711,7 @@
 .mt-mentor {
   padding: 9rem 0;
   border-top: 1px solid var(--mt-line-soft);
+  background: var(--mt-surface-alt);
   position: relative;
   overflow: hidden;
 }
@@ -680,7 +725,7 @@
   height: 55vw;
   max-width: 700px;
   max-height: 700px;
-  background: radial-gradient(circle, rgba(224, 123, 84, 0.08) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(156, 74, 34, 0.06) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -698,9 +743,10 @@
   height: 200px;
   border-radius: 50%;
   border: 1px solid var(--mt-line);
-  background: var(--mt-raised);
+  background: var(--mt-surface);
   padding: 6px;
   position: relative;
+  box-shadow: 0 12px 32px rgba(28, 25, 19, 0.1);
 }
 
 .mt-mentor__avatar-wrap::after {
@@ -708,7 +754,7 @@
   position: absolute;
   inset: -8px;
   border-radius: 50%;
-  border: 1px dashed rgba(224, 123, 84, 0.4);
+  border: 1px dashed rgba(156, 74, 34, 0.35);
   animation: mtSpin 24s linear infinite;
 }
 
@@ -725,7 +771,7 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  background: #1C1A13;
+  background: var(--mt-surface-alt);
 }
 
 .mt-mentor__right {
@@ -742,6 +788,7 @@
   line-height: 1.15;
   letter-spacing: -0.02em;
   max-width: 720px;
+  color: var(--mt-text);
 }
 
 .mt-mentor__quote em {
@@ -787,7 +834,7 @@
 }
 
 .mt-passo {
-  background: var(--mt-bg);
+  background: var(--mt-surface);
   padding: 2rem 1.75rem 2.5rem;
   display: flex;
   flex-direction: column;
@@ -796,7 +843,7 @@
 }
 
 .mt-passo:hover {
-  background: var(--mt-raised);
+  background: var(--mt-surface-alt);
 }
 
 .mt-passo__num {
@@ -807,6 +854,7 @@
   font-size: var(--text-lg);
   font-weight: var(--weight-semibold);
   letter-spacing: -0.01em;
+  color: var(--mt-text);
 }
 
 .mt-passo__desc {
@@ -842,6 +890,7 @@
   cursor: pointer;
   list-style: none;
   user-select: none;
+  color: var(--mt-text);
   transition: color var(--transition-base);
 }
 
@@ -894,36 +943,50 @@
   max-width: 600px;
 }
 
-/* ---- CTA final ---- */
+/* ---- CTA final: cartão escuro dentro de seção clara ---- */
 .mt-cta {
-  padding: 10rem 0;
-  border-top: 1px solid var(--mt-line-soft);
+  padding: var(--section-padding);
+}
+
+.mt-cta__card {
   position: relative;
   overflow: hidden;
-  text-align: center;
-}
-
-.mt-cta::before {
-  content: '';
-  position: absolute;
-  bottom: -60%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80vw;
-  height: 80vw;
-  max-width: 1000px;
-  max-height: 1000px;
-  background: radial-gradient(circle, rgba(224, 123, 84, 0.12) 0%, transparent 65%);
-  pointer-events: none;
-}
-
-.mt-cta .mt-container {
-  position: relative;
-  z-index: 1;
+  background: var(--mtd-bg);
+  border-radius: var(--radius-xl);
+  padding: 5rem 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   gap: 1.5rem;
+  box-shadow: 0 30px 70px rgba(28, 25, 19, 0.22);
+}
+
+.mt-cta__card::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 50%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(232, 132, 95, 0.16) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.mt-cta__card::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 45%;
+  height: 65%;
+  background: radial-gradient(circle, rgba(62, 207, 142, 0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.mt-cta__card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .mt-cta__heading {
@@ -932,16 +995,17 @@
   letter-spacing: -0.035em;
   line-height: 1.05;
   max-width: 900px;
+  color: var(--mtd-text);
 }
 
 .mt-cta__heading em {
-  color: var(--mt-accent);
+  color: var(--mtd-accent);
   font-weight: var(--weight-regular);
 }
 
 .mt-cta__sub {
   font-size: var(--text-lg);
-  color: var(--mt-dim);
+  color: var(--mtd-dim);
 }
 
 .mt-cta__actions {
@@ -1033,8 +1097,8 @@
     padding: 3rem 0 6rem;
   }
 
-  .mt-cta {
-    padding: 7rem 0;
+  .mt-cta__card {
+    padding: 3.5rem 2rem;
   }
 
   .mt-mov__grid {
@@ -1092,6 +1156,11 @@
   .mt-mentor__meta {
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+
+  .mt-cta__card {
+    padding: 2.75rem 1.5rem;
+    border-radius: var(--radius-lg);
   }
 
   .mt-btn--lg {

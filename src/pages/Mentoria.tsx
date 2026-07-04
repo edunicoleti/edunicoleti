@@ -517,19 +517,20 @@ export default function Mentoria() {
         {/* ---- CTA final ---- */}
         <section className="mt-cta" id="agendar" aria-label="Agendar diagnóstico">
           <div className="mt-container">
-            <span className="mt-mono mt-kicker mr">diagnóstico gratuito</span>
-            <h2 className="mt-cta__heading mr">
-              Me mostre como você usa Claude Code <em>hoje.</em>
-            </h2>
-            <p className="mt-cta__sub mr">
-              30 minutos no Meet. Eu te mostro o que dá pra destravar.
-            </p>
-            <div className="mt-cta__actions mr">
+            <div className="mt-cta__card mr">
+              <span className="mt-mono mt-kicker mt-kicker--dark">diagnóstico gratuito</span>
+              <h2 className="mt-cta__heading">
+                Me mostre como você usa Claude Code <em>hoje.</em>
+              </h2>
+              <p className="mt-cta__sub">
+                30 minutos no Meet. Eu te mostro o que dá pra destravar.
+              </p>
+              <div className="mt-cta__actions">
               <a
                 href={agendaHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-btn mt-btn--lg"
+                className="mt-btn mt-btn--lg mt-btn--onDark"
                 id="mentoria-cta-agendar-btn"
               >
                 Agendar diagnóstico
@@ -539,11 +540,12 @@ export default function Mentoria() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-link"
+                className="mt-link mt-link--onDark"
                 id="mentoria-cta-whatsapp-btn"
               >
                 ou chama no WhatsApp <ArrowUpRight size={16} strokeWidth={2} />
               </a>
+              </div>
             </div>
           </div>
         </section>
