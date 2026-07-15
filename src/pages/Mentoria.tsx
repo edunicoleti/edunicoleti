@@ -8,6 +8,7 @@ import {
   CalendarClock,
   FileText,
   Landmark,
+  MessageCircle,
   MessagesSquare,
 } from 'lucide-react'
 import {
@@ -299,6 +300,61 @@ function FaqItem({ q, a, i }: { q: string; a: string; i: number }) {
   )
 }
 
+/* ---- Sticky CTA bar mobile: aparece após o hero, some no CTA final ---- */
+function MobileCtaBar() {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const hero = document.querySelector('.mt-hero')
+    const cta = document.querySelector('#agendar')
+    if (!hero || !cta) return
+
+    let heroGone = false
+    let ctaVisible = false
+    const update = () => setVisible(heroGone && !ctaVisible)
+
+    const heroIO = new IntersectionObserver(([e]) => {
+      heroGone = !e.isIntersecting
+      update()
+    })
+    const ctaIO = new IntersectionObserver(([e]) => {
+      ctaVisible = e.isIntersecting
+      update()
+    })
+    heroIO.observe(hero)
+    ctaIO.observe(cta)
+    return () => {
+      heroIO.disconnect()
+      ctaIO.disconnect()
+    }
+  }, [])
+
+  return (
+    <div className={`mt-sticky-cta ${visible ? 'mt-sticky-cta--show' : ''}`}>
+      <a
+        href={agendaHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-btn mt-sticky-cta__btn"
+        id="mentoria-sticky-agendar-btn"
+      >
+        Reservar horário
+        <ArrowRight size={16} strokeWidth={2} />
+      </a>
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-sticky-cta__wa"
+        id="mentoria-sticky-whatsapp-btn"
+        aria-label="Chamar no WhatsApp"
+      >
+        <MessageCircle size={22} strokeWidth={2} />
+      </a>
+    </div>
+  )
+}
+
 function useMeta() {
   useEffect(() => {
     const prevTitle = document.title
@@ -378,6 +434,7 @@ export default function Mentoria() {
     <div className="mentoria">
       <div className="mentoria__grain" aria-hidden="true" />
       <ReadingProgress />
+      <MobileCtaBar />
 
       {/* ---- Nav ---- */}
       <nav className={`mt-nav ${navSolid ? 'mt-nav--solid' : ''}`}>
@@ -420,7 +477,7 @@ export default function Mentoria() {
               </span>
               <span className="mt-hero__line mt-hero__line--serif">
                 <span className="mt-load" style={{ animationDelay: '0.38s' }}>
-                  Claude Code como sistema<br />operacional do negócio.
+                  Claude Code como sistema <br />operacional do negócio.
                 </span>
               </span>
             </h1>
