@@ -8,6 +8,9 @@ const Proposta = lazy(() => import('./pages/Proposta'))
 const PropostaPDF = lazy(() => import('./pages/PropostaPDF'))
 const PropostaDashboard = lazy(() => import('./pages/PropostaDashboard'))
 
+/* Painel financeiro pessoal (protegido por senha, noindex) */
+const Financeiro = lazy(() => import('./pages/Financeiro'))
+
 export default function App() {
   return (
     <Suspense fallback={null}>
@@ -17,6 +20,7 @@ export default function App() {
         <Route path="/proposta/:slug" element={<Proposta />} />
         <Route path="/proposta/:slug/pdf" element={<PropostaPDF />} />
         <Route path="/propostas" element={<PropostaDashboard />} />
+        <Route path="/financeiro" element={<Financeiro />} />
       </Routes>
     </Suspense>
   )
