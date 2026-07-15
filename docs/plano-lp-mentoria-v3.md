@@ -230,13 +230,26 @@ Mapa de motion por seção:
 
 ## 7. Fases de desenvolvimento (executar em nova sessão)
 
-### Fase 0 — Conteúdo (bloqueia a Fase 2; pedir ao Eduardo logo no início)
-- [ ] Confirmar quais clientes podem ser NOMEADOS publicamente (Preamar, Cristal Poços, Clínica Fonoaudiologia Avançada, Cardápios Um Livro Vivo)
-- [ ] Foto profissional real (ou confirmar memoji por ora)
-- [ ] Link da agenda (Google Calendar appointment schedule) → `SCHEDULING_URL`
-- [ ] Nº honesto de vagas/mês para o badge de escassez
-- [ ] 1–2 depoimentos, se existirem
-- **Aceite**: lista de assets respondida (a página não pode ir ao ar com placeholder de cliente)
+### Fase 0 — Conteúdo ✅ RESPONDIDO (2026-07-14)
+- [x] **Clientes nomeados: NENHUM.** Os projetos citados são sites institucionais, não cases
+  de Claude Code. Esta LP é o piloto de captação dos primeiros clientes de mentoria (não
+  mencionar isso na página). **Consequência**: a seção 3.3 (barra de prova com nomes) SAI;
+  a prova social passa a ser: números genéricos (10+ anos, 50+ projetos) + dogfooding
+  (sistema de propostas deste site rodando em Claude Code). A bio da seção 3.8 é reescrita
+  sem nomes de clientes.
+- [x] Foto: **memoji por ora**; slot pronto para trocar por foto real depois.
+- [x] `SCHEDULING_URL`: **ainda não existe** → mantém vazio, CTA cai no fallback WhatsApp.
+- [x] Vagas/mês: **sem número** → badge genérico `● poucas vagas por mês`.
+- [x] Depoimentos: **não há** (sem cases de mentoria ainda) → seção sai sem placeholder.
+- **Aceite**: ✅ assets respondidos; copy das fases seguintes adaptada a estas decisões.
+
+#### Ajustes de copy decorrentes da Fase 0
+- **3.3 Barra de prova**: substituir nomes por linha mono genérica:
+  `10+ anos em produtos digitais · 50+ projetos entregues · operação própria rodando em claude code`
+- **3.8 Bio (sem nomes)**:
+  `Sou Eduardo Nicoleti. Há mais de 10 anos desenho e desenvolvo produtos digitais para empresas da região: sites, sistemas e operações que rodam todos os dias.`
+  `Minha própria operação roda em Claude Code: o sistema de propostas que meus clientes recebem foi construído com ele e está neste site, em produção.`
+  `Sou empresário, membro da JCI e de Associações Comerciais. Conheço a rotina de quem decide porque vivo ela.`
 
 ### Fase 1 — Copy nova no código (~1 sessão curta)
 - Substituir todos os textos conforme seção 3 deste doc (arrays no topo de Mentoria.tsx)
