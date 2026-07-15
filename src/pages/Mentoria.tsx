@@ -664,6 +664,8 @@ export default function Mentoria() {
                   className="mt-mentor__avatar"
                   width={160}
                   height={160}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>

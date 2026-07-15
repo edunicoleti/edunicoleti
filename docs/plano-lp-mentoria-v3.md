@@ -270,10 +270,20 @@ Mapa de motion por seção:
 - Sticky CTA bar; hero mobile; variantes de seção da seção 6
 - **Aceite**: screenshots aprovados em 360/375/414; nenhum scroll horizontal; tap targets ok
 
-### Fase 5 — QA e lançamento
-- Lighthouse mobile ≥ 90 (perf e a11y); OG/title; contraste AA nas cores novas
-- Commit por fase; branch atual `claude/angry-solomon-9774b6`
-- **Aceite**: build de produção testado com `npm run preview`
+### Fase 5 — QA e lançamento ✅ EXECUTADO (2026-07-15)
+- Lighthouse mobile (build de produção, servido com brotli):
+  **a11y 100** ✓ · **perf 83–85** · TBT 0ms · CLS 0 · FCP/LCP 3.3s (simulado)
+- Contraste AA corrigido: `--mt-faint` 0.42→0.64 e `--mtd-faint` 0.36→0.56
+- Fontes Google carregam async (media=print + onload); memoji com lazy loading
+- Rotas de proposta em code-splitting (chunk principal 460→370KB)
+- **Perf < 90**: FCP=LCP são dominados pelo boot do JS (SPA 100% client-side
+  com CPU 4x do Lighthouse). Para ≥ 90 é preciso prerender/SSG da rota
+  `/mentoria` (ex.: vite-prerender-plugin) — fica como melhoria futura;
+  em hosting real (HTTP/2 + CDN) o número tende a ser melhor que o simulado.
+- OG do `/mentoria`: title/description trocam em runtime (useMeta); crawlers de
+  rede social leem o OG estático do index.html — também resolve com prerender.
+- Branch de execução: `claude/plano-lp-mentoria-fase-0-e4548d` (commit por fase)
+- **Aceite**: build de produção testado via preview servido de `dist/` ✓
 
 ### Prompt sugerido para abrir a nova sessão
 > "Execute o plano em docs/plano-lp-mentoria-v3.md, começando pela Fase 0 (me pergunte os

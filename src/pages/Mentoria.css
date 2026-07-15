@@ -11,7 +11,7 @@
   --mt-line-soft: rgba(26, 23, 15, 0.07);
   --mt-text: #1C1913;
   --mt-dim: rgba(28, 25, 19, 0.66);
-  --mt-faint: rgba(28, 25, 19, 0.42);
+  --mt-faint: rgba(28, 25, 19, 0.64); /* AA 4.5:1 sobre --mt-bg */
   --mt-accent: #9C4A22;
   --mt-accent-soft: rgba(156, 74, 34, 0.1);
   --mt-green: #1E8F5E;
@@ -24,7 +24,7 @@
   --mtd-line-soft: rgba(244, 241, 232, 0.07);
   --mtd-text: #F4F1E8;
   --mtd-dim: rgba(244, 241, 232, 0.62);
-  --mtd-faint: rgba(244, 241, 232, 0.36);
+  --mtd-faint: rgba(244, 241, 232, 0.56); /* AA 4.5:1 sobre --mtd-bg */
   --mtd-accent: #E8845F;
   --mtd-green: #3ECF8E;
 
