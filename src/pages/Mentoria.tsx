@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BarChart3,
+  Cable,
+  CalendarClock,
+  FileText,
+  Landmark,
+  MessagesSquare,
+} from 'lucide-react'
 import './Mentoria.css'
 
 /*
@@ -8,6 +17,9 @@ import './Mentoria.css'
  * Enquanto vazio, os botões de agendamento caem no WhatsApp.
  */
 const SCHEDULING_URL = ''
+
+/* Slot de foto real: trocar por ex. '/eduardo.jpg' quando a foto chegar. */
+const MENTOR_PHOTO = '/memoji.png'
 
 const WHATSAPP_URL =
   'https://wa.me/5549999531382?text=Ol%C3%A1%2C%20Eduardo!%20Vi%20que%20a%20agenda%20est%C3%A1%20aberta%20e%20quero%20reservar%20um%20diagn%C3%B3stico.'
@@ -30,15 +42,21 @@ const scenarios = [
   },
 ]
 
+/* Barra de prova: sem clientes nomeados por decisão da Fase 0 */
 const marqueeItems = [
-  'Relatórios automáticos',
-  'Propostas em minutos',
-  'Financeiro conciliado',
-  'Follow-up sem esquecer',
-  'CRM e ERP conectados',
-  'Rotinas agendadas',
-  'Planilhas que se atualizam',
-  'Operação rodando',
+  '10+ anos em produtos digitais',
+  '50+ projetos entregues',
+  'operação própria rodando em claude code',
+  'mentoria e consultoria 1:1',
+]
+
+const modulos = [
+  { icon: BarChart3, title: 'Relatórios e indicadores', desc: 'Chegam prontos, no horário, sem ninguém pedir.' },
+  { icon: FileText, title: 'Propostas e orçamentos', desc: 'Geradas no padrão da empresa, em minutos.' },
+  { icon: Landmark, title: 'Financeiro', desc: 'Conciliação automática, pendências sinalizadas.' },
+  { icon: MessagesSquare, title: 'Atendimento e follow-up', desc: 'Nenhum cliente esquecido na fila.' },
+  { icon: Cable, title: 'Integrações', desc: 'CRM, planilhas e ERP conversando entre si.' },
+  { icon: CalendarClock, title: 'Rotinas agendadas', desc: 'O que é recorrente roda sozinho, todo dia.' },
 ]
 
 const dores = [
@@ -383,11 +401,41 @@ export default function Mentoria() {
           </div>
         </section>
 
+        {/* ---- O sistema (módulos) ---- */}
+        <section className="mt-mods" id="sistema" aria-label="O que eu implanto">
+          <div className="mt-container">
+            <div className="mt-section-head mr">
+              <span className="mt-mono mt-kicker">02 — o sistema</span>
+              <h2 className="mt-h2">
+                Um sistema operacional <em>pra gestão inteira.</em>
+              </h2>
+              <p className="mt-section-sub">
+                Cada módulo é desenhado no seu contexto e implantado comigo, um a um.
+              </p>
+            </div>
+
+            <div className="mt-mods__grid">
+              {modulos.map((m, i) => {
+                const Icon = m.icon
+                return (
+                  <div className="mt-mod mr" key={m.title} style={{ transitionDelay: `${i * 60}ms` }}>
+                    <span className="mt-mod__icon" aria-hidden="true">
+                      <Icon size={20} strokeWidth={1.75} />
+                    </span>
+                    <h3 className="mt-mod__title">{m.title}</h3>
+                    <p className="mt-mod__desc">{m.desc}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+
         {/* ---- Diff: da rotina manual à operação ---- */}
         <section className="mt-diff" id="antes-e-depois" aria-label="Antes e depois">
           <div className="mt-container">
             <div className="mt-section-head mr">
-              <span className="mt-mono mt-kicker">02 — antes e depois</span>
+              <span className="mt-mono mt-kicker">03 — antes e depois</span>
               <h2 className="mt-h2">
                 Da rotina manual <em>à operação.</em>
               </h2>
@@ -415,7 +463,7 @@ export default function Mentoria() {
         <section className="mt-mov" id="metodo" aria-label="O método">
           <div className="mt-container">
             <div className="mt-section-head mr">
-              <span className="mt-mono mt-kicker">03 — o método</span>
+              <span className="mt-mono mt-kicker">04 — o método</span>
               <h2 className="mt-h2">
                 Consultoria completa.<br />
                 <em>Mentoria no processo.</em>
@@ -444,7 +492,7 @@ export default function Mentoria() {
             <div className="mt-mentor__left mr">
               <div className="mt-mentor__avatar-wrap">
                 <img
-                  src="/memoji.png"
+                  src={MENTOR_PHOTO}
                   alt="Eduardo Nicoleti"
                   className="mt-mentor__avatar"
                   width={160}
@@ -454,7 +502,7 @@ export default function Mentoria() {
             </div>
 
             <div className="mt-mentor__right">
-              <span className="mt-mono mt-kicker mr">04 — quem implanta</span>
+              <span className="mt-mono mt-kicker mr">05 — quem implanta</span>
               <blockquote className="mt-mentor__quote mr">
                 “Eu não vendo a ferramenta. Eu construo a operação <em>em cima dela.</em>”
               </blockquote>
@@ -491,7 +539,7 @@ export default function Mentoria() {
         <section className="mt-passos" id="como-funciona" aria-label="Como funciona">
           <div className="mt-container">
             <div className="mt-section-head mr">
-              <span className="mt-mono mt-kicker">05 — como funciona</span>
+              <span className="mt-mono mt-kicker">06 — como funciona</span>
               <h2 className="mt-h2">
                 Do primeiro papo <em>à empresa rodando.</em>
               </h2>
@@ -515,7 +563,7 @@ export default function Mentoria() {
         <section className="mt-faq" id="faq" aria-label="Perguntas frequentes">
           <div className="mt-container">
             <div className="mt-section-head mr">
-              <span className="mt-mono mt-kicker">06 — dúvidas</span>
+              <span className="mt-mono mt-kicker">07 — dúvidas</span>
               <h2 className="mt-h2">
                 Perguntas <em>frequentes.</em>
               </h2>

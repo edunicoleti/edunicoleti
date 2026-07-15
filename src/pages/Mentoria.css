@@ -56,6 +56,8 @@
 .mt-kicker {
   color: var(--mt-accent);
   display: block;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
 }
 
 .mt-kicker--dark {
@@ -301,7 +303,7 @@
 }
 
 .mt-hero__heading {
-  font-size: clamp(2.75rem, 8.5vw, 7rem);
+  font-size: clamp(3rem, 10vw, 8.5rem);
   font-weight: var(--weight-bold);
   letter-spacing: -0.04em;
   line-height: 0.98;
@@ -499,7 +501,7 @@
 .mt-marquee__track {
   display: flex;
   width: max-content;
-  animation: mtMarquee 36s linear infinite;
+  animation: mtMarquee 48s linear infinite;
 }
 
 .mt-marquee__group {
@@ -563,7 +565,7 @@
 
 /* ---- Dores ---- */
 .mt-dores {
-  padding: 9rem 0;
+  padding: 12rem 0;
 }
 
 .mt-dores__intro {
@@ -627,7 +629,7 @@
 
 /* ---- Diff (cartão escuro: prova técnica) ---- */
 .mt-diff {
-  padding: 4rem 0 9rem;
+  padding: 0 0 12rem;
 }
 
 .mt-diff__card {
@@ -688,9 +690,60 @@
   color: var(--mtd-green);
 }
 
+/* ---- Módulos (o sistema) ---- */
+.mt-mods {
+  padding: 0 0 12rem;
+}
+
+.mt-mods__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.mt-mod {
+  background: var(--mt-surface);
+  border: 1px solid var(--mt-line);
+  border-radius: var(--radius-md);
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), border-color var(--transition-base);
+}
+
+.mt-mod:hover {
+  border-color: var(--mt-accent);
+}
+
+.mt-mod__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--mt-accent-soft);
+  color: var(--mt-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.35rem;
+}
+
+.mt-mod__title {
+  font-size: 1.0625rem;
+  font-weight: var(--weight-medium);
+  letter-spacing: -0.01em;
+  color: var(--mt-text);
+}
+
+.mt-mod__desc {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--mt-dim);
+}
+
 /* ---- Movimentos ---- */
 .mt-mov {
-  padding: 9rem 0;
+  padding: 12rem 0;
   border-top: 1px solid var(--mt-line-soft);
 }
 
@@ -730,7 +783,7 @@
 
 /* ---- Mentor ---- */
 .mt-mentor {
-  padding: 9rem 0;
+  padding: 12rem 0;
   border-top: 1px solid var(--mt-line-soft);
   background: var(--mt-surface-alt);
   position: relative;
@@ -840,7 +893,7 @@
 
 /* ---- Passos ---- */
 .mt-passos {
-  padding: 9rem 0;
+  padding: 12rem 0;
   border-top: 1px solid var(--mt-line-soft);
 }
 
@@ -891,7 +944,7 @@
 
 /* ---- FAQ ---- */
 .mt-faq {
-  padding: 9rem 0;
+  padding: 12rem 0;
   border-top: 1px solid var(--mt-line-soft);
 }
 
@@ -1119,8 +1172,13 @@
     padding: 6rem 0;
   }
 
-  .mt-diff {
-    padding: 3rem 0 6rem;
+  .mt-diff,
+  .mt-mods {
+    padding: 0 0 6rem;
+  }
+
+  .mt-mods__grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .mt-cta__card {
@@ -1172,6 +1230,10 @@
   }
 
   .mt-passos__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mt-mods__grid {
     grid-template-columns: 1fr;
   }
 
