@@ -10,6 +10,15 @@ import {
   Landmark,
   MessagesSquare,
 } from 'lucide-react'
+import {
+  animate,
+  motion,
+  useInView,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'motion/react'
 import './Mentoria.css'
 
 /*
@@ -214,6 +223,82 @@ function LiveTerminal() {
   )
 }
 
+/* ---- Progress bar de leitura (terracota, topo) ---- */
+function ReadingProgress() {
+  const reduced = useReducedMotion()
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 })
+  if (reduced) return null
+  return <motion.div className="mt-progress" style={{ scaleX }} aria-hidden="true" />
+}
+
+/* ---- Item do segundo turno: acende ao cruzar o centro da viewport ---- */
+function DorItem({ d, i }: { d: string; i: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inCenter = useInView(ref, { margin: '-45% 0px -45% 0px' })
+  return (
+    <div
+      ref={ref}
+      className={`mt-dor mr ${inCenter ? 'mt-dor--active' : ''}`}
+      style={{ transitionDelay: `${i * 60}ms` }}
+    >
+      <span className="mt-dor__num mt-mono">0{i + 1}</span>
+      <p className="mt-dor__text">{d}</p>
+    </div>
+  )
+}
+
+/* ---- Stat com count-up ao entrar na viewport ---- */
+function CountUpStat({ value, suffix }: { value: number; suffix: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const inView = useInView(ref, { once: true, margin: '0px 0px -15% 0px' })
+  const reduced = useReducedMotion()
+  // Com reduced-motion o initializer já entrega o valor final, sem animar
+  const [display, setDisplay] = useState(() => (reduced ? value : 0))
+
+  useEffect(() => {
+    if (!inView || reduced) return
+    const controls = animate(0, value, {
+      duration: 1.2,
+      ease: 'easeOut',
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    })
+    return () => controls.stop()
+  }, [inView, reduced, value])
+
+  return (
+    <span ref={ref} className="mt-mono">
+      {display}{suffix}
+    </span>
+  )
+}
+
+/* ---- FAQ controlado: abertura anima via grid-template-rows ---- */
+function FaqItem({ q, a, i }: { q: string; a: string; i: number }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div
+      className={`mt-faq__item mr ${open ? 'mt-faq__item--open' : ''}`}
+      style={{ transitionDelay: `${i * 40}ms` }}
+    >
+      <button
+        type="button"
+        className="mt-faq__q"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {q}
+        <span className="mt-faq__marker" aria-hidden="true" />
+      </button>
+      <div className="mt-faq__body">
+        <div className="mt-faq__body-inner">
+          <p className="mt-faq__a">{a}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function useMeta() {
   useEffect(() => {
     const prevTitle = document.title
@@ -237,6 +322,24 @@ export default function Mentoria() {
   useMeta()
   const observerRef = useRef<IntersectionObserver | null>(null)
   const [navSolid, setNavSolid] = useState(false)
+  const reduced = useReducedMotion()
+
+  // Parallax sutil do terminal no hero
+  const { scrollY } = useScroll()
+  const terminalY = useTransform(scrollY, [0, 700], [0, -40])
+
+  // Linha conectora do método desenha conforme o scroll
+  const movRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress: movProgress } = useScroll({
+    target: movRef,
+    offset: ['start 0.85', 'start 0.35'],
+  })
+  const movLine = useSpring(movProgress, { stiffness: 120, damping: 28 })
+
+  // O quote anima clip-path; observar o wrapper (não-clipado) evita que o
+  // IntersectionObserver nunca dispare (elemento clipado tem interseção zero)
+  const quoteWrapRef = useRef<HTMLDivElement>(null)
+  const quoteInView = useInView(quoteWrapRef, { once: true, amount: 0.5 })
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -274,6 +377,7 @@ export default function Mentoria() {
   return (
     <div className="mentoria">
       <div className="mentoria__grain" aria-hidden="true" />
+      <ReadingProgress />
 
       {/* ---- Nav ---- */}
       <nav className={`mt-nav ${navSolid ? 'mt-nav--solid' : ''}`}>
@@ -343,9 +447,12 @@ export default function Mentoria() {
                 </div>
               </div>
 
-              <div className="mt-hero__terminal mt-load" style={{ animationDelay: '0.7s' }}>
+              <motion.div
+                className="mt-hero__terminal mt-load"
+                style={{ animationDelay: '0.7s', y: reduced ? 0 : terminalY }}
+              >
                 <LiveTerminal />
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -388,10 +495,7 @@ export default function Mentoria() {
 
             <div className="mt-dores__list">
               {dores.map((d, i) => (
-                <div className="mt-dor mr" key={i} style={{ transitionDelay: `${i * 60}ms` }}>
-                  <span className="mt-dor__num mt-mono">0{i + 1}</span>
-                  <p className="mt-dor__text">{d}</p>
-                </div>
+                <DorItem d={d} i={i} key={i} />
               ))}
             </div>
 
@@ -474,7 +578,13 @@ export default function Mentoria() {
               </p>
             </div>
 
-            <div className="mt-mov__grid">
+            <motion.div
+              className="mt-mov__line"
+              style={{ scaleX: reduced ? 1 : movLine }}
+              aria-hidden="true"
+            />
+
+            <div className="mt-mov__grid" ref={movRef}>
               {movimentos.map((m, i) => (
                 <div className="mt-mov__item mr" key={m.num} style={{ transitionDelay: `${i * 80}ms` }}>
                   <span className="mt-mono mt-mov__num">{m.num}</span>
@@ -503,9 +613,20 @@ export default function Mentoria() {
 
             <div className="mt-mentor__right">
               <span className="mt-mono mt-kicker mr">05 — quem implanta</span>
-              <blockquote className="mt-mentor__quote mr">
-                “Eu não vendo a ferramenta. Eu construo a operação <em>em cima dela.</em>”
-              </blockquote>
+              <div ref={quoteWrapRef}>
+                <motion.blockquote
+                  className="mt-mentor__quote"
+                  initial={reduced ? false : { clipPath: 'inset(0 0 100% 0)', opacity: 0 }}
+                  animate={
+                    reduced || !quoteInView
+                      ? undefined
+                      : { clipPath: 'inset(0 0 0% 0)', opacity: 1 }
+                  }
+                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  “Eu não vendo a ferramenta. Eu construo a operação <em>em cima dela.</em>”
+                </motion.blockquote>
+              </div>
               <p className="mt-mentor__bio mr">
                 <strong>Sou Eduardo Nicoleti.</strong> Há mais de 10 anos desenho e
                 desenvolvo produtos digitais para empresas da região: sites, sistemas
@@ -516,9 +637,9 @@ export default function Mentoria() {
                 decide porque vivo ela.
               </p>
               <div className="mt-mentor__meta mr">
-                <span className="mt-mono">10+ anos</span>
+                <span className="mt-mono"><CountUpStat value={10} suffix="+" /> anos</span>
                 <span className="mt-mentor__sep">·</span>
-                <span className="mt-mono">50+ projetos</span>
+                <span className="mt-mono"><CountUpStat value={50} suffix="+" /> projetos</span>
                 <span className="mt-mentor__sep">·</span>
                 <span className="mt-mono">operação própria em claude code</span>
               </div>
@@ -571,13 +692,7 @@ export default function Mentoria() {
 
             <div className="mt-faq__list">
               {faqs.map((f, i) => (
-                <details className="mt-faq__item mr" key={i} style={{ transitionDelay: `${i * 40}ms` }}>
-                  <summary className="mt-faq__q">
-                    {f.q}
-                    <span className="mt-faq__marker" aria-hidden="true" />
-                  </summary>
-                  <p className="mt-faq__a">{f.a}</p>
-                </details>
+                <FaqItem q={f.q} a={f.a} i={i} key={i} />
               ))}
             </div>
           </div>
@@ -586,7 +701,13 @@ export default function Mentoria() {
         {/* ---- CTA final ---- */}
         <section className="mt-cta" id="agendar" aria-label="Agendar diagnóstico">
           <div className="mt-container">
-            <div className="mt-cta__card mr">
+            <motion.div
+              className="mt-cta__card"
+              initial={reduced ? false : { opacity: 0, scale: 0.96 }}
+              whileInView={reduced ? {} : { opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
               <span className="mt-mono mt-kicker mt-kicker--dark">agenda aberta</span>
               <h2 className="mt-cta__heading">
                 Poucas vagas. Atendimento <em>é 1:1.</em>
@@ -616,7 +737,7 @@ export default function Mentoria() {
                 ou chama no WhatsApp <ArrowUpRight size={16} strokeWidth={2} />
               </a>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
       </main>

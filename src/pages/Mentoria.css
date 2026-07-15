@@ -60,6 +60,19 @@
   letter-spacing: 0.14em;
 }
 
+/* ---- Progress bar de leitura ---- */
+.mt-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--mt-accent);
+  transform-origin: 0 0;
+  z-index: 400;
+  pointer-events: none;
+}
+
 .mt-kicker--dark {
   color: var(--mtd-accent);
 }
@@ -177,6 +190,30 @@
     opacity: 1;
     transform: none;
     animation: none;
+    transition: none;
+  }
+
+  /* Página 100% estática e completa sem motion */
+  .mt-diff__pair .mt-diff__row--del,
+  .mt-diff__pair .mt-diff__row--add {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .mt-diff__pair.in .mt-diff__row--add .mt-diff__sign {
+    animation: none !important;
+  }
+
+  .mt-cta__card::before,
+  .mt-cta__card::after {
+    animation: none;
+  }
+
+  .mt-faq__body {
+    transition: none;
+  }
+
+  .mt-mod__icon svg {
     transition: none;
   }
 }
@@ -600,8 +637,17 @@
 }
 
 .mt-dor__num {
-  color: var(--mt-accent);
+  color: var(--mt-faint);
   flex-shrink: 0;
+  transition: color 0.45s ease;
+}
+
+.mt-dor--active .mt-dor__num {
+  color: var(--mt-accent);
+}
+
+.mt-dor--active .mt-dor__text {
+  color: var(--mt-text);
 }
 
 .mt-dor__text {
@@ -690,6 +736,39 @@
   color: var(--mtd-green);
 }
 
+/* Linhas do diff entram como se o patch estivesse sendo aplicado */
+.mt-diff__pair .mt-diff__row--del,
+.mt-diff__pair .mt-diff__row--add {
+  opacity: 0;
+}
+
+.mt-diff__pair.in .mt-diff__row--del {
+  animation: mtDiffDel 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mt-diff__pair.in .mt-diff__row--add {
+  animation: mtDiffAdd 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.mt-diff__pair.in .mt-diff__row--add .mt-diff__sign {
+  animation: mtSignBlink 0.5s ease 0.7s 1;
+}
+
+@keyframes mtDiffDel {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes mtDiffAdd {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes mtSignBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
 /* ---- Módulos (o sistema) ---- */
 .mt-mods {
   padding: 0 0 12rem;
@@ -728,6 +807,14 @@
   margin-bottom: 0.35rem;
 }
 
+.mt-mod__icon svg {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mt-mod:hover .mt-mod__icon svg {
+  transform: scale(1.12);
+}
+
 .mt-mod__title {
   font-size: 1.0625rem;
   font-weight: var(--weight-medium);
@@ -745,6 +832,15 @@
 .mt-mov {
   padding: 12rem 0;
   border-top: 1px solid var(--mt-line-soft);
+}
+
+.mt-mov__line {
+  height: 2px;
+  background: var(--mt-accent);
+  transform-origin: 0 50%;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
 }
 
 .mt-mov__grid {
@@ -962,7 +1058,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
+  width: 100%;
   padding: 1.5rem 0.25rem;
+  background: none;
+  border: none;
+  font-family: inherit;
+  text-align: left;
   font-size: var(--text-lg);
   font-weight: var(--weight-medium);
   letter-spacing: -0.01em;
@@ -975,10 +1076,6 @@
 
 .mt-faq__q:hover {
   color: var(--mt-accent);
-}
-
-.mt-faq__q::-webkit-details-marker {
-  display: none;
 }
 
 .mt-faq__marker {
@@ -1010,8 +1107,23 @@
   height: 16px;
 }
 
-.mt-faq__item[open] .mt-faq__marker::after {
+.mt-faq__item--open .mt-faq__marker::after {
   transform: rotate(90deg);
+}
+
+/* Abertura anima altura via grid-template-rows 0fr→1fr */
+.mt-faq__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mt-faq__item--open .mt-faq__body {
+  grid-template-rows: 1fr;
+}
+
+.mt-faq__body-inner {
+  overflow: hidden;
 }
 
 .mt-faq__a {
@@ -1050,6 +1162,7 @@
   height: 70%;
   background: radial-gradient(circle, rgba(232, 132, 95, 0.16) 0%, transparent 65%);
   pointer-events: none;
+  animation: mtGlowBreathe 5.5s ease-in-out infinite;
 }
 
 .mt-cta__card::after {
@@ -1061,6 +1174,12 @@
   height: 65%;
   background: radial-gradient(circle, rgba(62, 207, 142, 0.1) 0%, transparent 65%);
   pointer-events: none;
+  animation: mtGlowBreathe 5.5s ease-in-out 2.75s infinite;
+}
+
+@keyframes mtGlowBreathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
 }
 
 .mt-cta__card > * {
