@@ -10,101 +10,100 @@ import './Mentoria.css'
 const SCHEDULING_URL = ''
 
 const WHATSAPP_URL =
-  'https://wa.me/5549999531382?text=Ol%C3%A1%2C%20Eduardo!%20Quero%20agendar%20o%20diagn%C3%B3stico%20gratuito%20da%20Mentoria%20de%20Claude%20Code.'
+  'https://wa.me/5549999531382?text=Ol%C3%A1%2C%20Eduardo!%20Vi%20que%20a%20agenda%20est%C3%A1%20aberta%20e%20quero%20reservar%20um%20diagn%C3%B3stico.'
 
 const agendaHref = SCHEDULING_URL || WHATSAPP_URL
 
 /* ---- Terminal: cenários que digitam em loop ---- */
 const scenarios = [
   {
-    cmd: 'Gere o relatório semanal e envie pra diretoria',
-    out: ['Lendo planilha de vendas', 'Montando indicadores', 'E-mail enviado · 3 destinatários'],
+    cmd: 'Feche o caixa de hoje e me mande o resumo',
+    out: ['Conciliando extrato com contas a receber', '2 pendências sinalizadas', 'Resumo enviado no WhatsApp'],
   },
   {
-    cmd: 'Monte a proposta do cliente novo no nosso padrão',
-    out: ['Buscando dados no CRM', 'Aplicando template da empresa', 'Proposta pronta · PDF gerado'],
+    cmd: 'Gere o relatório da semana pra reunião de segunda',
+    out: ['Lendo planilha de vendas', 'Montando indicadores', 'PDF pronto no seu e-mail'],
   },
   {
-    cmd: 'Concilie os pagamentos e me avise das pendências',
-    out: ['Cruzando extrato com contas a receber', '2 pendências encontradas', 'Resumo enviado no WhatsApp'],
+    cmd: 'Prepare a proposta do cliente novo no nosso padrão',
+    out: ['Buscando dados no CRM', 'Aplicando template da empresa', 'Proposta gerada em 4 min'],
   },
 ]
 
 const marqueeItems = [
   'Relatórios automáticos',
   'Propostas em minutos',
-  'CRM conectado',
-  'Agentes de IA',
-  'MCPs',
+  'Financeiro conciliado',
+  'Follow-up sem esquecer',
+  'CRM e ERP conectados',
   'Rotinas agendadas',
   'Planilhas que se atualizam',
-  'Follow-up sem esquecer',
+  'Operação rodando',
 ]
 
 const dores = [
-  'Tudo vive no chat. Nada roda sozinho.',
-  'Você sabe que dá pra fazer mais. Não sabe por onde.',
-  'Suas automações funcionam… às vezes.',
-  'Conectar a IA nos sistemas reais dá medo.',
-  'Tentativa e erro está comendo suas semanas.',
+  'O relatório de segunda que rouba o domingo.',
+  'A proposta que só sai se você montar.',
+  'O financeiro conferido linha por linha.',
+  'O follow-up que depende da sua memória.',
 ]
 
 const diffs = [
-  { antes: 'Pede o relatório toda segunda', depois: 'O relatório chega sozinho, 07h00' },
-  { antes: 'Cola dados do cliente no chat', depois: 'CRM e planilhas conectados' },
-  { antes: 'Cada proposta, um prompt novo', depois: 'Propostas no padrão, em minutos' },
-  { antes: 'Prompts espalhados em 40 conversas', depois: 'Sistema que a equipe inteira usa' },
+  { antes: 'Relatório montado à mão toda segunda', depois: 'Chega pronto no e-mail, 07h00' },
+  { antes: 'Proposta refeita a cada cliente', depois: 'Gerada no padrão, em minutos' },
+  { antes: 'Financeiro conferido planilha por planilha', depois: 'Conciliação automática com alertas' },
+  { antes: 'A operação depende de você', depois: 'A operação roda. Você decide.' },
 ]
 
 const movimentos = [
   {
     num: '01',
-    title: 'Diagnóstico',
-    desc: 'Reviso o que você já montou. O que fica, o que sai, o que vem primeiro.',
+    title: 'Análise',
+    desc: 'Mergulho no seu negócio: processos, sistemas, gargalos. Saio com o mapa do que automatizar primeiro.',
   },
   {
     num: '02',
-    title: 'Infraestrutura',
-    desc: 'Automações que rodam sozinhas, conectadas aos sistemas da sua empresa.',
+    title: 'Implantação',
+    desc: 'Construímos juntos, módulo a módulo, dentro da sua operação real. Cada sessão termina com algo rodando.',
   },
   {
     num: '03',
-    title: 'Autonomia',
-    desc: 'Você sai operando e evoluindo tudo sem depender de mim.',
+    title: 'Comando',
+    desc: 'Você aprende a operar e evoluir o sistema. A empresa fica com o ativo, não com a dependência.',
   },
 ]
 
 const passos = [
-  { num: '01', title: 'Diagnóstico gratuito', desc: '30 min no Meet. Você mostra, eu destravo na hora.' },
-  { num: '02', title: 'Plano', desc: 'Prioridades definidas. Sem enrolação.' },
-  { num: '03', title: 'Sessões 1:1', desc: 'Mão na massa, no seu contexto real.' },
-  { num: '04', title: 'Suporte direto', desc: 'WhatsApp aberto entre as sessões.' },
+  { num: '01', title: 'Diagnóstico', desc: '30 min no Meet. Você me mostra a operação, eu já aponto onde o sistema entra.' },
+  { num: '02', title: 'Mapa', desc: 'Proposta com módulos priorizados, prazo e investimento. Preto no branco.' },
+  { num: '03', title: 'Implantação 1:1', desc: 'Sessões de trabalho na sua operação real. Nada de aula gravada.' },
+  { num: '04', title: 'Acompanhamento', desc: 'Canal direto comigo enquanto o sistema ganha corpo.' },
 ]
 
 const faqs = [
   {
-    q: 'Já uso Claude Code todo dia. O que a mentoria acrescenta?',
-    a: 'Direção. Eu reviso o que você montou, aponto o que priorizar e transformo usos pontuais em processos que rodam sozinhos.',
+    q: 'Preciso já usar Claude Code?',
+    a: 'Não. Se você já usa, eu profissionalizo o que começou. Se nunca abriu, eu implanto do zero. O ponto de partida muda, o destino não.',
+  },
+  {
+    q: 'Serve pro meu ramo?',
+    a: 'Se a sua gestão tem rotina repetitiva (relatório, proposta, cobrança, planilha), serve. O sistema é desenhado no seu contexto, não é pacote pronto.',
   },
   {
     q: 'Você faz por mim ou me ensina?',
-    a: 'Os dois. Construímos juntos, no seu contexto. O objetivo final é você operar tudo sem mim.',
+    a: 'Os dois, nessa ordem. Implanto com você e te deixo operando sozinho. O ativo fica na empresa.',
   },
   {
-    q: 'Funciona com ERP, CRM e planilhas que já uso?',
-    a: 'Sim. Conectar o Claude Code com segurança aos seus sistemas é parte central do trabalho.',
-  },
-  {
-    q: 'Quanto tempo até ver resultado?',
-    a: 'O primeiro destravamento acontece no próprio diagnóstico. A primeira automação real, nas primeiras sessões.',
+    q: 'Em quanto tempo vejo resultado?',
+    a: 'A primeira automação entra em produção nas primeiras sessões. O diagnóstico já sai com destravamento.',
   },
   {
     q: 'Quanto custa?',
-    a: 'Depende do formato e da profundidade. Apresento as opções no diagnóstico, sem compromisso.',
+    a: 'Depende do escopo do mapa. Apresento o investimento no diagnóstico, sem compromisso. O diagnóstico é gratuito.',
   },
   {
-    q: 'Qual plano do Claude eu preciso?',
-    a: 'Um plano pago com acesso ao Claude Code. Te oriento sobre qual, no seu volume de uso.',
+    q: 'O que preciso ter?',
+    a: 'Uma assinatura do Claude com acesso ao Claude Code e acesso aos sistemas da sua empresa. Eu te oriento na configuração.',
   },
 ]
 
@@ -203,10 +202,10 @@ function useMeta() {
     const metaDesc = document.querySelector('meta[name="description"]')
     const prevDesc = metaDesc?.getAttribute('content') ?? ''
 
-    document.title = 'Mentoria de Claude Code para Empreendedores | Eduardo Nicoleti'
+    document.title = 'Consultoria e Mentoria de Claude Code para Empresas | Eduardo Nicoleti'
     metaDesc?.setAttribute(
       'content',
-      'Mentoria individual para empreendedores que já usam Claude Code: automações que rodam sozinhas, sistemas conectados e soluções sob medida. Diagnóstico gratuito via Meet.'
+      'Claude Code como sistema operacional da sua empresa: eu analiso o contexto do negócio e implanto automações de gestão. Agenda aberta, diagnóstico gratuito.'
     )
 
     return () => {
@@ -265,14 +264,14 @@ export default function Mentoria() {
             edunicoleti<span>.</span>
           </Link>
           <div className="mt-nav__right">
-            <span className="mt-nav__tag">mentoria de claude code</span>
+            <span className="mt-nav__tag">consultoria · claude code</span>
             <a
               href="#agendar"
               onClick={scrollToAgendar}
               className="mt-btn mt-btn--sm"
               id="mentoria-nav-agendar-btn"
             >
-              Agendar
+              Reservar horário
             </a>
           </div>
         </div>
@@ -280,26 +279,26 @@ export default function Mentoria() {
 
       <main>
         {/* ---- Hero ---- */}
-        <section className="mt-hero" aria-label="Mentoria de Claude Code">
+        <section className="mt-hero" aria-label="Consultoria e mentoria de Claude Code">
           <div className="mt-hero__glow" aria-hidden="true" />
           <div className="mt-container mt-hero__inner">
             <div className="mt-hero__eyebrow mt-load" style={{ animationDelay: '0.05s' }}>
-              <span className="mt-mono">mentoria 1:1 · online via meet</span>
+              <span className="mt-mono">agenda aberta · mentoria e consultoria 1:1</span>
               <span className="mt-hero__avail">
-                <span className="mt-hero__avail-dot" /> vagas abertas
+                <span className="mt-hero__avail-dot" /> poucas vagas por mês
               </span>
             </div>
 
             <h1 className="mt-hero__heading">
               <span className="mt-hero__line">
-                <span className="mt-load" style={{ animationDelay: '0.15s' }}>Você já usa</span>
+                <span className="mt-load" style={{ animationDelay: '0.15s' }}>Sua empresa</span>
               </span>
               <span className="mt-hero__line">
-                <span className="mt-load" style={{ animationDelay: '0.25s' }}>Claude Code.</span>
+                <span className="mt-load" style={{ animationDelay: '0.25s' }}>rodando sozinha.</span>
               </span>
               <span className="mt-hero__line mt-hero__line--serif">
                 <span className="mt-load" style={{ animationDelay: '0.38s' }}>
-                  Agora faça ele rodar<br />a sua empresa.
+                  Claude Code como sistema<br />operacional do negócio.
                 </span>
               </span>
             </h1>
@@ -307,8 +306,9 @@ export default function Mentoria() {
             <div className="mt-hero__bottom">
               <div className="mt-hero__cta mt-load" style={{ animationDelay: '0.55s' }}>
                 <p className="mt-hero__sub">
-                  Mentoria individual pra transformar o chat em operação:
-                  automações, integrações e soluções sob medida.
+                  Eu entro no contexto do seu negócio, desenho a operação e implanto
+                  as automações: relatórios, propostas, financeiro e follow-ups
+                  rodando sem depender de você.
                 </p>
                 <div className="mt-hero__actions">
                   <a
@@ -318,10 +318,10 @@ export default function Mentoria() {
                     className="mt-btn"
                     id="mentoria-hero-agendar-btn"
                   >
-                    Agendar diagnóstico gratuito
+                    Reservar horário na agenda
                     <ArrowRight size={18} strokeWidth={2} />
                   </a>
-                  <span className="mt-mono mt-hero__note">30 min · gratuito · sem compromisso</span>
+                  <span className="mt-mono mt-hero__note">diagnóstico de 30 min · gratuito · via meet</span>
                 </div>
               </div>
 
@@ -347,14 +347,25 @@ export default function Mentoria() {
           </div>
         </div>
 
-        {/* ---- Dores ---- */}
-        <section className="mt-dores" id="momento" aria-label="Te parece familiar">
+        {/* ---- O segundo turno ---- */}
+        <section className="mt-dores" id="problema" aria-label="O segundo turno invisível">
           <div className="mt-container">
             <div className="mt-section-head mr">
-              <span className="mt-mono mt-kicker">01 — o travamento</span>
+              <span className="mt-mono mt-kicker">01 — o problema</span>
               <h2 className="mt-h2">
-                Te parece <em>familiar?</em>
+                Toda empresa tem um <em>segundo turno</em> invisível.
               </h2>
+            </div>
+
+            <div className="mt-dores__intro mr">
+              <p>
+                Depois do expediente, alguém ainda monta relatório, confere planilha,
+                cobra retorno, formata proposta. Quase sempre esse alguém é o dono.
+              </p>
+              <p>
+                Esse turno não aparece no organograma, mas consome as melhores horas
+                de quem decide. É ele que eu elimino.
+              </p>
             </div>
 
             <div className="mt-dores__list">
@@ -367,18 +378,18 @@ export default function Mentoria() {
             </div>
 
             <p className="mt-dores__closing mr">
-              Se você assentiu duas vezes, <em>continua lendo.</em>
+              Nada disso precisa mais <em>de você.</em>
             </p>
           </div>
         </section>
 
-        {/* ---- Diff: do chat à operação ---- */}
-        <section className="mt-diff" id="salto" aria-label="Do chat à operação">
+        {/* ---- Diff: da rotina manual à operação ---- */}
+        <section className="mt-diff" id="antes-e-depois" aria-label="Antes e depois">
           <div className="mt-container">
             <div className="mt-section-head mr">
-              <span className="mt-mono mt-kicker">02 — o salto</span>
+              <span className="mt-mono mt-kicker">02 — antes e depois</span>
               <h2 className="mt-h2">
-                Do chat <em>à operação.</em>
+                Da rotina manual <em>à operação.</em>
               </h2>
             </div>
 
@@ -400,15 +411,19 @@ export default function Mentoria() {
           </div>
         </section>
 
-        {/* ---- Movimentos ---- */}
-        <section className="mt-mov" id="mentoria-formato" aria-label="A mentoria">
+        {/* ---- O método ---- */}
+        <section className="mt-mov" id="metodo" aria-label="O método">
           <div className="mt-container">
             <div className="mt-section-head mr">
-              <span className="mt-mono mt-kicker">03 — a mentoria</span>
+              <span className="mt-mono mt-kicker">03 — o método</span>
               <h2 className="mt-h2">
-                Não é curso. É um facilitador<br />
-                <em>dentro da sua operação.</em>
+                Consultoria completa.<br />
+                <em>Mentoria no processo.</em>
               </h2>
+              <p className="mt-section-sub">
+                Eu não entrego um curso nem um sistema fechado. Analiso seu contexto,
+                implanto com você e te deixo no comando.
+              </p>
             </div>
 
             <div className="mt-mov__grid">
@@ -439,21 +454,25 @@ export default function Mentoria() {
             </div>
 
             <div className="mt-mentor__right">
-              <span className="mt-mono mt-kicker mr">04 — seu mentor</span>
+              <span className="mt-mono mt-kicker mr">04 — quem implanta</span>
               <blockquote className="mt-mentor__quote mr">
-                “Eu já percorri o caminho que você está <em>tentando percorrer.</em>”
+                “Eu não vendo a ferramenta. Eu construo a operação <em>em cima dela.</em>”
               </blockquote>
               <p className="mt-mentor__bio mr">
-                <strong>Eduardo Nicoleti.</strong> 10+ anos criando produtos digitais.
-                Claude Code todos os dias na própria operação: agentes, MCPs, automações
-                e integrações. Empresário, membro da JCI e de Associações Comerciais.
+                <strong>Sou Eduardo Nicoleti.</strong> Há mais de 10 anos desenho e
+                desenvolvo produtos digitais para empresas da região: sites, sistemas
+                e operações que rodam todos os dias. Minha própria operação roda em
+                Claude Code: o sistema de propostas que meus clientes recebem foi
+                construído com ele e está neste site, em produção. Sou empresário,
+                membro da JCI e de Associações Comerciais. Conheço a rotina de quem
+                decide porque vivo ela.
               </p>
               <div className="mt-mentor__meta mr">
                 <span className="mt-mono">10+ anos</span>
                 <span className="mt-mentor__sep">·</span>
                 <span className="mt-mono">50+ projetos</span>
                 <span className="mt-mentor__sep">·</span>
-                <span className="mt-mono">claude code diário</span>
+                <span className="mt-mono">operação própria em claude code</span>
               </div>
               <a
                 href="https://www.linkedin.com/in/edunicoleti/"
@@ -474,7 +493,7 @@ export default function Mentoria() {
             <div className="mt-section-head mr">
               <span className="mt-mono mt-kicker">05 — como funciona</span>
               <h2 className="mt-h2">
-                Simples, direto, <em>no seu contexto.</em>
+                Do primeiro papo <em>à empresa rodando.</em>
               </h2>
             </div>
 
@@ -487,6 +506,8 @@ export default function Mentoria() {
                 </div>
               ))}
             </div>
+
+            <p className="mt-mono mt-passos__note mr">individual · online · agenda limitada</p>
           </div>
         </section>
 
@@ -518,12 +539,13 @@ export default function Mentoria() {
         <section className="mt-cta" id="agendar" aria-label="Agendar diagnóstico">
           <div className="mt-container">
             <div className="mt-cta__card mr">
-              <span className="mt-mono mt-kicker mt-kicker--dark">diagnóstico gratuito</span>
+              <span className="mt-mono mt-kicker mt-kicker--dark">agenda aberta</span>
               <h2 className="mt-cta__heading">
-                Me mostre como você usa Claude Code <em>hoje.</em>
+                Poucas vagas. Atendimento <em>é 1:1.</em>
               </h2>
               <p className="mt-cta__sub">
-                30 minutos no Meet. Eu te mostro o que dá pra destravar.
+                Diagnóstico gratuito de 30 minutos. Se eu não enxergar ganho real,
+                eu te falo na call.
               </p>
               <div className="mt-cta__actions">
               <a
@@ -533,7 +555,7 @@ export default function Mentoria() {
                 className="mt-btn mt-btn--lg mt-btn--onDark"
                 id="mentoria-cta-agendar-btn"
               >
-                Agendar diagnóstico
+                Reservar horário
                 <ArrowRight size={20} strokeWidth={2} />
               </a>
               <a

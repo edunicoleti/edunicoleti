@@ -554,9 +554,30 @@
   font-weight: var(--weight-regular);
 }
 
+.mt-section-sub {
+  max-width: 560px;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--mt-dim);
+}
+
 /* ---- Dores ---- */
 .mt-dores {
   padding: 9rem 0;
+}
+
+.mt-dores__intro {
+  max-width: 620px;
+  margin-bottom: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.mt-dores__intro p {
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--mt-dim);
 }
 
 .mt-dores__list {
@@ -831,6 +852,11 @@
   border: 1px solid var(--mt-line);
   border-radius: var(--radius-md);
   overflow: hidden;
+}
+
+.mt-passos__note {
+  margin-top: 2rem;
+  color: var(--mt-dim);
 }
 
 .mt-passo {

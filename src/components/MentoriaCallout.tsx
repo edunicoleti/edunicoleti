@@ -8,19 +8,20 @@ export default function MentoriaCallout() {
       <div className="container">
         <Link to="/mentoria" className="m-callout__card reveal" id="home-mentoria-callout">
           <div className="m-callout__content">
-            <span className="m-callout__badge">Novo</span>
+            <span className="m-callout__badge">Agenda aberta</span>
             <h2 className="m-callout__title">
-              Mentoria de{' '}
-              <span className="text-serif" style={{ fontStyle: 'italic' }}>Claude Code</span>
+              Claude Code como{' '}
+              <span className="text-serif" style={{ fontStyle: 'italic' }}>sistema operacional</span>{' '}
+              da sua empresa
             </h2>
             <p className="m-callout__desc">
-              Pra empreendedores que já usam Claude Code e querem transformar o chat em
-              operação: automações, integrações e soluções sob medida, com acompanhamento
-              individual.
+              Eu analiso o contexto do seu negócio e implanto automações de gestão:
+              relatórios, propostas, financeiro e follow-ups rodando sem depender
+              de você. Consultoria e mentoria 1:1.
             </p>
           </div>
           <span className="m-callout__action">
-            Conhecer a mentoria
+            Conhecer a consultoria
             <ArrowRight size={18} strokeWidth={2} />
           </span>
         </Link>
