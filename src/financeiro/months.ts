@@ -25,6 +25,22 @@ export function monthLabel(month: string): string {
   return `${MONTH_NAMES[m - 1]} de ${y}`
 }
 
+const MONTH_SHORT = [
+  'jan', 'fev', 'mar', 'abr', 'mai', 'jun',
+  'jul', 'ago', 'set', 'out', 'nov', 'dez',
+]
+
+export function monthShortLabel(month: string): string {
+  const [, m] = month.split('-').map(Number)
+  return MONTH_SHORT[m - 1]
+}
+
+/* "mai/30" — para rótulos compactos que precisam do ano */
+export function monthShortWithYear(month: string): string {
+  const [y] = month.split('-')
+  return `${monthShortLabel(month)}/${y.slice(2)}`
+}
+
 /* Lista de meses de start até end, inclusive */
 export function monthRange(start: string, end: string): string[] {
   const months: string[] = []

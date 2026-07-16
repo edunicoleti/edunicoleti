@@ -212,3 +212,35 @@ categoria padrão ausente ressuscitaria as que o usuário apagou de propósito.
 
 `recharts` fica isolado no chunk lazy do `/financeiro` (147 kB gzip). O chunk
 `index`, que serve Home e LP Mentoria, seguiu inalterado em ~116 kB gzip.
+
+---
+
+## Revisão 3 — 2026-07-16 (dashboard analítica)
+
+Os percentuais dentro do anel do donut saíram (poluição visual); ficam na
+legenda e na figura central. Novos recursos, todos sobre dados que já existiam:
+
+- **Projeção dos próximos 6 meses** (`MonthlyProjection`): barras com o
+  comprometido (fixas + parcelas) dos 6 meses após o mês visto, linha de
+  receita quando houver, rótulo compacto no topo de cada barra, tooltip, e
+  clique na barra navega para o mês. A materialização de séries passou a
+  cobrir mês visto + 6.
+- **Parcelamentos ativos** (`InstallmentsPanel`): por grupo de parcelas —
+  próxima parcela, quantas faltam, valor restante, mês de término e barra de
+  progresso. "Faltam" é sempre relativo ao mês de hoje, não ao navegado.
+- **Comparativo com o mês anterior**: delta % nos cards Receita/Despesas
+  (para despesa, subir é ruim/laranja) e delta por categoria na legenda do
+  donut, em cinza. Variação < 1% é suprimida; sem mês anterior, sem delta.
+- **Categoria filtra a lista**: clique na fatia/legenda do donut ou no chip
+  da linha alterna o filtro; barra acima da lista mostra o filtro ativo com
+  "limpar". Seleção no donut é controlada (persiste após o hover).
+- **Copiar mês anterior**: botão no cabeçalho da lista (só quando há
+  candidatos) copia os lançamentos manuais — sem série e sem parcela — do mês
+  anterior como cópias em aberto, pulando nomes já presentes no mês.
+- **Leitura da tabela**: zebra sutil (#F7F7F4) nas linhas em aberto; linhas
+  pagas recebem lavagem verde (5%) que vence a zebra — pendente alterna,
+  resolvido recua em bloco uniforme. Divisor entre linhas saiu; cantos
+  arredondados entraram. Riscado e reordenação de pagos foram descartados
+  (prejudica leitura / linha pularia ao marcar).
+
+Chunk do /financeiro: 171 kB gzip (Bar/Line/ComposedChart); `index` inalterado.

@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
-  Check, ChevronLeft, ChevronRight, Clock, Cloud, CloudOff, Download, LogOut,
-  Pencil, Plus, Settings2, Upload,
+  Check, ChevronLeft, ChevronRight, Clock, Cloud, CloudOff, CopyPlus, Download,
+  LogOut, Pencil, Plus, Settings2, TrendingDown, TrendingUp, Upload, X,
 } from 'lucide-react'
 import type { Entry, EntryType, TabKey } from '../financeiro/types'
 import { formatBRL } from '../financeiro/money'
-import { addMonths, currentMonth, monthLabel } from '../financeiro/months'
+import { addMonths, currentMonth, monthLabel, monthShortLabel } from '../financeiro/months'
 import { useFinStore } from '../financeiro/store'
 import { isAuthenticated, logout } from '../financeiro/supabase'
 import LockScreen from '../financeiro/components/LockScreen'
 import CategoryDonut from '../financeiro/components/CategoryDonut'
+import MonthlyProjection from '../financeiro/components/MonthlyProjection'
+import InstallmentsPanel from '../financeiro/components/InstallmentsPanel'
 import EntryForm from '../financeiro/components/EntryForm'
 import ManagePanel from '../financeiro/components/ManagePanel'
 import './Financeiro.css'
@@ -73,15 +75,50 @@ function StatusPill({ entry, onToggle }: { entry: Entry; onToggle: () => void })
   )
 }
 
+/*
+ * Variação vs mês anterior nos cards do topo. Para despesas subir é ruim
+ * (laranja) e cair é bom (verde); para receita, o inverso.
+ */
+function CardDelta({
+  current,
+  previous,
+  isExpense,
+  prevMonth,
+}: {
+  current: number
+  previous: number
+  isExpense: boolean
+  prevMonth: string
+}) {
+  if (previous <= 0) return null
+  const pct = ((current - previous) / previous) * 100
+  if (Math.abs(pct) < 1) return null
+  const up = pct > 0
+  const bad = isExpense ? up : !up
+  return (
+    <small className={bad ? 'fin-delta fin-delta--bad' : 'fin-delta fin-delta--good'}>
+      {up ? <TrendingUp size={11} /> : <TrendingDown size={11} />}
+      {Math.abs(Math.round(pct))}% vs {monthShortLabel(prevMonth)}
+    </small>
+  )
+}
+
 function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [month, setMonth] = useState(currentMonth())
   const [tab, setTab] = useState<TabKey>('todas')
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
   const [formOpen, setFormOpen] = useState(false)
   const [editingEntry, setEditingEntry] = useState<Entry | null>(null)
   const [manageOpen, setManageOpen] = useState(false)
 
   const store = useFinStore(month)
   const { data, monthEntries, loading, syncError, mode } = store
+
+  const prevMonth = addMonths(month, -1)
+  const prevEntries = useMemo(
+    () => data.entries.filter((e) => e.month === prevMonth),
+    [data.entries, prevMonth],
+  )
 
   const totals = useMemo(() => {
     let receita = 0
@@ -98,24 +135,42 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     return { receita, despesas, pago, aPagar: despesas - pago, saldo: receita - despesas }
   }, [monthEntries])
 
-  const donutSegments = useMemo(() => {
-    const byCategory = new Map<string, number>()
-    for (const e of monthEntries) {
-      if (e.type === 'receita') continue
-      const key = e.categoryId ?? ''
-      byCategory.set(key, (byCategory.get(key) ?? 0) + e.amountCents)
+  const prevTotals = useMemo(() => {
+    let receita = 0
+    let despesas = 0
+    for (const e of prevEntries) {
+      if (e.type === 'receita') receita += e.amountCents
+      else despesas += e.amountCents
     }
-    return [...byCategory.entries()]
+    return { receita, despesas }
+  }, [prevEntries])
+
+  const donutSegments = useMemo(() => {
+    const sumByCategory = (entries: Entry[]) => {
+      const map = new Map<string, number>()
+      for (const e of entries) {
+        if (e.type === 'receita') continue
+        const key = e.categoryId ?? ''
+        map.set(key, (map.get(key) ?? 0) + e.amountCents)
+      }
+      return map
+    }
+    const current = sumByCategory(monthEntries)
+    const previous = sumByCategory(prevEntries)
+    const hasPrev = prevEntries.some((e) => e.type === 'despesa')
+    return [...current.entries()]
       .map(([categoryId, value]) => {
         const cat = data.categories.find((c) => c.id === categoryId)
         return {
+          id: categoryId || null,
           label: cat?.name ?? 'Sem categoria',
           color: cat?.color ?? '#898781',
           value,
+          previousValue: hasPrev ? previous.get(categoryId) ?? 0 : null,
         }
       })
       .sort((a, b) => b.value - a.value)
-  }, [monthEntries, data.categories])
+  }, [monthEntries, prevEntries, data.categories])
 
   const cardTotals = useMemo(() => {
     const byCard = new Map<string, number>()
@@ -131,11 +186,27 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
   /* Em "Todas" as receitas vêm antes: o mês lê como entra → sai */
   const tabEntries = useMemo(() => {
-    if (tab !== 'todas') return monthEntries.filter((e) => e.type === tab)
-    return [...monthEntries].sort((a, b) =>
-      a.type === b.type ? 0 : a.type === 'receita' ? -1 : 1,
-    )
-  }, [monthEntries, tab])
+    let entries =
+      tab === 'todas'
+        ? [...monthEntries].sort((a, b) =>
+            a.type === b.type ? 0 : a.type === 'receita' ? -1 : 1,
+          )
+        : monthEntries.filter((e) => e.type === tab)
+    if (categoryFilter) entries = entries.filter((e) => e.categoryId === categoryFilter)
+    return entries
+  }, [monthEntries, tab, categoryFilter])
+
+  const filterCategory = categoryFilter
+    ? data.categories.find((c) => c.id === categoryFilter) ?? null
+    : null
+
+  /* Lançamentos manuais do mês anterior ainda não presentes neste mês */
+  const copyCandidates = useMemo(() => {
+    const currentNames = new Set(monthEntries.map((e) => e.name))
+    return prevEntries.filter(
+      (e) => !e.seriesId && !e.installment && !currentNames.has(e.name),
+    ).length
+  }, [monthEntries, prevEntries])
 
   const footer = useMemo(() => {
     let total = 0
@@ -232,10 +303,22 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         <article>
           <span className="text-label">Receita</span>
           <strong className="fin-green">{formatBRL(totals.receita)}</strong>
+          <CardDelta
+            current={totals.receita}
+            previous={prevTotals.receita}
+            isExpense={false}
+            prevMonth={prevMonth}
+          />
         </article>
         <article>
           <span className="text-label">Despesas</span>
           <strong className="fin-red">{formatBRL(totals.despesas)}</strong>
+          <CardDelta
+            current={totals.despesas}
+            previous={prevTotals.despesas}
+            isExpense
+            prevMonth={prevMonth}
+          />
         </article>
         <article>
           <span className="text-label">A pagar</span>
@@ -267,24 +350,57 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         <section className="fin-panel fin-list">
           <header>
             <h2>{TABS.find((t) => t.key === tab)?.label}</h2>
-            <button
-              type="button"
-              className="btn btn--primary fin-add"
-              onClick={() => { setEditingEntry(null); setFormOpen(true) }}
-            >
-              <Plus size={14} /> Adicionar
-            </button>
+            <div className="fin-list__actions">
+              {copyCandidates > 0 && (
+                <button
+                  type="button"
+                  className="btn btn--outline fin-add"
+                  title={`Copiar ${copyCandidates} lançamento(s) manual(is) de ${monthLabel(prevMonth)} como em aberto`}
+                  onClick={() => store.copyFromPreviousMonth(month)}
+                >
+                  <CopyPlus size={14} /> Copiar mês anterior
+                </button>
+              )}
+              <button
+                type="button"
+                className="btn btn--primary fin-add"
+                onClick={() => { setEditingEntry(null); setFormOpen(true) }}
+              >
+                <Plus size={14} /> Adicionar
+              </button>
+            </div>
           </header>
+
+          {filterCategory && (
+            <div className="fin-filterbar">
+              <span
+                className="fin-chip"
+                style={{ background: `${filterCategory.color}1A`, color: filterCategory.color }}
+              >
+                {filterCategory.name}
+              </span>
+              <span>mostrando só esta categoria</span>
+              <button
+                type="button"
+                onClick={() => setCategoryFilter(null)}
+                aria-label="Limpar filtro de categoria"
+              >
+                <X size={13} /> limpar
+              </button>
+            </div>
+          )}
 
           {loading ? (
             <p className="fin-empty">Carregando…</p>
           ) : tabEntries.length === 0 ? (
             <p className="fin-empty">
-              {tab === 'receita'
-                ? 'Nenhuma receita lançada neste mês.'
-                : tab === 'despesa'
-                  ? 'Nenhuma despesa lançada neste mês.'
-                  : 'Nenhum lançamento neste mês.'}
+              {filterCategory
+                ? `Nada em ${filterCategory.name} neste mês.`
+                : tab === 'receita'
+                  ? 'Nenhuma receita lançada neste mês.'
+                  : tab === 'despesa'
+                    ? 'Nenhuma despesa lançada neste mês.'
+                    : 'Nenhum lançamento neste mês.'}
             </p>
           ) : (
             <ul className="fin-rows">
@@ -298,9 +414,17 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                       <span className="fin-row__meta">
                         {e.dueDay && <em>venc. dia {e.dueDay}</em>}
                         {cat && (
-                          <em className="fin-chip" style={{ background: `${cat.color}1A`, color: cat.color }}>
+                          <button
+                            type="button"
+                            className="fin-chip fin-chip--button"
+                            style={{ background: `${cat.color}1A`, color: cat.color }}
+                            title={`Filtrar por ${cat.name}`}
+                            onClick={() =>
+                              setCategoryFilter((cur) => (cur === cat.id ? null : cat.id))
+                            }
+                          >
                             {cat.name}
-                          </em>
+                          </button>
                         )}
                         {card && <em>{card.name}</em>}
                         {e.installment && <em>{e.installment.current}/{e.installment.total}</em>}
@@ -346,8 +470,23 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         <aside className="fin-side">
           <section className="fin-panel">
             <h2>Despesas por categoria</h2>
-            <CategoryDonut segments={donutSegments} />
+            <CategoryDonut
+              segments={donutSegments}
+              selectedId={categoryFilter}
+              onSelect={setCategoryFilter}
+            />
           </section>
+
+          <section className="fin-panel">
+            <h2>Próximos 6 meses</h2>
+            <MonthlyProjection
+              entries={data.entries}
+              baseMonth={month}
+              onSelectMonth={setMonth}
+            />
+          </section>
+
+          <InstallmentsPanel entries={data.entries} />
 
           {cardTotals.length > 0 && (
             <section className="fin-panel">

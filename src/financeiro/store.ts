@@ -76,9 +76,12 @@ export function useFinStore(viewedMonth: string) {
   const materializedKeysRef = useRef(new Set<string>())
   useEffect(() => {
     if (loading) return
-    const created = materializeSeries(data.series, data.entries, viewedMonth).filter(
-      (e) => !materializedKeysRef.current.has(`${e.seriesId}:${e.month}`),
-    )
+    /* +6: a projeção do painel lateral mostra os 6 meses após o mês visto */
+    const created = materializeSeries(
+      data.series,
+      data.entries,
+      addMonths(viewedMonth, 6),
+    ).filter((e) => !materializedKeysRef.current.has(`${e.seriesId}:${e.month}`))
     if (created.length === 0) return
     for (const e of created) materializedKeysRef.current.add(`${e.seriesId}:${e.month}`)
     setData((d) => {
@@ -142,6 +145,34 @@ export function useFinStore(viewedMonth: string) {
       guard(adapter.upsertEntries([entry]))
     },
     [adapter, guard],
+  )
+
+  /*
+   * Copia os lançamentos manuais do mês anterior (sem série e sem parcela —
+   * fixas e parcelas já se projetam sozinhas) como cópias em aberto.
+   * Pula nomes que já existem no mês de destino. Retorna quantos copiou.
+   */
+  const copyFromPreviousMonth = useCallback(
+    (month: string): number => {
+      const prev = addMonths(month, -1)
+      const existingNames = new Set(
+        data.entries.filter((e) => e.month === month).map((e) => e.name),
+      )
+      const copies: Entry[] = data.entries
+        .filter(
+          (e) =>
+            e.month === prev &&
+            !e.seriesId &&
+            !e.installment &&
+            !existingNames.has(e.name),
+        )
+        .map((e) => ({ ...e, id: uid(), month, paid: false }))
+      if (copies.length === 0) return 0
+      setData((d) => ({ ...d, entries: [...d.entries, ...copies] }))
+      guard(adapter.upsertEntries(copies))
+      return copies.length
+    },
+    [data.entries, adapter, guard],
   )
 
   const updateEntry = useCallback(
@@ -366,6 +397,7 @@ export function useFinStore(viewedMonth: string) {
     dismissSyncError: () => setSyncError(null),
     mode: adapter.mode,
     addEntry,
+    copyFromPreviousMonth,
     updateEntry,
     togglePaid,
     deleteEntry,

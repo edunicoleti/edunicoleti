@@ -285,16 +285,28 @@
   list-style: none;
 }
 
+/*
+ * Leitura rápida da lista: linhas em aberto alternam zebra sutil; linhas
+ * pagas recuam numa lavagem verde uniforme que vence a zebra — o olho separa
+ * "resolvido" de "pendente" sem ler nada. Com fundos visíveis, o divisor sai
+ * (borda + zebra = separação dupla) e entra canto arredondado.
+ */
 .fin-row {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--color-border-light);
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 2px;
 }
 
-.fin-row:last-child {
-  border-bottom: none;
+.fin-row:nth-child(even) {
+  background: #F7F7F4;
+}
+
+.fin-row--done,
+.fin-row--done:nth-child(even) {
+  background: rgba(12, 163, 12, 0.05);
 }
 
 /* --- Pill de status (substitui o checkbox) --- */
@@ -380,6 +392,181 @@
   padding: 0.1rem 0.5rem;
   border-radius: var(--radius-full);
   font-weight: var(--weight-medium);
+}
+
+.fin-chip--button {
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: filter var(--transition-fast);
+}
+
+.fin-chip--button:hover {
+  filter: brightness(0.85) saturate(1.4);
+}
+
+/* --- Barra de filtro por categoria --- */
+.fin-filterbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-alt);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.fin-filterbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-left: auto;
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.fin-filterbar button:hover {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* --- Delta vs mês anterior (cards do topo e legenda do donut) --- */
+.fin-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--text-xs);
+}
+
+.fin-delta--bad { color: #C2410C; }
+.fin-delta--good { color: #006300; }
+
+.fin-donut__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+/* --- Projeção dos próximos meses --- */
+.fin-projection__tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  padding: 0.5rem 0.75rem;
+  font-size: var(--text-xs);
+}
+
+.fin-projection__tooltip strong {
+  font-size: var(--text-xs);
+}
+
+.fin-projection__legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  justify-content: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.fin-projection__key {
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.fin-projection__key--bar {
+  width: 10px;
+  height: 10px;
+  background: #2047C9;
+}
+
+.fin-projection__key--line {
+  width: 14px;
+  height: 3px;
+  background: #16A34A;
+  margin-left: 0.5rem;
+}
+
+/* --- Parcelamentos ativos --- */
+.fin-installments {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.fin-installments__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: var(--text-sm);
+}
+
+.fin-installments__name {
+  font-weight: var(--weight-medium);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fin-installments__head strong {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.fin-installments__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin: 0.1rem 0 0.35rem;
+}
+
+.fin-installments__track {
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-alt);
+  overflow: hidden;
+}
+
+.fin-installments__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+
+.fin-installments__total {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  padding-top: 0.75rem;
+  margin-top: 0.85rem;
+  border-top: 1.5px solid var(--color-border);
+}
+
+.fin-installments__total strong {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Ações do cabeçalho da lista --- */
+.fin-list__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .fin-row__amount {
