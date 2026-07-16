@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from 'recharts'
-import type { PieLabelRenderProps, PieSectorShapeProps } from 'recharts/types/polar/Pie'
+import type { PieSectorShapeProps } from 'recharts/types/polar/Pie'
 import { formatBRL } from '../money'
-import { OTHER_COLOR, inkOn } from '../palette'
+import { OTHER_COLOR } from '../palette'
 
 export type DonutSegment = {
   label: string
@@ -17,9 +17,6 @@ type Props = {
 /* Donut só é honesto para parte-do-todo à primeira vista e com poucas fatias:
    além de 6 a cauda vira "Outras" em cinza, nunca um 9º hue gerado. */
 const MAX_SLICES = 6
-
-/* Abaixo disso o rótulo não cabe dentro do anel — fica só na legenda/centro */
-const MIN_LABEL_PCT = 7
 
 function foldTail(segments: DonutSegment[]): DonutSegment[] {
   if (segments.length <= MAX_SLICES) return segments
@@ -55,31 +52,6 @@ export default function CategoryDonut({ segments }: Props) {
     return <Sector {...props} outerRadius={isActive ? outerRadius + 6 : outerRadius} />
   }
 
-  const renderLabel = (props: PieLabelRenderProps) => {
-    const pct = (props.percent ?? 0) * 100
-    if (pct < MIN_LABEL_PCT) return <g />
-    const cx = Number(props.cx ?? 0)
-    const cy = Number(props.cy ?? 0)
-    const inner = Number(props.innerRadius ?? 0)
-    const outer = Number(props.outerRadius ?? 0)
-    const radius = inner + (outer - inner) * 0.5
-    const rad = -(props.midAngle ?? 0) * (Math.PI / 180)
-    return (
-      <text
-        x={cx + radius * Math.cos(rad)}
-        y={cy + radius * Math.sin(rad)}
-        fill={inkOn(String(props.fill ?? '#000000'))}
-        textAnchor="middle"
-        dominantBaseline="central"
-        fontSize={11}
-        fontWeight={600}
-        pointerEvents="none"
-      >
-        {Math.round(pct)}%
-      </text>
-    )
-  }
-
   return (
     <div className="fin-donut">
       <div className="fin-donut__plot">
@@ -96,8 +68,6 @@ export default function CategoryDonut({ segments }: Props) {
               startAngle={90}
               endAngle={-270}
               shape={renderSector}
-              labelLine={false}
-              label={renderLabel}
               isAnimationActive={false}
               onMouseEnter={(d) => setActiveLabel((d as unknown as DonutSegment).label)}
               onMouseLeave={() => setActiveLabel(null)}
