@@ -244,3 +244,37 @@ legenda e na figura central. Novos recursos, todos sobre dados que já existiam:
   (prejudica leitura / linha pularia ao marcar).
 
 Chunk do /financeiro: 171 kB gzip (Bar/Line/ComposedChart); `index` inalterado.
+
+---
+
+## Revisão 4 — 2026-07-16 (ajustes + backlog do assistente IA)
+
+- **Despesas parceladas**: o painel de parcelamentos passa a considerar só
+  `type === 'despesa'` — receita parcelada (ex.: projeto recebido em parcelas)
+  não é dívida; segue na lista e na projeção.
+- **Projeção redesenhada**: barras horizontais em HTML/CSS (mês / barra /
+  valor legível), traço verde marcando a receita na régua, barra vermelha
+  quando o comprometido passa da receita do mês. Sai o BarChart do Recharts
+  (ilegível no painel estreito); chunk cai para ~149 kB gzip.
+
+### Backlog — Assistente IA financeiro (análise de viabilidade feita, não implementado)
+
+Viável e barato; decisão registrada em 2026-07-16. Plano em duas fases:
+
+1. **Fase 1 — Alertas inteligentes sem IA** (~meio dia, sem pré-requisitos):
+   regras determinísticas sobre dados existentes — mês futuro com comprometido
+   acima da receita, categoria fora do padrão histórico, comprometimento da
+   renda acima de limiar. Painel de alertas na dashboard.
+2. **Fase 2 — Assistente IA** (~1 dia, com pré-requisitos): Supabase Edge
+   Function como ponte (a chave da API nunca vai ao navegador; site é estático),
+   autenticação via Supabase Auth existente. O app envia **resumo agregado**
+   (totais por mês/categoria, parcelamentos, projeção), não lançamentos
+   individuais. Prompt de especialista em organização financeira em linguagem
+   acessível; escopo limitado a orçamento/organização — sem recomendação de
+   investimentos específicos. Modelo: Claude Opus 4.8 (~US$ 0,08/análise;
+   Haiku 4.5 como alternativa econômica ~US$ 0,02).
+
+   **Pré-requisitos da Fase 2**: (a) Supabase configurado
+   (`docs/financeiro-supabase-setup.md`), (b) conta em console.anthropic.com
+   com créditos pré-pagos (~US$ 5 duram meses), (c) Edge Function + painel de
+   chat a implementar.
