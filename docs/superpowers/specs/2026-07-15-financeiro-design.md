@@ -274,7 +274,80 @@ Viável e barato; decisão registrada em 2026-07-16. Plano em duas fases:
    investimentos específicos. Modelo: Claude Opus 4.8 (~US$ 0,08/análise;
    Haiku 4.5 como alternativa econômica ~US$ 0,02).
 
-   **Pré-requisitos da Fase 2**: (a) Supabase configurado
+   **Pré-requisitos**: (a) Supabase configurado
    (`docs/financeiro-supabase-setup.md`), (b) conta em console.anthropic.com
    com créditos pré-pagos (~US$ 5 duram meses), (c) Edge Function + painel de
    chat a implementar.
+
+---
+
+## Revisão 5 — 2026-07-16 (projeção em área + backlog reordenado)
+
+### Projeção vira gráfico de área
+
+`MonthlyProjection` passa a ser um `AreaChart` do Recharts com duas séries
+preenchidas: comprometido (vermelho `#DC2626`) e receita (verde `#16A34A`),
+com o valor de cada ponto rotulado no gráfico.
+
+Decisões que valem registrar:
+
+- **Rótulo posiciona por comparação, não por posição fixa.** `position="top"`
+  na receita e `"bottom"` na despesa colidia sempre que as linhas se cruzam
+  (medido: 3px de distância em set/out). Agora quem tem o maior valor no mês
+  leva o rótulo acima; empate manda a despesa para cima. Zero colisões
+  medidas em desktop e mobile.
+- **Par verde/vermelho validado**, apesar de ser a colisão clássica do
+  daltonismo: ΔE 20.6 sob deuteranopia (alvo 12) — a diferença de
+  luminosidade separa o par mesmo sem percepção de matiz. Legenda + rótulos
+  diretos são o canal secundário exigido pela regra de alívio.
+- **Eixo Y ancorado em zero** (`domain={[0, max * 1.25]}`): truncar o eixo
+  exageraria a distância entre as linhas e faria um mês apertado parecer
+  folgado.
+- **Hit-test do clique é próprio**, calculado da posição do clique — não do
+  `activeIndex` do Recharts, que deriva do `offsetX` de evento real de
+  ponteiro (opaco no toque e não verificável em teste). As constantes
+  `MARGIN_X`/`AXIS_PAD` são compartilhadas entre o gráfico e o hit-test.
+
+Chunk do /financeiro: ~169 kB gzip; `index` (Home e LP) inalterado em ~115 kB.
+
+### Backlog reordenado
+
+1. **Fase 1 — Alertas por regras** (sem IA, sem pré-requisito, ~meio dia)
+2. **Fase 2 — Import de faturas por print** ⬅ subiu de prioridade
+3. **Fase 3 — Assistente de chat** (reaproveita a Edge Function da Fase 2)
+
+### Fase 2 — Import de faturas de cartão por print (análise feita 2026-07-16)
+
+Viável. Sobe de prioridade porque conserta o maior buraco de dados do sistema:
+hoje cada fatura é **um** lançamento, então o donut diz "Cartões 51%" — metade
+do dinheiro sem categoria real.
+
+**O modelo já aguenta, sem migração.** `cardTotals` em `Financeiro.tsx` soma
+toda despesa com `cardId` preenchido — não um lançamento-resumo específico.
+Itens individuais com `cardId` fazem o painel "Faturas por cartão" continuar
+correto **e** dão categoria própria a cada item. Parcelas dentro da fatura
+("3/10") caem no modelo de `installment` existente e se projetam sozinhas.
+Único cuidado: ao importar, substituir o lançamento-resumo da fatura para não
+somar duas vezes.
+
+**Fluxo**: `<input type="file" accept="image/*" multiple>` (abre galeria/câmera
+no celular) → Edge Function → Claude Opus 4.8 com `output_config.format`
+(JSON Schema garante saída parseável) → tabela de revisão → salvar. **Nunca
+lançar direto.**
+
+**Verificação que torna confiável**: somar os itens extraídos e comparar com o
+total da fatura que a Claude também lê do print. Pega linha perdida na emenda
+entre prints e linha duplicada na sobreposição. Sem esse cruzamento, não
+construir. Dedup adicional por fingerprint (cartão + data + nome + valor).
+
+**Modelo**: Opus 4.8 — visão de alta resolução (2576px; print de iPhone cabe
+inteiro) e treinado para imagem torta/borrada/com ruído. ~US$ 0,12 por fatura
+de ~3 prints (~R$ 0,65); ~R$ 2,60/mês para 4 cartões. Haiku 4.5 sairia ~US$
+0,02 mas economizar R$ 2/mês num OCR de valores em dinheiro é falsa economia.
+
+**Decisão pendente**: fatura ≠ mês — a fatura que vence em julho tem compras de
+junho. Recomendação: lançar no **mês da fatura** (é quando o dinheiro sai, e é
+como a planilha original funcionava).
+
+**Esforço**: ~1 a 1,5 dia. Pré-requisitos iguais aos da Fase 3 (Supabase +
+conta Anthropic); a Edge Function é compartilhada entre as duas fases.
