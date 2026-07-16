@@ -22,8 +22,7 @@ type PendingAction = { kind: 'update'; patch: EntryPatch } | { kind: 'delete' }
 
 const TYPE_LABELS: Record<EntryType, string> = {
   receita: 'Receita',
-  fixa: 'Despesa fixa',
-  variavel: 'Despesa variável',
+  despesa: 'Despesa',
 }
 
 export default function EntryForm({
@@ -246,6 +245,9 @@ export default function EntryForm({
                     onChange={(e) => setRecurring(e.target.checked)}
                   />
                   Repetir todo mês
+                  <span className="fin-check__hint">
+                    {type === 'receita' ? 'receita fixa' : 'despesa fixa'}
+                  </span>
                 </label>
                 <label className="fin-check">
                   <input

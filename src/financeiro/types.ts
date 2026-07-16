@@ -1,4 +1,12 @@
-export type EntryType = 'receita' | 'fixa' | 'variavel'
+/*
+ * Um lançamento é receita ou despesa. A qualidade de "fixa" não é um tipo:
+ * ela vem de o lançamento pertencer a uma série (repete todo mês) ou ter
+ * parcelas — ambos visíveis como selo na linha.
+ */
+export type EntryType = 'receita' | 'despesa'
+
+/* Aba de visualização — "todas" é só uma lente, nunca um tipo de lançamento */
+export type TabKey = 'todas' | 'receita' | 'despesa'
 
 export type Installment = {
   current: number
@@ -44,13 +52,17 @@ export type Card = {
 }
 
 export type FinData = {
+  version: number
   entries: Entry[]
   series: Series[]
   categories: Category[]
   cards: Card[]
 }
 
+export const DATA_VERSION = 2
+
 export const EMPTY_DATA: FinData = {
+  version: DATA_VERSION,
   entries: [],
   series: [],
   categories: [],

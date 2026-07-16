@@ -155,3 +155,60 @@ faturas por cartão, responsivo mobile.
 
 `docs/financeiro-supabase-setup.md` com passo a passo: criar projeto Supabase, rodar o
 SQL das tabelas + RLS, criar o usuário, e colar as env vars no provedor de deploy.
+
+---
+
+## Revisão 2 — 2026-07-16 (pós-uso)
+
+Ajustes pedidos depois da primeira versão no ar. O que muda em relação ao texto acima:
+
+### Modelo: `fixa`/`variavel` colapsam em `despesa`
+
+`EntryType` passa a ser `'receita' | 'despesa'`. A distinção fixa/variável era
+informação duplicada: "fixa" já é observável por o lançamento ter uma `Series`
+(repete todo mês) ou parcelas — ambos já exibidos como selo na linha. Migração
+`v1 → v2` em `migrate.ts`, acionada no `load` dos dois adapters; `FinData` ganha
+`version`.
+
+### Abas: Todas · Receitas · Despesas
+
+"Todas" é a lente principal e padrão, com receitas listadas antes das despesas.
+Some a separação fixas/variáveis.
+
+### Rodapé da lista: três números
+
+Total · Pago · A pagar (em Receitas: Total · Recebido · A receber). Em "Todas" o
+total é o **saldo** (assinado) e pago/a pagar seguem só as despesas, igual aos
+cards do topo — somar receita recebida com despesa paga não teria significado.
+
+### Status: pill no lugar do checkbox
+
+Checkbox à esquerda da linha é a convenção de *seleção de linha*, não de status;
+não se descreve sozinho e tinha alvo de toque de 18px. Vira um pill clicável à
+direita do valor, com ícone + rótulo ("Pago"/"A pagar"), `aria-pressed` e 44px de
+alvo de toque — espelhando a coluna SITUAÇÃO da planilha.
+
+### Gráfico: Recharts, e a paleta passou a ser validada
+
+Donut em `recharts` (MIT): percentuais dentro do anel, hover sincronizado com a
+legenda nos dois sentidos, figura central que mostra a fatia em foco, toque para
+focar no mobile.
+
+A paleta antiga **reprovava** no validador de CVD: `#4F46E5` (Contas) e `#7C3AED`
+(Cartões) ficavam a ΔE 3.5 sob protanopia — indistinguíveis. A nova (`palette.ts`)
+mantém o azul da marca no slot 1 e usa a paleta de referência validada nos demais:
+pior par ΔE 12.9 com os 7 slots padrão, checado com `--pairs all` porque as fatias
+são ordenadas por valor e qualquer par pode virar vizinho.
+
+Regras aplicadas: cauda além de 6 fatias vira "Outras" em cinza (nunca um 9º hue
+gerado); rótulo só dentro de fatias ≥ 7% (abaixo disso não cabe e vai para a
+legenda); legenda sempre presente como canal de alívio — aqua, amarelo e magenta
+ficam abaixo de 3:1 no branco, e a regra de alívio exige rótulo visível.
+
+Nova categoria padrão: **Filho**. A migração só garante essa — recriar toda
+categoria padrão ausente ressuscitaria as que o usuário apagou de propósito.
+
+### Custo de bundle
+
+`recharts` fica isolado no chunk lazy do `/financeiro` (147 kB gzip). O chunk
+`index`, que serve Home e LP Mentoria, seguiu inalterado em ~116 kB gzip.

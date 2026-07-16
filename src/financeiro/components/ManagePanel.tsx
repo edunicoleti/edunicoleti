@@ -2,11 +2,10 @@ import { useState } from 'react'
 import { Check, Pencil, Plus, Trash2, X } from 'lucide-react'
 import type { Card, Category } from '../types'
 import { uid } from '../types'
+import { CATEGORY_PALETTE } from '../palette'
 
-const PALETTE = [
-  '#2047C9', '#4F46E5', '#7C3AED', '#DC2626', '#EA580C',
-  '#16A34A', '#0D9488', '#0EA5E9', '#DB2777', '#65605A',
-]
+/* Só os 8 slots validados: um hue fora dessa lista quebra a checagem de CVD */
+const PALETTE = CATEGORY_PALETTE
 
 type Props = {
   open: boolean

@@ -1,5 +1,7 @@
 import type { Card, Category, Entry, FinData, Series } from './types'
+import { DATA_VERSION } from './types'
 import { cloudEnabled, getSupabase } from './supabase'
+import { migrate } from './migrate'
 
 export interface StorageAdapter {
   mode: 'local' | 'cloud'
@@ -35,7 +37,9 @@ function isFinData(value: unknown): value is FinData {
 export function parseBackup(json: string): FinData | null {
   try {
     const parsed: unknown = JSON.parse(json)
-    return isFinData(parsed) ? parsed : null
+    if (!isFinData(parsed)) return null
+    /* Backups anteriores à v2 não têm o campo version */
+    return migrate({ ...parsed, version: parsed.version ?? 1 })
   } catch {
     return null
   }
@@ -52,8 +56,10 @@ class LocalAdapter implements StorageAdapter {
   async load(): Promise<FinData | null> {
     const raw = localStorage.getItem(LOCAL_KEY)
     if (!raw) return null
+    /* parseBackup já migra; grava de volta para não remigrar a cada carga */
     const parsed = parseBackup(raw)
     this.data = parsed
+    if (parsed) this.persist()
     return parsed
   }
 
@@ -235,8 +241,12 @@ class SupabaseAdapter implements StorageAdapter {
     ])
     const err = entries.error ?? series.error ?? categories.error ?? cards.error
     if (err) throw new Error(err.message)
+    const rawEntries = (entries.data as EntryRow[]).map(fromEntryRow)
+    /* Sem coluna de versão no banco: infere pelo tipo legado nas linhas */
+    const legacy = rawEntries.some((e) => e.type !== 'receita' && e.type !== 'despesa')
     const data: FinData = {
-      entries: (entries.data as EntryRow[]).map(fromEntryRow),
+      version: legacy ? 1 : DATA_VERSION,
+      entries: rawEntries,
       series: (series.data as SeriesRow[]).map(fromSeriesRow),
       categories: categories.data as Category[],
       cards: cards.data as Card[],
@@ -246,7 +256,11 @@ class SupabaseAdapter implements StorageAdapter {
       data.series.length === 0 &&
       data.categories.length === 0 &&
       data.cards.length === 0
-    return empty ? null : data
+    if (empty) return null
+
+    const migrated = migrate(data)
+    if (migrated !== data) await this.replaceAll(migrated)
+    return migrated
   }
 
   async seedAll(data: FinData) {
