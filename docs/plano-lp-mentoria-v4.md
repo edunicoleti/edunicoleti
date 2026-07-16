@@ -215,70 +215,90 @@ Sem travessões. Jargão sempre traduzido em resultado.
   sistema de gestão próprio, agentes de IA 24h e integrações via MCP. Mentoria
   individual, presencial em Chapecó/SC ou online.`
 
-## 5. Direção visual: linguagem designcode.io
+## 5. Direção visual: linguagem da referência "Fluxa"
 
-Referência aprovada pelo Eduardo: https://designcode.io/ (identidade visual geral +
-micro-interações de scroll e hover, navegação interativa e fluida).
+**Referência correta (16/jul):** template "Fluxa · AI Finance Platform", exportado
+pelo Eduardo e versionado em `docs/referencia-visual/fluxa.html`. A referência
+designcode.io citada antes estava ERRADA e foi descartada. Instrução do Eduardo:
+não copiar o código nem o conteúdo; usar como referência de **seções interativas
+com conteúdo visual que reage ao hover**, adaptadas ao nosso contexto.
 
-### DNA visual da referência
-- **Dark luminoso** (não dark chapado): fundo azul-noite profundo com gradientes
-  aurora (violeta, azul, ciano, rosa) em mesh/blur criando profundidade
-- **Glassmorphism**: cards com blur, borda `rgba(255,255,255,0.1)`, brilho interno
-- **Glow**: sombras coloridas atrás de elementos-chave, texto com gradiente
-- Tipografia display grande e apertada, labels pequenas em caps
-- **Micro-interações spring**: cards que levantam/inclinam no hover com glow que
-  acompanha o mouse, botões com shimmer, ícones que reagem
-- **Scroll storytelling**: seções sticky, parallax em camadas, reveals suaves,
-  elementos que se montam conforme o scroll
-- Nav em pill glass flutuante que encolhe ao rolar
+### DNA visual da referência (extraído do código)
+- **Tema claro premium**: fundo branco, texto slate quase-preto, cinzas frios;
+  acento **azul royal** (gradiente `#2f6bff → #2454f4 → #1237d8`), ciano de apoio,
+  verde esmeralda para status "live/ok"
+- **Navy profundo `#06145b`** como cor de contraste em 1-2 cartões-destaque por
+  seção (painel escuro entre cards claros, com dot-grid e glows azuis internos)
+- **Estética blueprint**: linhas-guia verticais nas margens da página, hairlines
+  horizontais entre seções, cruzetas de canto (＋), crosshairs tracejados,
+  texturas de grid/pontos dentro dos cards
+- **Cards**: raio grande (18 a 34px), sombras em camadas + highlight interno
+  (`inset 0 1px 0 white`), glass sutil (`white/85 + backdrop-blur`), círculos de
+  glow desfocados (azul/ciano) atrás do conteúdo
+- **Mini-UIs ilustrativas dentro dos cards**: interfaces esqueleto (pills, barras,
+  chips de ícone, mini gráficos) que "vivem" com animações ambientes contínuas
+  (float, pulse, barras crescendo, shimmer) — o card parece software rodando
+- Tipografia **Inter** com tracking apertado (-0.04 a -0.065em), títulos grandes,
+  **palavra-chave do título em azul**; kickers em caps com ícone em círculo azul claro
+- Botões: gradiente azul com brilho superior, orbe de luz que desliza no hover,
+  ícone em chip glass que dá nudge, lift de -2px
 
-### ⚠️ Decisão consciente sobre o dark
-Na v1 desta LP o Eduardo rejeitou um tema dark editorial "pesado" (atmosfera
-demais). O designcode.io é dark de outra natureza: **luminoso, colorido, vivo**,
-lê-se como produto premium de tecnologia e é coerente com "ecossistema + agentes".
-Decisão v4: seguir a referência (dark luminoso), validar com screenshot ao fim da
-primeira fase de implementação antes de avançar. Plano B barato: os mesmos tokens
-em modo claro (o designcode.io tem light mode; a linguagem sobrevive à troca).
+### Alinhamento estratégico (por que essa referência é melhor que a anterior)
+1. **Resolve o dilema do dark**: é claro com navy pontual, exatamente a lição do
+   feedback v1 do Eduardo (confiança = claro; contraste = pontos escuros).
+2. O acento azul royal conversa com o **azul #2047C9 que já é accent do site** do
+   Eduardo: a LP v4 fica premium e continua parecendo dele.
+3. As mini-UIs ilustrativas são perfeitas pra **mostrar o produto invisível**
+   (sistema de gestão, agente trabalhando, integrações) sem screenshot real.
+4. A referência usa lucide icons e Inter, que **já estão no nosso stack**.
+
+### Mapa de interações v4 (padrões da referência → nosso conteúdo)
+| Onde | Padrão da referência | Adaptação ao nosso conteúdo |
+|---|---|---|
+| Headlines (todas) | Reveal palavra-a-palavra (y 120%→0, blur 10→0, stagger 40ms) on-scroll | Recriar com motion/react (sem GSAP); palavra-chave em azul |
+| Blocos de conteúdo | Fade-up com blur (y 40→0, blur 8→0) on-scroll | Substituir o `.mr` atual por essa variante |
+| Hero visual | Colagem de painéis: dashboard glass + card navy de destaque + mini card de gráfico flutuando | "Console da empresa": painel de gestão com indicadores, card navy do agente aprovando/executando, mini gráfico. Terminal v3 aposentado ou reduzido a um painel da colagem |
+| **Ecossistema (assinatura)** | **Hub orbital**: núcleo flutuando + 2 anéis tracejados girando em 3D (rotateX 65°) + chips de ícone orbitando + aura pulsante + crosshairs | Núcleo = sistema de gestão da empresa; chips = agentes e plataformas (Meta, Google, Analytics, WhatsApp); hover em cada chip revela o que faz |
+| Processo (como funciona) | Colunas numeradas 01/02/03 com pill de rótulo, mini-UI por etapa, **coluna do meio em painel navy** com dot-grid | 01 Avaliação (form/checklist da sua realidade) · 02 Estratégia+Construção (navy: agente decidindo/executando) · 03 Comando (dashboard de acompanhamento em tempo real) |
+| Grid de pilares/módulos | 4 cards com mini-UI animada (ambiente) + coreografia no hover: card lift, borda azul, linhas internas deslizam em stagger, seta vira chip azul | Automação inteligente · Sistema próprio · Visibilidade em tempo real · Integrações MCP (um dos 4 em navy) |
+| Integrações | Marquee de logos com máscara de fade nas bordas | Logos das plataformas (Meta, Google, Analytics, Sheets, WhatsApp) via simple-icons, tom slate |
+| Botões CTA | Gradiente azul + orbe de luz no hover + chip de ícone com nudge | Reproduzir em CSS próprio (mt-btn v4) |
+| FAQ | Accordion com fade-up | Manter mecânica v3 (grid-rows), re-skin claro/hairline |
+| CTA final | Painel navy com glows e headline com palavra azul-clara | Manter conteúdo v4, re-skin navy `#06145b` |
+| Página toda | — | Progress bar (manter), reduced-motion em tudo (as animações ambientes pausam) |
 
 ### Aproveitamento técnico da v3
-- `motion/react` já instalada e dominada (progress bar, springs, whileInView)
+- `motion/react` já instalada e dominada: cobre reveals, stagger e springs
+  (GSAP da referência não será usado)
+- Animações ambientes das mini-UIs: CSS keyframes puros (float/pulse/scaleY),
+  como na referência; coreografia de hover via `:hover` do card pai
 - Sticky CTA mobile, acessibilidade AA, reduced-motion, code-splitting: manter
-- Terminal vivo: manter como demo, re-skinado para o novo tema
-- CSS: **novo arquivo de tokens** (paleta, glass, glow, gradientes); estrutura de
-  seções nova, então Mentoria.css será majoritariamente reescrito
-
-### Mapa de interações v4 (evolução da tabela v3)
-| Onde | Interação |
-|---|---|
-| Nav | Pill glass flutuante, encolhe no scroll, links com glow no hover |
-| Hero | Gradiente aurora animado lento no fundo; headline com reveal por palavra; CTA com shimmer |
-| Ecossistema | Scrollytelling sticky: núcleo → agentes → conexões MCP se montam conforme scroll |
-| Cards (todas as seções) | Hover: lift + tilt sutil + glow seguindo o cursor |
-| Integrações | Linhas de conexão animadas (dash offset), ícones com glow no hover |
-| Agentes | Timeline com entradas aparecendo em sequência (stagger) |
-| Passos da mentoria | Linha conectora que desenha + número com gradiente ativo |
-| FAQ | Accordion glass suave (manter mecânica v3) |
-| CTA final | Card glass com aurora própria e glow que respira |
-| Página toda | Progress bar (manter), reduced-motion em tudo |
+- CSS: novos tokens (azul royal, navy, hairlines, sombras em camadas);
+  Mentoria.css majoritariamente reescrito; Fraunces sai da LP (referência é
+  Inter-only; serif itálico destoaria) — confirmar na Fase 0
 
 ## 6. Fases de execução
 
 ### Fase 0 — Aprovação (bloqueia tudo)
-- [ ] Eduardo aprova este documento (discurso, arquitetura, referência visual)
+- [x] Referência visual definida: template Fluxa (`docs/referencia-visual/fluxa.html`),
+      tema claro + navy pontual (16/jul)
+- [ ] Eduardo aprova este documento (discurso, arquitetura de comunicação)
 - [ ] Confirmar uso dos dados de mercado da seção 4.8 na página
-- [ ] Confirmar dark luminoso como direção (com plano B claro)
+- [ ] Confirmar Inter-only na LP (Fraunces itálico sai, seguindo a referência)
 - [ ] Definir se o produto ganha nome próprio (ex.: "Ecossistema IA") ou segue
       como mentoria/consultoria do Eduardo
 
 ### Fase 1 — Design system v4 + hero (~1 sessão)
-- Tokens novos (paleta dark luminosa, glass, glow, gradientes), nav pill, hero completo
+- Tokens novos (azul royal, navy #06145b, hairlines blueprint, sombras em camadas),
+  nav, hero com colagem de painéis e reveal palavra-a-palavra
 - **Gate de aprovação: screenshot do hero pro Eduardo antes de seguir**
 
 ### Fase 2 — Seções e copy (~1-2 sessões)
 - Todas as seções da arquitetura 4.2 a 4.11, com copy final
 
 ### Fase 3 — Interações (~1 sessão)
-- Scrollytelling do ecossistema, hovers com tilt/glow, timeline dos agentes
+- Hub orbital do ecossistema, mini-UIs animadas com coreografia de hover,
+  reveals palavra-a-palavra, marquee de integrações
 
 ### Fase 4 — Mobile (~1 sessão)
 - Adaptar interações pro touch (tilt vira press, scrollytelling simplificado),
@@ -292,4 +312,5 @@ em modo claro (o designcode.io tem light mode; a linguagem sobrevive à troca).
 - https://claudementorybossai.manus.space/ (mentoria de nicho, advocacia)
 - https://www.clicportela.com.br/noticia/170144/claude-amplia-atuacao-no-brasil-com-parceiros-especializados (Claude Partner Network + Corevalue)
 - https://abraao.tech/blog/agentes-de-ia-2026/ e https://eco.sapo.pt/2026/03/16/as-empresas-entraram-na-nova-era-da-ia-os-agentes-novo-curso-prepara-profissionais-portugueses/ (dados de adoção de agentes)
-- https://designcode.io/ (referência visual aprovada)
+- `docs/referencia-visual/fluxa.html` (referência visual definitiva, exportada pelo
+  Eduardo em 16/jul; designcode.io foi citado por engano e descartado)
