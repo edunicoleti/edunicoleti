@@ -19,6 +19,10 @@ type InstallmentGroup = {
 }
 
 /*
+ * Só despesas: o painel mede dívida a quitar. Uma receita parcelada (ex.:
+ * projeto recebido em parcelas) não é compromisso — aparece na lista e na
+ * projeção, não aqui.
+ *
  * "Faltam" é sempre relativo ao mês de hoje (não ao mês navegado): a dívida
  * restante é um fato do presente, independente de qual mês está na tela.
  */
@@ -26,7 +30,7 @@ function buildGroups(entries: Entry[]): InstallmentGroup[] {
   const today = currentMonth()
   const bySeries = new Map<string, Entry[]>()
   for (const e of entries) {
-    if (!e.installment || !e.seriesId) continue
+    if (e.type !== 'despesa' || !e.installment || !e.seriesId) continue
     const list = bySeries.get(e.seriesId) ?? []
     list.push(e)
     bySeries.set(e.seriesId, list)
@@ -62,7 +66,7 @@ export default function InstallmentsPanel({ entries }: Props) {
 
   return (
     <section className="fin-panel">
-      <h2>Parcelamentos ativos</h2>
+      <h2>Despesas parceladas</h2>
       <ul className="fin-installments">
         {groups.map((g) => (
           <li key={g.seriesId}>
