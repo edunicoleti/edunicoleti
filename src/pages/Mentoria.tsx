@@ -362,6 +362,7 @@ export default function Mentoria() {
               onClick={scrollToAgendar}
               className="mt-btn mt-btn--sm"
               id="mentoria-nav-agendar-btn"
+              aria-label="Agendar diagnóstico"
             >
               <span className="mt-btn__orb" aria-hidden="true" />
               <span className="mt-btn__label">Agendar diagnóstico</span>

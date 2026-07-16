@@ -68,6 +68,19 @@
   scroll-margin-top: 90px;
 }
 
+/* Seções abaixo da dobra só são renderizadas ao se aproximarem da viewport */
+.mt-eco,
+.mt-pilares,
+.mt-agent,
+.mt-proc,
+.mt-formato,
+.mt-prova,
+.mt-faq,
+.mt-cta {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
+}
+
 /* ---- Keyframes ambientes (padrão da referência) ---- */
 @keyframes vFloat {
   0%, 100% { transform: translateY(0); }
@@ -553,7 +566,7 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--v-faint);
+  color: var(--v-dim);
 }
 
 /* ---- Hero ---- */
@@ -919,7 +932,7 @@
   gap: 0.7rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--v-faint);
+  color: var(--v-dim);
   white-space: nowrap;
 }
 
@@ -1564,7 +1577,7 @@
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--v-faint);
+  color: var(--v-dim);
 }
 
 .mt-proc__head--onNavy .mt-proc__num {
@@ -2214,7 +2227,7 @@
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--v-faint);
+  color: var(--v-dim);
 }
 
 .mt-footer__links {
