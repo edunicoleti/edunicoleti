@@ -312,9 +312,16 @@ Chunk do /financeiro: ~169 kB gzip; `index` (Home e LP) inalterado em ~115 kB.
 
 ### Backlog reordenado
 
-1. **Fase 1 — Alertas por regras** (sem IA, sem pré-requisito, ~meio dia)
-2. **Fase 2 — Import de faturas por print** ⬅ subiu de prioridade
+1. **Fase 1 — Alertas por regras** ✅ **CONCLUÍDA** (`alerts.ts` + painel; deploy)
+2. **Fase 2 — Import de faturas por print** ⬅ próxima; pré-requisitos pendentes
 3. **Fase 3 — Assistente de chat** (reaproveita a Edge Function da Fase 2)
+
+**Fase 1 entregue** (`alerts.ts`): motor puro com três regras — gargalo futuro
+(mês dos próximos 6 com despesa > receita), comprometimento da renda
+(fixas+parcelas vs receita; aviso 60%, perigo 85%), categoria acima da média
+(vs média dos até 3 meses anteriores; ≥30% e ≥R$100). Painel entre cards e
+abas, só aparece quando há alerta, ordenado por gravidade. Sem alarme falso no
+seed padrão. Limiares centralizados no topo de `alerts.ts` para ajuste fácil.
 
 ### Fase 2 — Import de faturas de cartão por print (análise feita 2026-07-16)
 
