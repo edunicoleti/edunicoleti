@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
-  Check, ChevronLeft, ChevronRight, Clock, Cloud, CloudOff, CopyPlus, Download,
-  LogOut, Pencil, Plus, Settings2, TrendingDown, TrendingUp, Upload, X,
+  AlertCircle, AlertTriangle, Check, ChevronLeft, ChevronRight, Clock, Cloud,
+  CloudOff, CopyPlus, Download, LogOut, Pencil, Plus, Settings2, TrendingDown,
+  TrendingUp, Upload, X,
 } from 'lucide-react'
 import type { Entry, EntryType, TabKey } from '../financeiro/types'
+import { computeAlerts } from '../financeiro/alerts'
 import { formatBRL } from '../financeiro/money'
 import { addMonths, currentMonth, monthLabel, monthShortLabel } from '../financeiro/months'
 import { useFinStore } from '../financeiro/store'
@@ -200,6 +202,12 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     ? data.categories.find((c) => c.id === categoryFilter) ?? null
     : null
 
+  /* Alertas por regras: gargalo futuro, renda comprometida, categoria em alta */
+  const alerts = useMemo(
+    () => computeAlerts(data.entries, data.categories, month),
+    [data.entries, data.categories, month],
+  )
+
   /* Lançamentos manuais do mês anterior ainda não presentes neste mês */
   const copyCandidates = useMemo(() => {
     const currentNames = new Set(monthEntries.map((e) => e.name))
@@ -330,6 +338,24 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           <strong className={totals.saldo < 0 ? 'fin-red' : ''}>{formatBRL(totals.saldo)}</strong>
         </article>
       </section>
+
+      {alerts.length > 0 && (
+        <section className="fin-alerts" aria-label="Alertas financeiros">
+          {alerts.map((a) => (
+            <div key={a.id} className={`fin-alert fin-alert--${a.severity}`}>
+              {a.severity === 'danger' ? (
+                <AlertTriangle size={16} aria-hidden="true" />
+              ) : (
+                <AlertCircle size={16} aria-hidden="true" />
+              )}
+              <div>
+                <strong>{a.title}</strong>
+                <span>{a.detail}</span>
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
 
       <div className="fin-tabs" role="tablist">
         {TABS.map((t) => (
