@@ -9,7 +9,7 @@ import { addMonths, monthLabel, monthShortLabel, monthShortWithYear } from '../m
 
 type Props = {
   entries: Entry[]
-  /* mês em exibição — a projeção mostra os 6 seguintes */
+  /* mês em exibição — a projeção começa nele e vai até os 5 seguintes */
   baseMonth: string
   onSelectMonth: (month: string) => void
 }
@@ -107,7 +107,8 @@ export default function MonthlyProjection({ entries, baseMonth, onSelectMonth }:
   const points = useMemo<MonthPoint[]>(() => {
     const baseYear = baseMonth.slice(0, 4)
     return Array.from({ length: 6 }, (_, i) => {
-      const month = addMonths(baseMonth, i + 1)
+      /* i = 0 é o próprio mês em exibição: sem ele não há de onde comparar */
+      const month = addMonths(baseMonth, i)
       let despesas = 0
       let receita = 0
       for (const e of entries) {
@@ -128,7 +129,7 @@ export default function MonthlyProjection({ entries, baseMonth, onSelectMonth }:
   const hasReceita = points.some((p) => p.receita > 0)
 
   if (points.every((p) => p.despesas === 0 && p.receita === 0)) {
-    return <p className="fin-donut__empty">Nada comprometido nos próximos meses.</p>
+    return <p className="fin-donut__empty">Nada comprometido nesses meses.</p>
   }
 
   /* Escala partindo de zero: um eixo truncado exageraria a distância entre

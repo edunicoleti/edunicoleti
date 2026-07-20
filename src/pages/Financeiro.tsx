@@ -504,7 +504,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           </section>
 
           <section className="fin-panel">
-            <h2>Próximos 6 meses</h2>
+            <h2>Este mês e os 5 seguintes</h2>
             <MonthlyProjection
               entries={data.entries}
               baseMonth={month}
