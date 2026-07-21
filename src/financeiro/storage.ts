@@ -142,8 +142,9 @@ type EntryRow = {
   category_id: string | null
   card_id: string | null
   amount_cents: number
-  due_day: number | null
+  due_date: string | null
   paid: boolean
+  paid_date: string | null
   installment_current: number | null
   installment_total: number | null
   series_id: string | null
@@ -158,8 +159,9 @@ function toEntryRow(e: Entry): EntryRow {
     category_id: e.categoryId,
     card_id: e.cardId,
     amount_cents: e.amountCents,
-    due_day: e.dueDay,
+    due_date: e.dueDate,
     paid: e.paid,
+    paid_date: e.paidDate,
     installment_current: e.installment?.current ?? null,
     installment_total: e.installment?.total ?? null,
     series_id: e.seriesId,
@@ -175,8 +177,9 @@ function fromEntryRow(r: EntryRow): Entry {
     categoryId: r.category_id,
     cardId: r.card_id,
     amountCents: r.amount_cents,
-    dueDay: r.due_day,
+    dueDate: r.due_date,
     paid: r.paid,
+    paidDate: r.paid_date,
     installment:
       r.installment_current != null && r.installment_total != null
         ? { current: r.installment_current, total: r.installment_total }

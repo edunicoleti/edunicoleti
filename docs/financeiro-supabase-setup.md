@@ -52,8 +52,9 @@ create table fin_entries (
   category_id uuid,
   card_id uuid,
   amount_cents bigint not null,
-  due_day int,
+  due_date text,
   paid boolean not null default false,
+  paid_date text,
   installment_current int,
   installment_total int,
   series_id uuid
@@ -76,6 +77,16 @@ create policy "authenticated_all" on fin_series
 create policy "authenticated_all" on fin_entries
   for all to authenticated using (true) with check (true);
 ```
+
+> **Já tem um banco da v2?** O lançamento passou a guardar a data completa de
+> vencimento e a data de pagamento. Rode:
+> ```sql
+> alter table fin_entries add column due_date text, add column paid_date text;
+> update fin_entries set due_date = month || '-' || lpad(due_day::text, 2, '0')
+>   where due_day is not null;
+> alter table fin_entries drop column due_day;
+> ```
+> A `fin_series` mantém `due_day` (o dia-do-mês recorrente do template).
 
 ### 3. Criar o usuário de acesso
 

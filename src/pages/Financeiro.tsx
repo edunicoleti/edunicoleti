@@ -7,7 +7,10 @@ import {
 import type { Entry, EntryType, TabKey } from '../financeiro/types'
 import { computeAlerts } from '../financeiro/alerts'
 import { formatBRL } from '../financeiro/money'
-import { addMonths, compareMonths, currentMonth, monthLabel, monthShortLabel } from '../financeiro/months'
+import {
+  addMonths, compareMonths, currentMonth, dayOf, monthLabel, monthOf, monthShortLabel,
+  shortDate, todayISO,
+} from '../financeiro/months'
 import { useFinStore } from '../financeiro/store'
 import { isAuthenticated, logout } from '../financeiro/supabase'
 import LockScreen from '../financeiro/components/LockScreen'
@@ -40,12 +43,12 @@ function isFixa(e: Entry): boolean {
  * mês corrente depende do dia de vencimento vs. hoje. Receita não entra — "a
  * receber" em atraso é outra conversa.
  */
-function isOverdue(e: Entry, todayMonth: string, todayDay: number): boolean {
+function isOverdue(e: Entry, todayMonth: string, today: string): boolean {
   if (e.paid || e.type !== 'despesa') return false
-  const rel = compareMonths(e.month, todayMonth)
-  if (rel > 0) return false
-  if (rel < 0) return true
-  return e.dueDay != null && e.dueDay < todayDay
+  /* Balde de mês passado conta como atrasado mesmo sem data (o mês fechou);
+     no mais, compara a data real de vencimento com hoje. */
+  if (compareMonths(e.month, todayMonth) < 0) return true
+  return e.dueDate != null && e.dueDate < today
 }
 
 type Group = {
@@ -169,9 +172,9 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     [data.entries, prevMonth],
   )
 
-  /* "Hoje" para derivar atraso — mês corrente e dia do mês, da data real */
+  /* "Hoje" para derivar atraso — mês corrente e data completa, da data real */
   const todayMonth = currentMonth()
-  const todayDay = new Date().getDate()
+  const today = todayISO()
 
   const totals = useMemo(() => {
     let receita = 0
@@ -281,7 +284,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       subtotal: list.reduce((s, e) => s + e.amountCents, 0),
       danger,
     })
-    const overdue = (e: Entry) => isOverdue(e, todayMonth, todayDay)
+    const overdue = (e: Entry) => isOverdue(e, todayMonth, today)
     const isCartao = (e: Entry) => Boolean(e.cardId)
     const despesa = tab === 'despesa' ? tabEntries : tabEntries.filter((e) => e.type === 'despesa')
     /* Atrasadas têm prioridade: a vencida e não paga sai do grupo de origem
@@ -301,7 +304,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       make('receitas', 'Receitas', 'receita', tabEntries.filter((e) => e.type === 'receita')),
       ...emDiaGroups,
     ]
-  }, [tabEntries, tab, todayMonth, todayDay])
+  }, [tabEntries, tab, todayMonth, today])
 
   /* Alertas por regras: gargalo futuro, renda comprometida, categoria em alta */
   const alerts = useMemo(
@@ -389,12 +392,25 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const renderRow = (e: Entry) => {
     const cat = data.categories.find((c) => c.id === e.categoryId)
     const card = data.cards.find((c) => c.id === e.cardId)
+    const overdue = isOverdue(e, todayMonth, today)
     return (
       <li key={e.id} className={e.paid ? 'fin-row fin-row--done' : 'fin-row'}>
+        <span
+          className={overdue ? 'fin-row__date fin-row__date--overdue' : 'fin-row__date'}
+          aria-hidden={e.dueDate ? undefined : true}
+        >
+          {e.dueDate ? (
+            <>
+              <strong>{String(dayOf(e.dueDate)).padStart(2, '0')}</strong>
+              <small>{monthShortLabel(monthOf(e.dueDate))}</small>
+            </>
+          ) : (
+            <small className="fin-row__date-empty">—</small>
+          )}
+        </span>
         <div className="fin-row__main">
           <span className="fin-row__name">{e.name}</span>
           <span className="fin-row__meta">
-            {e.dueDay && <em>venc. dia {e.dueDay}</em>}
             {cat && (
               <button
                 type="button"
@@ -409,6 +425,9 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             {card && <em>{card.name}</em>}
             {e.installment && <em>{e.installment.current}/{e.installment.total}</em>}
             {e.seriesId && !e.installment && <em>mensal</em>}
+            {e.paidDate && (
+              <em>{e.type === 'receita' ? 'receb.' : 'pago'} {shortDate(e.paidDate)}</em>
+            )}
           </span>
         </div>
         <span className={`fin-row__amount ${e.type === 'receita' ? 'fin-green' : 'fin-red'}`}>
@@ -416,7 +435,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         </span>
         <StatusPill
           entry={e}
-          overdue={isOverdue(e, todayMonth, todayDay)}
+          overdue={overdue}
           onToggle={() => store.togglePaid(e)}
         />
         <button

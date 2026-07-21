@@ -1,5 +1,6 @@
 import type { Category, FinData } from './types'
 import { DATA_VERSION, uid } from './types'
+import { isoDate } from './months'
 import { CATEGORY_PALETTE } from './palette'
 import { DEFAULT_CATEGORY_NAMES, defaultCategoryColor } from './seed'
 
@@ -18,9 +19,7 @@ function migrateType(type: LegacyType): 'receita' | 'despesa' {
  * - reatribui cores: a paleta v1 reprovava no validador (indigo e violeta
  *   colapsavam sob protanopia, ΔE 3.5)
  */
-export function migrate(data: FinData): FinData {
-  if (data.version === DATA_VERSION) return data
-
+function migrateV1toV2(data: FinData): FinData {
   const entries = data.entries.map((e) => ({
     ...e,
     type: migrateType(e.type as LegacyType),
@@ -54,5 +53,35 @@ export function migrate(data: FinData): FinData {
     })
   }
 
-  return { version: DATA_VERSION, entries, series, categories, cards: data.cards }
+  return { version: 2, entries, series, categories, cards: data.cards }
+}
+
+/*
+ * v2 → v3
+ * - o vencimento do lançamento vira data completa: dueDay (só o dia) → dueDate
+ *   ('YYYY-MM-DD'), montada a partir do mês do lançamento. Sem dia → null.
+ * - novo paidDate (quando quitou): desconhecido no histórico, fica null.
+ * - a série mantém dueDay (dia-do-mês recorrente); nada a fazer nela.
+ */
+function migrateV2toV3(data: FinData): FinData {
+  const entries = data.entries.map((raw) => {
+    const e = raw as unknown as {
+      month: string
+      dueDay?: number | null
+      dueDate?: string | null
+      paidDate?: string | null
+    } & Record<string, unknown>
+    const dueDate = e.dueDate ?? (e.dueDay != null ? isoDate(e.month, e.dueDay) : null)
+    const next: Record<string, unknown> = { ...e, dueDate, paidDate: e.paidDate ?? null }
+    delete next.dueDay
+    return next as unknown as FinData['entries'][number]
+  })
+  return { ...data, version: 3, entries }
+}
+
+export function migrate(data: FinData): FinData {
+  let d = data
+  if (d.version < 2) d = migrateV1toV2(d)
+  if (d.version < 3) d = migrateV2toV3(d)
+  return d.version === DATA_VERSION ? d : { ...d, version: DATA_VERSION }
 }

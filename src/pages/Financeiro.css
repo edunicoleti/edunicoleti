@@ -415,6 +415,38 @@
   border-bottom: 0.5px solid var(--color-border);
 }
 
+/* Coluna de data à esquerda: o dia grande ancora a linha, o mês curto embaixo.
+   Vermelho quando atrasado, acompanhando o pill. */
+.fin-row__date {
+  flex-shrink: 0;
+  width: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.05;
+}
+
+.fin-row__date strong {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.fin-row__date small {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.fin-row__date--overdue strong,
+.fin-row__date--overdue small {
+  color: #B91C1C;
+}
+
+.fin-row__date-empty {
+  color: var(--color-text-muted);
+}
+
 /*
  * Pill de status (substitui o checkbox). A cor vai para o estado acionável:
  * pendente ("A pagar"/"A receber") em âmbar — o mesmo laranja do "A pagar" do
@@ -1274,17 +1306,19 @@
   }
 
   /* Nome, valor, status e editar não cabem numa linha só: quebra em duas,
-     com o status e o valor embaixo */
+     com o status e o valor embaixo. A data ocupa a coluna da esquerda,
+     centrada nas duas linhas. */
   .fin-row {
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-areas:
-      'main main edit'
-      'status amount amount';
+      'date main edit'
+      'date status amount';
     gap: 0.4rem 0.5rem;
     align-items: center;
   }
 
+  .fin-row__date { grid-area: date; align-self: center; }
   .fin-row__main { grid-area: main; }
   .fin-row__edit { grid-area: edit; }
   .fin-status { grid-area: status; justify-self: start; }

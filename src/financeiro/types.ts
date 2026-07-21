@@ -15,14 +15,18 @@ export type Installment = {
 
 export type Entry = {
   id: string
-  month: string // 'YYYY-MM'
+  month: string // 'YYYY-MM' — balde contábil
   type: EntryType
   name: string
   categoryId: string | null
   cardId: string | null
   amountCents: number
-  dueDay: number | null
+  /* Vencimento como data real 'YYYY-MM-DD'. Antes era só o dia (v2): a data
+     completa distingue a parcela de junho da de julho e sustenta o atraso. */
+  dueDate: string | null
   paid: boolean
+  /* Quando foi marcado como pago ('YYYY-MM-DD'); null enquanto em aberto */
+  paidDate: string | null
   installment: Installment | null
   seriesId: string | null
 }
@@ -59,7 +63,7 @@ export type FinData = {
   cards: Card[]
 }
 
-export const DATA_VERSION = 2
+export const DATA_VERSION = 3
 
 export const EMPTY_DATA: FinData = {
   version: DATA_VERSION,

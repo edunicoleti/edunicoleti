@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { X } from 'lucide-react'
 import type { Card, Category, Entry, EntryType } from '../types'
 import { formatBRL, maskDigitsToBRL } from '../money'
+import { todayISO } from '../months'
 import type { EditScope, EntryPatch, NewEntryInput } from '../store'
 
 /* Montado sob demanda pelo pai (com key por entry) — o estado inicializa dos props */
@@ -41,8 +42,9 @@ export default function EntryForm({
   const [amountCents, setAmountCents] = useState(entry?.amountCents ?? 0)
   const [categoryId, setCategoryId] = useState(entry?.categoryId ?? '')
   const [cardId, setCardId] = useState(entry?.cardId ?? '')
-  const [dueDay, setDueDay] = useState(entry?.dueDay ? String(entry.dueDay) : '')
+  const [dueDate, setDueDate] = useState(entry?.dueDate ?? '')
   const [paid, setPaid] = useState(entry?.paid ?? false)
+  const [paidDate, setPaidDate] = useState(entry?.paidDate ?? '')
   const [recurring, setRecurring] = useState(false)
   const [installments, setInstallments] = useState(false)
   const [instCurrent, setInstCurrent] = useState('1')
@@ -59,8 +61,9 @@ export default function EntryForm({
       categoryId: categoryId || null,
       cardId: cardId || null,
       amountCents,
-      dueDay: dueDay ? Number(dueDay) : null,
+      dueDate: dueDate || null,
       paid,
+      paidDate: paid ? paidDate || todayISO() : null,
     }
   }
 
@@ -88,8 +91,9 @@ export default function EntryForm({
       categoryId: categoryId || null,
       cardId: cardId || null,
       amountCents,
-      dueDay: dueDay ? Number(dueDay) : null,
+      dueDate: dueDate || null,
       paid,
+      paidDate: paid ? paidDate || todayISO() : null,
       recurring: recurring && !installments,
       installment:
         installments && total >= 1 && current >= 1 && current <= total
@@ -198,16 +202,12 @@ export default function EntryForm({
                 />
               </div>
               <div className="fin-field">
-                <label htmlFor="fin-due">Vencimento (dia)</label>
+                <label htmlFor="fin-due">Vencimento</label>
                 <input
                   id="fin-due"
-                  inputMode="numeric"
-                  value={dueDay}
-                  onChange={(e) => {
-                    const v = e.target.value.replace(/\D/g, '').slice(0, 2)
-                    setDueDay(v && Number(v) >= 1 && Number(v) <= 31 ? v : v === '' ? '' : dueDay)
-                  }}
-                  placeholder="Ex.: 12"
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
                 />
               </div>
             </div>
@@ -281,9 +281,28 @@ export default function EntryForm({
             )}
 
             <label className="fin-check fin-check--paid">
-              <input type="checkbox" checked={paid} onChange={(e) => setPaid(e.target.checked)} />
+              <input
+                type="checkbox"
+                checked={paid}
+                onChange={(e) => {
+                  setPaid(e.target.checked)
+                  if (e.target.checked && !paidDate) setPaidDate(todayISO())
+                }}
+              />
               {paidLabel}
             </label>
+
+            {paid && (
+              <div className="fin-field">
+                <label htmlFor="fin-paid-date">{type === 'receita' ? 'Recebido em' : 'Pago em'}</label>
+                <input
+                  id="fin-paid-date"
+                  type="date"
+                  value={paidDate}
+                  onChange={(e) => setPaidDate(e.target.value)}
+                />
+              </div>
+            )}
 
             <footer className="fin-modal__footer">
               {editing && (

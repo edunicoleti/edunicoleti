@@ -1,6 +1,6 @@
 import type { Entry, Installment, Series } from './types'
 import { uid } from './types'
-import { addMonths, compareMonths, currentMonth, monthRange } from './months'
+import { addMonths, compareMonths, currentMonth, dayOf, isoDate, monthRange } from './months'
 
 /* Horizonte mínimo de materialização de séries fixas além do mês atual */
 const HORIZON_MONTHS = 12
@@ -14,8 +14,10 @@ function seriesOccurrence(series: Series, month: string): Entry {
     categoryId: series.categoryId,
     cardId: series.cardId,
     amountCents: series.amountCents,
-    dueDay: series.dueDay,
+    /* O template guarda o dia-do-mês; a ocorrência ganha a data real do seu mês */
+    dueDate: series.dueDay != null ? isoDate(month, series.dueDay) : null,
     paid: false,
+    paidDate: null,
     installment: null,
     seriesId: series.id,
   }
@@ -61,12 +63,19 @@ export function generateInstallments(
 ): Entry[] {
   const seriesId = uid()
   const entries: Entry[] = []
+  /* Só a primeira parcela herda o estado pago da base; as futuras nascem em
+     aberto. O dia do vencimento se repete a cada mês na data de cada parcela. */
+  const day = base.dueDate != null ? dayOf(base.dueDate) : null
   for (let i = installment.current; i <= installment.total; i++) {
+    const first = i === installment.current
+    const month = addMonths(base.month, i - installment.current)
     entries.push({
       ...base,
       id: uid(),
-      month: addMonths(base.month, i - installment.current),
-      paid: i === installment.current ? base.paid : false,
+      month,
+      dueDate: day != null ? isoDate(month, day) : null,
+      paid: first ? base.paid : false,
+      paidDate: first ? base.paidDate : null,
       installment: { current: i, total: installment.total },
       seriesId,
     })

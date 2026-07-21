@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Card, Category, Entry, FinData, Installment, Series } from './types'
 import { EMPTY_DATA, uid } from './types'
-import { addMonths, compareMonths, currentMonth } from './months'
+import { addMonths, compareMonths, currentMonth, dayOf, isoDate, todayISO } from './months'
 import { generateInstallments, materializeSeries } from './recurrence'
 import { buildSeedData } from './seed'
 import { createAdapter, parseBackup } from './storage'
@@ -15,8 +15,9 @@ export type NewEntryInput = {
   categoryId: string | null
   cardId: string | null
   amountCents: number
-  dueDay: number | null
+  dueDate: string | null
   paid: boolean
+  paidDate: string | null
   /* repetir todo mês (cria série) */
   recurring: boolean
   /* parcelado (gera grupo de parcelas) */
@@ -28,8 +29,9 @@ export type EntryPatch = {
   categoryId: string | null
   cardId: string | null
   amountCents: number
-  dueDay: number | null
+  dueDate: string | null
   paid: boolean
+  paidDate: string | null
 }
 
 export function useFinStore(viewedMonth: string) {
@@ -105,8 +107,9 @@ export function useFinStore(viewedMonth: string) {
         categoryId: input.categoryId,
         cardId: input.cardId,
         amountCents: input.amountCents,
-        dueDay: input.dueDay,
+        dueDate: input.dueDate,
         paid: input.paid,
+        paidDate: input.paidDate,
       }
 
       if (input.installment) {
@@ -124,7 +127,8 @@ export function useFinStore(viewedMonth: string) {
           categoryId: input.categoryId,
           cardId: input.cardId,
           amountCents: input.amountCents,
-          dueDay: input.dueDay,
+          /* A série guarda só o dia-do-mês; cada ocorrência data no próprio mês */
+          dueDay: input.dueDate != null ? dayOf(input.dueDate) : null,
           startMonth: input.month,
           endMonth: null,
           skipMonths: [],
@@ -166,7 +170,14 @@ export function useFinStore(viewedMonth: string) {
             !e.installment &&
             !existingNames.has(e.name),
         )
-        .map((e) => ({ ...e, id: uid(), month, paid: false }))
+        .map((e) => ({
+          ...e,
+          id: uid(),
+          month,
+          dueDate: e.dueDate != null ? isoDate(month, dayOf(e.dueDate)) : null,
+          paid: false,
+          paidDate: null,
+        }))
       if (copies.length === 0) return 0
       setData((d) => ({ ...d, entries: [...d.entries, ...copies] }))
       guard(adapter.upsertEntries(copies))
@@ -221,14 +232,19 @@ export function useFinStore(viewedMonth: string) {
 
   const updateEntry = useCallback(
     (entry: Entry, patch: EntryPatch, scope: EditScope) => {
+      /* A data do vencimento se reancora no mês de cada ocorrência: aplicar o
+         patch às futuras mantém o dia, não a data inteira (senão agosto herdaria
+         o mês de julho). paidDate acompanha paid só quando o pago é editado. */
+      const day = patch.dueDate != null ? dayOf(patch.dueDate) : null
       const apply = (e: Entry, withPaid: boolean): Entry => ({
         ...e,
         name: patch.name,
         categoryId: patch.categoryId,
         cardId: patch.cardId,
         amountCents: patch.amountCents,
-        dueDay: patch.dueDay,
+        dueDate: day != null ? isoDate(e.month, day) : null,
         paid: withPaid ? patch.paid : e.paid,
+        paidDate: withPaid ? patch.paidDate : e.paidDate,
       })
 
       const changed: Entry[] = []
@@ -268,7 +284,7 @@ export function useFinStore(viewedMonth: string) {
             categoryId: patch.categoryId,
             cardId: patch.cardId,
             amountCents: patch.amountCents,
-            dueDay: patch.dueDay,
+            dueDay: day,
           }
           seriesList = d.series.map((s) => (s.id === newSeries!.id ? newSeries! : s))
         }
@@ -284,7 +300,9 @@ export function useFinStore(viewedMonth: string) {
 
   const togglePaid = useCallback(
     (entry: Entry) => {
-      const next = { ...entry, paid: !entry.paid }
+      /* Marcar pago carimba a data de hoje; reabrir apaga */
+      const paid = !entry.paid
+      const next = { ...entry, paid, paidDate: paid ? todayISO() : null }
       setData((d) => ({
         ...d,
         entries: d.entries.map((e) => (e.id === entry.id ? next : e)),
@@ -429,7 +447,12 @@ export function useFinStore(viewedMonth: string) {
     () =>
       data.entries
         .filter((e) => e.month === viewedMonth)
-        .sort((a, b) => (a.dueDay ?? 32) - (b.dueDay ?? 32) || a.name.localeCompare(b.name)),
+        .sort((a, b) => {
+          /* Ordena por data de vencimento; sem data vai para o fim */
+          const da = a.dueDate ?? '9999-99-99'
+          const db = b.dueDate ?? '9999-99-99'
+          return da < db ? -1 : da > db ? 1 : a.name.localeCompare(b.name)
+        }),
     [data.entries, viewedMonth],
   )
 
