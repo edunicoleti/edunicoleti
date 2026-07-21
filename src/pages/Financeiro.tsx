@@ -25,6 +25,23 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: 'despesa', label: 'Despesas' },
 ]
 
+/*
+ * "Fixa" não é um tipo (ver types.ts): a despesa é comprometida quando pertence
+ * a uma série (repete todo mês) ou tem parcelas. É o eixo que separa a base
+ * previsível — que só se confere — do gasto avulso, onde o mês se decide.
+ */
+function isFixa(e: Entry): boolean {
+  return Boolean(e.seriesId || e.installment)
+}
+
+type Group = {
+  key: string
+  label: string
+  kind: EntryType
+  entries: Entry[]
+  subtotal: number
+}
+
 export default function Financeiro() {
   const [authed, setAuthed] = useState<boolean | null>(null)
 
@@ -186,21 +203,57 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       .sort((a, b) => b.total - a.total)
   }, [monthEntries, data.cards])
 
-  /* Em "Todas" as receitas vêm antes: o mês lê como entra → sai */
+  /*
+   * Pago desce: os pendentes vêm primeiro e os pagos afundam, então o topo de
+   * cada grupo (e da lista plana de receitas) vira "o que falta resolver". O
+   * sort é estável, logo a ordem de lançamento se mantém dentro de cada metade.
+   * O corte por tipo/natureza fica com o memo `groups`, não aqui.
+   */
   const tabEntries = useMemo(() => {
-    let entries =
-      tab === 'todas'
-        ? [...monthEntries].sort((a, b) =>
-            a.type === b.type ? 0 : a.type === 'receita' ? -1 : 1,
-          )
-        : monthEntries.filter((e) => e.type === tab)
+    let entries = tab === 'todas' ? monthEntries : monthEntries.filter((e) => e.type === tab)
     if (categoryFilter) entries = entries.filter((e) => e.categoryId === categoryFilter)
-    return entries
+    return [...entries].sort((a, b) => Number(a.paid) - Number(b.paid))
   }, [monthEntries, tab, categoryFilter])
 
   const filterCategory = categoryFilter
     ? data.categories.find((c) => c.id === categoryFilter) ?? null
     : null
+
+  /*
+   * A lista se lê melhor separada por natureza do lançamento. Em "Todas": o que
+   * entra (receitas), a fatura dos cartões (cartões), a base fixa fora do cartão
+   * (fixas e parcelas) e o gasto solto (avulsas). Na aba "Despesas", os mesmos
+   * três cortes de despesa. Em "Receitas" não agrupamos — o título da aba já diz
+   * tudo, um só grupo seria redundante.
+   *
+   * Ordem de classificação da despesa: o cartão manda. Uma parcela quase sempre
+   * está num cartão, e o que se paga é a fatura inteira — deixá-la fora do grupo
+   * do cartão esconderia parte do valor. Só o que não é de cartão desce para
+   * fixas (recorrente/parcelado) ou avulsas.
+   */
+  const grouped = tab === 'todas' || tab === 'despesa'
+  const groups = useMemo<Group[]>(() => {
+    const make = (key: string, label: string, kind: EntryType, list: Entry[]): Group => ({
+      key,
+      label,
+      kind,
+      entries: list,
+      subtotal: list.reduce((s, e) => s + e.amountCents, 0),
+    })
+    const isCartao = (e: Entry) => Boolean(e.cardId)
+    const despesa = tab === 'despesa' ? tabEntries : tabEntries.filter((e) => e.type === 'despesa')
+    const despesaGroups = [
+      make('cartoes', 'Cartões', 'despesa', despesa.filter(isCartao)),
+      make('fixas', 'Fixas e parcelas', 'despesa', despesa.filter((e) => !isCartao(e) && isFixa(e))),
+      make('avulsas', 'Avulsas', 'despesa', despesa.filter((e) => !isCartao(e) && !isFixa(e))),
+    ]
+    if (tab === 'despesa') return despesaGroups
+    // "Todas": receitas na frente das despesas
+    return [
+      make('receitas', 'Receitas', 'receita', tabEntries.filter((e) => e.type === 'receita')),
+      ...despesaGroups,
+    ]
+  }, [tabEntries, tab])
 
   /* Alertas por regras: gargalo futuro, renda comprometida, categoria em alta */
   const alerts = useMemo(
@@ -272,6 +325,47 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         : 'fin-red'
   const totalText =
     tab === 'despesa' ? `– ${formatBRL(footer.total)}` : formatBRL(footer.total)
+
+  const renderRow = (e: Entry) => {
+    const cat = data.categories.find((c) => c.id === e.categoryId)
+    const card = data.cards.find((c) => c.id === e.cardId)
+    return (
+      <li key={e.id} className={e.paid ? 'fin-row fin-row--done' : 'fin-row'}>
+        <div className="fin-row__main">
+          <span className="fin-row__name">{e.name}</span>
+          <span className="fin-row__meta">
+            {e.dueDay && <em>venc. dia {e.dueDay}</em>}
+            {cat && (
+              <button
+                type="button"
+                className="fin-chip fin-chip--button"
+                style={{ background: `${cat.color}1A`, color: cat.color }}
+                title={`Filtrar por ${cat.name}`}
+                onClick={() => setCategoryFilter((cur) => (cur === cat.id ? null : cat.id))}
+              >
+                {cat.name}
+              </button>
+            )}
+            {card && <em>{card.name}</em>}
+            {e.installment && <em>{e.installment.current}/{e.installment.total}</em>}
+            {e.seriesId && !e.installment && <em>mensal</em>}
+          </span>
+        </div>
+        <span className={`fin-row__amount ${e.type === 'receita' ? 'fin-green' : 'fin-red'}`}>
+          {e.type === 'receita' ? '' : '– '}{formatBRL(e.amountCents)}
+        </span>
+        <StatusPill entry={e} onToggle={() => store.togglePaid(e)} />
+        <button
+          type="button"
+          className="fin-row__edit"
+          aria-label={`Editar ${e.name}`}
+          onClick={() => { setEditingEntry(e); setFormOpen(true) }}
+        >
+          <Pencil size={14} />
+        </button>
+      </li>
+    )
+  }
 
   return (
     <div className="fin">
@@ -428,51 +522,26 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                     ? 'Nenhuma despesa lançada neste mês.'
                     : 'Nenhum lançamento neste mês.'}
             </p>
-          ) : (
-            <ul className="fin-rows">
-              {tabEntries.map((e) => {
-                const cat = data.categories.find((c) => c.id === e.categoryId)
-                const card = data.cards.find((c) => c.id === e.cardId)
-                return (
-                  <li key={e.id} className={e.paid ? 'fin-row fin-row--done' : 'fin-row'}>
-                    <div className="fin-row__main">
-                      <span className="fin-row__name">{e.name}</span>
-                      <span className="fin-row__meta">
-                        {e.dueDay && <em>venc. dia {e.dueDay}</em>}
-                        {cat && (
-                          <button
-                            type="button"
-                            className="fin-chip fin-chip--button"
-                            style={{ background: `${cat.color}1A`, color: cat.color }}
-                            title={`Filtrar por ${cat.name}`}
-                            onClick={() =>
-                              setCategoryFilter((cur) => (cur === cat.id ? null : cat.id))
-                            }
-                          >
-                            {cat.name}
-                          </button>
-                        )}
-                        {card && <em>{card.name}</em>}
-                        {e.installment && <em>{e.installment.current}/{e.installment.total}</em>}
-                        {e.seriesId && !e.installment && <em>mensal</em>}
+          ) : grouped ? (
+            <div className="fin-groups">
+              {groups
+                .filter((g) => g.entries.length > 0)
+                .map((g) => (
+                  <div key={g.key} className="fin-group">
+                    <div className="fin-group__head">
+                      <span className="fin-group__label">
+                        {g.label} <em>· {g.entries.length}</em>
+                      </span>
+                      <span className={`fin-group__sum ${g.kind === 'receita' ? 'fin-green' : 'fin-red'}`}>
+                        {g.kind === 'receita' ? '' : '– '}{formatBRL(g.subtotal)}
                       </span>
                     </div>
-                    <span className={`fin-row__amount ${e.type === 'receita' ? 'fin-green' : 'fin-red'}`}>
-                      {e.type === 'receita' ? '' : '– '}{formatBRL(e.amountCents)}
-                    </span>
-                    <StatusPill entry={e} onToggle={() => store.togglePaid(e)} />
-                    <button
-                      type="button"
-                      className="fin-row__edit"
-                      aria-label={`Editar ${e.name}`}
-                      onClick={() => { setEditingEntry(e); setFormOpen(true) }}
-                    >
-                      <Pencil size={14} />
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
+                    <ul className="fin-rows">{g.entries.map(renderRow)}</ul>
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <ul className="fin-rows">{tabEntries.map(renderRow)}</ul>
           )}
 
           {tabEntries.length > 0 && (
