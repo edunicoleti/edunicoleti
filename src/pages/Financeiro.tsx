@@ -7,7 +7,7 @@ import {
 import type { Entry, EntryType, TabKey } from '../financeiro/types'
 import { computeAlerts } from '../financeiro/alerts'
 import { formatBRL } from '../financeiro/money'
-import { addMonths, currentMonth, monthLabel, monthShortLabel } from '../financeiro/months'
+import { addMonths, compareMonths, currentMonth, monthLabel, monthShortLabel } from '../financeiro/months'
 import { useFinStore } from '../financeiro/store'
 import { isAuthenticated, logout } from '../financeiro/supabase'
 import LockScreen from '../financeiro/components/LockScreen'
@@ -34,12 +34,28 @@ function isFixa(e: Entry): boolean {
   return Boolean(e.seriesId || e.installment)
 }
 
+/*
+ * Atrasado é derivado, não armazenado: uma despesa não paga cujo vencimento já
+ * passou. Mês anterior ao de hoje conta inteiro (venceu de qualquer forma); no
+ * mês corrente depende do dia de vencimento vs. hoje. Receita não entra — "a
+ * receber" em atraso é outra conversa.
+ */
+function isOverdue(e: Entry, todayMonth: string, todayDay: number): boolean {
+  if (e.paid || e.type !== 'despesa') return false
+  const rel = compareMonths(e.month, todayMonth)
+  if (rel > 0) return false
+  if (rel < 0) return true
+  return e.dueDay != null && e.dueDay < todayDay
+}
+
 type Group = {
   key: string
   label: string
   kind: EntryType
   entries: Entry[]
   subtotal: number
+  /* cabeçalho em vermelho — grupo de atrasadas */
+  danger?: boolean
 }
 
 export default function Financeiro() {
@@ -72,23 +88,37 @@ export default function Financeiro() {
  * em texto (como a coluna SITUAÇÃO da planilha), carrega ícone + rótulo — nunca
  * só cor — e tem alvo de toque adequado.
  */
-function StatusPill({ entry, onToggle }: { entry: Entry; onToggle: () => void }) {
+function StatusPill({
+  entry,
+  overdue,
+  onToggle,
+}: {
+  entry: Entry
+  overdue: boolean
+  onToggle: () => void
+}) {
   const isReceita = entry.type === 'receita'
   const doneLabel = isReceita ? 'Recebido' : 'Pago'
   const pendingLabel = isReceita ? 'A receber' : 'A pagar'
-  const current = entry.paid ? doneLabel : pendingLabel
+  const current = entry.paid ? doneLabel : overdue ? 'Atrasado' : pendingLabel
   const next = entry.paid ? pendingLabel : doneLabel
+  const cls = entry.paid
+    ? 'fin-status fin-status--done'
+    : overdue
+      ? 'fin-status fin-status--overdue'
+      : 'fin-status'
+  const Icon = entry.paid ? Check : overdue ? AlertTriangle : Clock
 
   return (
     <button
       type="button"
-      className={entry.paid ? 'fin-status fin-status--done' : 'fin-status'}
+      className={cls}
       aria-pressed={entry.paid}
       aria-label={`${entry.name}: ${current}. Marcar como ${next}`}
       title={`Marcar como ${next}`}
       onClick={onToggle}
     >
-      {entry.paid ? <Check size={13} /> : <Clock size={13} />}
+      <Icon size={13} />
       <span>{current}</span>
     </button>
   )
@@ -138,6 +168,10 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     () => data.entries.filter((e) => e.month === prevMonth),
     [data.entries, prevMonth],
   )
+
+  /* "Hoje" para derivar atraso — mês corrente e dia do mês, da data real */
+  const todayMonth = currentMonth()
+  const todayDay = new Date().getDate()
 
   const totals = useMemo(() => {
     let receita = 0
@@ -233,27 +267,41 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
    */
   const grouped = tab === 'todas' || tab === 'despesa'
   const groups = useMemo<Group[]>(() => {
-    const make = (key: string, label: string, kind: EntryType, list: Entry[]): Group => ({
+    const make = (
+      key: string,
+      label: string,
+      kind: EntryType,
+      list: Entry[],
+      danger = false,
+    ): Group => ({
       key,
       label,
       kind,
       entries: list,
       subtotal: list.reduce((s, e) => s + e.amountCents, 0),
+      danger,
     })
+    const overdue = (e: Entry) => isOverdue(e, todayMonth, todayDay)
     const isCartao = (e: Entry) => Boolean(e.cardId)
     const despesa = tab === 'despesa' ? tabEntries : tabEntries.filter((e) => e.type === 'despesa')
-    const despesaGroups = [
-      make('cartoes', 'Cartões', 'despesa', despesa.filter(isCartao)),
-      make('fixas', 'Fixas e parcelas', 'despesa', despesa.filter((e) => !isCartao(e) && isFixa(e))),
-      make('avulsas', 'Avulsas', 'despesa', despesa.filter((e) => !isCartao(e) && !isFixa(e))),
+    /* Atrasadas têm prioridade: a vencida e não paga sai do grupo de origem
+       (cartão/fixa/avulsa) para o topo, em vermelho. O restante segue a
+       classificação normal, com o cartão mandando. */
+    const atrasadas = make('atrasadas', 'Atrasadas', 'despesa', despesa.filter(overdue), true)
+    const emDia = despesa.filter((e) => !overdue(e))
+    const emDiaGroups = [
+      make('cartoes', 'Cartões', 'despesa', emDia.filter(isCartao)),
+      make('fixas', 'Fixas e parcelas', 'despesa', emDia.filter((e) => !isCartao(e) && isFixa(e))),
+      make('avulsas', 'Avulsas', 'despesa', emDia.filter((e) => !isCartao(e) && !isFixa(e))),
     ]
-    if (tab === 'despesa') return despesaGroups
-    // "Todas": receitas na frente das despesas
+    if (tab === 'despesa') return [atrasadas, ...emDiaGroups]
+    // "Todas": atrasadas lideram pela urgência, depois receitas, depois o resto
     return [
+      atrasadas,
       make('receitas', 'Receitas', 'receita', tabEntries.filter((e) => e.type === 'receita')),
-      ...despesaGroups,
+      ...emDiaGroups,
     ]
-  }, [tabEntries, tab])
+  }, [tabEntries, tab, todayMonth, todayDay])
 
   /* Alertas por regras: gargalo futuro, renda comprometida, categoria em alta */
   const alerts = useMemo(
@@ -268,6 +316,18 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       (e) => !e.seriesId && !e.installment && !currentNames.has(e.name),
     ).length
   }, [monthEntries, prevEntries])
+
+  /* Despesas não pagas presas em meses anteriores — candidatas a reagendar.
+     Só faz sentido oferecer quando o mês visto é o corrente. */
+  const overdueFromPast = useMemo(
+    () =>
+      month === todayMonth
+        ? data.entries.filter(
+            (e) => e.type === 'despesa' && !e.paid && compareMonths(e.month, month) < 0,
+          ).length
+        : 0,
+    [data.entries, month, todayMonth],
+  )
 
   const footer = useMemo(() => {
     let total = 0
@@ -354,7 +414,11 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         <span className={`fin-row__amount ${e.type === 'receita' ? 'fin-green' : 'fin-red'}`}>
           {e.type === 'receita' ? '' : '– '}{formatBRL(e.amountCents)}
         </span>
-        <StatusPill entry={e} onToggle={() => store.togglePaid(e)} />
+        <StatusPill
+          entry={e}
+          overdue={isOverdue(e, todayMonth, todayDay)}
+          onToggle={() => store.togglePaid(e)}
+        />
         <button
           type="button"
           className="fin-row__edit"
@@ -471,6 +535,16 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           <header>
             <h2>{TABS.find((t) => t.key === tab)?.label}</h2>
             <div className="fin-list__actions">
+              {overdueFromPast > 0 && (
+                <button
+                  type="button"
+                  className="btn btn--outline fin-add fin-add--danger"
+                  title={`Trazer ${overdueFromPast} conta(s) atrasada(s) de meses anteriores para ${monthLabel(month)}`}
+                  onClick={() => store.rescheduleOverdue(month)}
+                >
+                  <AlertTriangle size={14} /> Trazer atrasadas
+                </button>
+              )}
               {copyCandidates > 0 && (
                 <button
                   type="button"
@@ -528,7 +602,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                 .filter((g) => g.entries.length > 0)
                 .map((g) => (
                   <div key={g.key} className="fin-group">
-                    <div className="fin-group__head">
+                    <div className={g.danger ? 'fin-group__head fin-group__head--danger' : 'fin-group__head'}>
                       <span className="fin-group__label">
                         {g.label} <em>· {g.entries.length}</em>
                       </span>

@@ -330,6 +330,11 @@
   font-size: var(--text-xs);
 }
 
+/* Ação de reagendar atrasadas: texto vermelho sinaliza urgência sem virar botão cheio */
+.fin-add--danger {
+  color: #B91C1C;
+}
+
 .fin-empty {
   color: var(--color-text-muted);
   font-size: var(--text-sm);
@@ -370,6 +375,15 @@
 .fin-group__label em {
   font-style: normal;
   font-weight: var(--weight-medium);
+}
+
+/* Grupo de atrasadas: borda e rótulo em vermelho, para o topo saltar */
+.fin-group__head--danger {
+  border-bottom-color: rgba(220, 38, 38, 0.35);
+}
+
+.fin-group__head--danger .fin-group__label {
+  color: #B91C1C;
 }
 
 .fin-group__sum {
@@ -449,6 +463,18 @@
   color: var(--color-text-secondary);
 }
 
+/* Atrasado: pendente que venceu — o estado mais urgente sobe do âmbar ao vermelho */
+.fin-status--overdue {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.25);
+  color: #B91C1C;
+}
+
+.fin-status--overdue:hover {
+  border-color: rgba(220, 38, 38, 0.5);
+  color: #991B1B;
+}
+
 .fin-status:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
@@ -472,7 +498,7 @@
 
 /* Pago recua a linha inteira e risca o nome — leitura de "resolvido" à distância */
 .fin-row--done {
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
 .fin-row--done .fin-row__name {

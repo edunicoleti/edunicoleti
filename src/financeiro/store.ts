@@ -175,6 +175,50 @@ export function useFinStore(viewedMonth: string) {
     [data.entries, adapter, guard],
   )
 
+  /*
+   * Reagenda para `month` as despesas não pagas presas em meses anteriores: a
+   * conta que não coube no mês dela passa a viver no mês atual em vez de sumir
+   * na virada. Ocorrências de série fixa marcam skipMonths no mês de origem para
+   * a materialização não recriá-las lá (parcelas e manuais não têm série, então
+   * mover basta). Retorna quantas moveu.
+   */
+  const rescheduleOverdue = useCallback(
+    (month: string): number => {
+      const stranded = data.entries.filter(
+        (e) => e.type === 'despesa' && !e.paid && compareMonths(e.month, month) < 0,
+      )
+      if (stranded.length === 0) return 0
+
+      const skipBySeries = new Map<string, Set<string>>()
+      for (const e of stranded) {
+        if (e.seriesId && data.series.some((s) => s.id === e.seriesId)) {
+          const set = skipBySeries.get(e.seriesId) ?? new Set<string>()
+          set.add(e.month)
+          skipBySeries.set(e.seriesId, set)
+        }
+      }
+
+      const moved = stranded.map((e) => ({ ...e, month }))
+      const movedById = new Map(moved.map((m) => [m.id, m]))
+      const updatedSeries = data.series
+        .filter((s) => skipBySeries.has(s.id))
+        .map((s) => ({
+          ...s,
+          skipMonths: [...new Set([...s.skipMonths, ...skipBySeries.get(s.id)!])],
+        }))
+
+      setData((d) => ({
+        ...d,
+        entries: d.entries.map((e) => movedById.get(e.id) ?? e),
+        series: d.series.map((s) => updatedSeries.find((u) => u.id === s.id) ?? s),
+      }))
+      guard(adapter.upsertEntries(moved))
+      for (const s of updatedSeries) guard(adapter.upsertSeries(s))
+      return moved.length
+    },
+    [data.entries, data.series, adapter, guard],
+  )
+
   const updateEntry = useCallback(
     (entry: Entry, patch: EntryPatch, scope: EditScope) => {
       const apply = (e: Entry, withPaid: boolean): Entry => ({
@@ -398,6 +442,7 @@ export function useFinStore(viewedMonth: string) {
     mode: adapter.mode,
     addEntry,
     copyFromPreviousMonth,
+    rescheduleOverdue,
     updateEntry,
     togglePaid,
     deleteEntry,
