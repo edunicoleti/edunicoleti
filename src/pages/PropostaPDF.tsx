@@ -1,18 +1,49 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { todasPropostas } from '../data/propostas'
+import { useEffect, useState } from 'react'
+import type { PropostaData } from '../data/proposta.types'
+import { fetchPropostaPublica } from '../data/propostaStore'
+import { useNoindex } from '../hooks/useNoindex'
 import './PropostaPDF.css'
 
 export default function PropostaPDF() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
-  const proposta = todasPropostas.find((p) => p.slug === slug)
+  useNoindex()
+
+  const [proposta, setProposta] = useState<PropostaData | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!slug) return
+    let cancelled = false
+    fetchPropostaPublica(slug)
+      .then((p) => {
+        if (!cancelled) setProposta(p)
+      })
+      .catch(() => {
+        if (!cancelled) setProposta(null)
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [slug])
 
   useEffect(() => {
     document.title = proposta
       ? `Proposta — ${proposta.cliente.empresa}`
       : 'Proposta'
   }, [proposta])
+
+  if (slug && loading) {
+    return (
+      <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+        <p>Carregando proposta…</p>
+      </div>
+    )
+  }
 
   if (!proposta) {
     return (

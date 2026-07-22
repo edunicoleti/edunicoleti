@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Artefatos de build/deploy não versionados
+*.zip
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -219,3 +219,137 @@
     justify-content: center;
   }
 }
+
+/* ---- Adições do Ciclo 1 (auth, status, criação) ---- */
+.dashboard__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.dashboard__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Header vira linha com o botão "Nova proposta" à direita */
+.dashboard__top {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dashboard__state {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  padding: 1rem 0;
+}
+
+.dashboard__state--error {
+  color: #c0392b;
+}
+
+.prop-status {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--color-bg-alt);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.prop-status--enviada { background: var(--color-accent-light); color: var(--color-accent); border-color: transparent; }
+.prop-status--vista { background: #FFF4E5; color: #B26A00; border-color: transparent; }
+.prop-status--aceita { background: #E7F6EC; color: #1B7F3B; border-color: transparent; }
+.prop-status--recusada { background: #FDECEC; color: #C0392B; border-color: transparent; }
+.prop-status--rascunho { background: var(--color-bg-alt); color: var(--color-text-muted); }
+
+.prop-card__delete {
+  padding: 0.6rem 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.prop-card__delete:hover {
+  color: #c0392b;
+  border-color: #c0392b;
+}
+
+/* Modal de nova proposta */
+.prop-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 50;
+}
+
+.prop-modal__card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow: auto;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.prop-modal__title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.prop-modal__hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.prop-modal__hint code {
+  font-family: 'Courier New', monospace;
+  background: var(--color-bg-alt);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: var(--color-accent);
+}
+
+.prop-modal__textarea {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  width: 100%;
+  min-height: 320px;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  resize: vertical;
+}
+
+.prop-modal__textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
+}
+
+.prop-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+}

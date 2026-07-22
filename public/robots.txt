@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+# Private areas / client documents - kept out of the index
+Disallow: /financeiro
+Disallow: /crm
+Disallow: /proposta
+Disallow: /propostas
+
+Sitemap: https://www.edunicoleti.com.br/sitemap.xml
