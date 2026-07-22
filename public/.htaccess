@@ -10,6 +10,23 @@
   <FilesMatch "\.(js|css|woff2?|png|svg|ico)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
+
+  # --- Cabeçalhos de segurança (aplicados a todas as respostas) ---
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+  # CSP: permite o próprio site, fontes do Google e a API do Supabase.
+  # 'unsafe-inline' é necessário porque o app usa estilos inline e o loader de
+  # fontes tem um onload inline. Se algo quebrar após o deploy (fontes ou o
+  # /financeiro sincronizando), remova esta linha e reponha aos poucos.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+
+  # Áreas privadas nunca indexadas, mesmo por crawlers que não rodam JS
+  SetEnvIf Request_URI "^/(financeiro|crm|propostas?)" PRIVATE_AREA
+  Header always set X-Robots-Tag "noindex, nofollow" env=PRIVATE_AREA
 </IfModule>
 
 <IfModule mod_rewrite.c>

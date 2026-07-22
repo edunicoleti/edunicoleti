@@ -11,6 +11,12 @@ const PropostaDashboard = lazy(() => import('./pages/PropostaDashboard'))
 /* Painel financeiro pessoal (protegido por senha, noindex) */
 const Financeiro = lazy(() => import('./pages/Financeiro'))
 
+/* CRM — funil de vendas (protegido por senha, noindex) */
+const Crm = lazy(() => import('./pages/Crm'))
+
+/* Rota desconhecida cai numa 404 real, não numa tela em branco */
+const NotFound = lazy(() => import('./pages/NotFound'))
+
 export default function App() {
   return (
     <Suspense fallback={null}>
@@ -21,6 +27,8 @@ export default function App() {
         <Route path="/proposta/:slug/pdf" element={<PropostaPDF />} />
         <Route path="/propostas" element={<PropostaDashboard />} />
         <Route path="/financeiro" element={<Financeiro />} />
+        <Route path="/crm" element={<Crm />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   )

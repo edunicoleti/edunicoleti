@@ -1,12 +1,56 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
-import { todasPropostas } from '../data/propostas'
+import type { PropostaData } from '../data/proposta.types'
+import { fetchPropostaPublica, registrarVisita } from '../data/propostaStore'
+import { useNoindex } from '../hooks/useNoindex'
 import './Proposta.css'
 
 export default function Proposta() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
-  const proposta = todasPropostas.find((p) => p.slug === slug)
+  useNoindex()
+
+  const [proposta, setProposta] = useState<PropostaData | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!slug) return
+    let cancelled = false
+    fetchPropostaPublica(slug)
+      .then((p) => {
+        if (cancelled) return
+        setProposta(p)
+        if (p) registrarVisita(slug)
+      })
+      .catch(() => {
+        if (!cancelled) setProposta(null)
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [slug])
+
+  if (!slug) {
+    return (
+      <div className="proposta-notfound">
+        <p className="text-label">Proposta não encontrada</p>
+        <h1>Esta proposta não existe ou foi removida.</h1>
+        <a href="/" className="btn btn--primary">Voltar ao início</a>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="proposta-notfound">
+        <p className="text-label">Carregando proposta…</p>
+      </div>
+    )
+  }
 
   if (!proposta) {
     return (
