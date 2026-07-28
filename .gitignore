@@ -15,6 +15,10 @@ dist-ssr
 # Artefatos de build/deploy não versionados
 *.zip
 
+# Dossiês comerciais de clientes: preços, margens e estratégia de negociação.
+# Este repositório é público — nada daqui pode ser versionado.
+clientes/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
