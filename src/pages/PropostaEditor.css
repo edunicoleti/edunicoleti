@@ -1,0 +1,270 @@
+/* Editor visual de propostas — formulário dentro do modal do painel. */
+
+.prop-modal__card--wide {
+  max-width: 860px;
+}
+
+.ed-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ed-head .prop-modal__title {
+  flex: 1;
+}
+
+.btn--sm {
+  padding: 0.4rem 0.75rem;
+  font-size: var(--text-sm);
+}
+
+.ed-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ed-sec {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.ed-sec__t {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  padding: 0 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ed-sec__t em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.ed-hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  margin-top: -0.2rem;
+}
+
+.ed-row {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.ed-f {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 140px;
+  flex: 1 1 140px;
+}
+
+.ed-f--grow {
+  flex: 3 1 220px;
+}
+
+.ed-f > span {
+  font-size: 0.78rem;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+}
+
+.ed-f > span em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.ed-f input,
+.ed-f select,
+.ed-f textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.ed-f textarea {
+  resize: vertical;
+  line-height: var(--leading-normal);
+}
+
+.ed-f input:focus,
+.ed-f select:focus,
+.ed-f textarea:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.ed-f--check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1 1 auto;
+  padding-bottom: 0.5rem;
+}
+
+.ed-f--check input {
+  width: auto;
+  accent-color: var(--color-accent);
+}
+
+.ed-f--check span {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+/* endereço do link com prefixo fixo */
+.ed-slug {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+.ed-slug em {
+  font-style: normal;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding: 0 0.1rem 0 0.7rem;
+  white-space: nowrap;
+}
+
+.ed-slug input {
+  border: none;
+  background: transparent;
+  padding-left: 0;
+}
+
+.ed-slug input:focus {
+  outline: none;
+}
+
+.ed-slug:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.ed-mini {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* linhas repetíveis (escopo) */
+.ed-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ed-item input {
+  flex: 1;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.ed-item input:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.ed-del {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 8px);
+  color: var(--color-text-muted);
+  padding: 0.45rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.ed-del:hover {
+  color: #c0392b;
+  border-color: #c0392b;
+}
+
+.ed-del--top {
+  align-self: flex-end;
+  margin-bottom: 0.1rem;
+}
+
+.ed-add {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm, 8px);
+  padding: 0.45rem 0.8rem;
+  font-size: var(--text-sm);
+  font-family: inherit;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.ed-add:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* cartão de uma opção de escopo */
+.ed-card {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-alt);
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+@media (max-width: 640px) {
+  .ed-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ed-del--top {
+    align-self: flex-start;
+  }
+}

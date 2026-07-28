@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { LogOut, Plus, Trash2 } from 'lucide-react'
+import { LogOut, Pencil, Plus, Trash2 } from 'lucide-react'
 import { AuthGate } from '../components/AuthGate'
 import { useNoindex } from '../hooks/useNoindex'
 import { cloudEnabled } from '../financeiro/supabase'
 import {
   listPropostas,
-  upsertProposta,
   deleteProposta,
   type PropostaRecord,
   type PropostaStatus,
 } from '../data/propostaStore'
-import type { PropostaData } from '../data/proposta.types'
+import { PropostaEditor } from './PropostaEditor'
 import './PropostaDashboard.css'
 
 const STATUS_LABEL: Record<PropostaStatus, string> = {
@@ -20,19 +19,6 @@ const STATUS_LABEL: Record<PropostaStatus, string> = {
   vista: 'Vista',
   aceita: 'Aceita',
   recusada: 'Recusada',
-}
-
-const TEMPLATE: PropostaData = {
-  slug: 'novo-cliente',
-  cliente: { nome: '', empresa: '', cargo: '', email: '', telefone: '' },
-  projeto: { titulo: 'Título do projeto', tipo: 'Projeto Web', descricao: '', tags: [] },
-  escopo: [{ descricao: 'Item do escopo', incluido: true }],
-  tecnologias: ['React', 'Vite'],
-  prazoEntrega: 'A definir',
-  valorTotal: 0,
-  pagamento: { entrada: 0, saldo: 0, descricao: '' },
-  validade: '30 dias',
-  criadoEm: new Date().toISOString(),
 }
 
 export default function PropostaDashboard() {
@@ -49,6 +35,7 @@ function DashboardInner({ onLogout }: { onLogout: () => void }) {
   const [loading, setLoading] = useState(cloudEnabled)
   const [error, setError] = useState<string | null>(null)
   const [showNew, setShowNew] = useState(false)
+  const [editando, setEditando] = useState<PropostaRecord | null>(null)
   const [reloadKey, setReloadKey] = useState(0)
 
   useEffect(() => {
@@ -179,6 +166,13 @@ function DashboardInner({ onLogout }: { onLogout: () => void }) {
                       Ver proposta
                     </Link>
                     <button
+                      className="btn btn--outline prop-card__edit"
+                      onClick={() => setEditando(rec)}
+                      aria-label={`Editar proposta ${rec.slug}`}
+                    >
+                      <Pencil size={15} /> Editar
+                    </button>
+                    <button
                       className="btn btn--outline prop-card__copy"
                       id={`copy-proposta-${rec.slug}`}
                       onClick={() => {
@@ -210,7 +204,7 @@ function DashboardInner({ onLogout }: { onLogout: () => void }) {
       </main>
 
       {showNew && (
-        <NewPropostaModal
+        <PropostaEditor
           onClose={() => setShowNew(false)}
           onSaved={() => {
             setShowNew(false)
@@ -218,60 +212,19 @@ function DashboardInner({ onLogout }: { onLogout: () => void }) {
           }}
         />
       )}
-    </div>
-  )
-}
 
-function NewPropostaModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
-  const [json, setJson] = useState(() => JSON.stringify(TEMPLATE, null, 2))
-  const [error, setError] = useState<string | null>(null)
-  const [busy, setBusy] = useState(false)
-
-  async function save() {
-    let parsed: PropostaData
-    try {
-      parsed = JSON.parse(json) as PropostaData
-    } catch {
-      setError('JSON inválido — confira as vírgulas e aspas.')
-      return
-    }
-    if (!parsed.slug || !parsed.projeto?.titulo) {
-      setError('A proposta precisa ao menos de "slug" e "projeto.titulo".')
-      return
-    }
-    setBusy(true)
-    setError(null)
-    try {
-      await upsertProposta(parsed, 'enviada')
-      onSaved()
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Falha ao salvar')
-      setBusy(false)
-    }
-  }
-
-  return (
-    <div className="prop-modal" role="dialog" aria-modal="true" onClick={onClose}>
-      <div className="prop-modal__card" onClick={(e) => e.stopPropagation()}>
-        <h2 className="prop-modal__title">Nova proposta</h2>
-        <p className="prop-modal__hint">
-          Edite o modelo abaixo. O <code>slug</code> vira o link público (<code>/proposta/slug</code>).
-          Um editor visual completo chega na próxima fase — por enquanto, é o mesmo formato do template.
-        </p>
-        <textarea
-          className="prop-modal__textarea"
-          value={json}
-          onChange={(e) => setJson(e.target.value)}
-          spellCheck={false}
+      {editando && (
+        <PropostaEditor
+          inicial={editando.data}
+          statusInicial={editando.status}
+          leadId={editando.leadId}
+          onClose={() => setEditando(null)}
+          onSaved={() => {
+            setEditando(null)
+            setReloadKey((k) => k + 1)
+          }}
         />
-        {error && <p className="dashboard__state dashboard__state--error">{error}</p>}
-        <div className="prop-modal__actions">
-          <button className="btn btn--outline" onClick={onClose} disabled={busy}>Cancelar</button>
-          <button className="btn btn--primary" onClick={save} disabled={busy}>
-            {busy ? 'Salvando…' : 'Salvar proposta'}
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   )
 }
