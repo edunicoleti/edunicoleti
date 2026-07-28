@@ -42,6 +42,19 @@ export interface PropostaMensalidadeInfo {
   recursos?: string[]
 }
 
+/* Escopos alternativos apresentados lado a lado. Quando preenchido, substitui o
+   par "Passo 1 / Passo 2" por uma comparação — o cliente escolhe o escopo, e
+   cada opção carrega seu próprio setup e sua própria mensalidade. */
+export interface PropostaOpcao {
+  id: string
+  titulo: string
+  resumo?: string
+  valorTotal: number
+  mensalidade?: number
+  recomendada?: boolean
+  destaques?: string[]
+}
+
 export interface PropostaData {
   slug: string
   cliente: {
@@ -58,6 +71,7 @@ export interface PropostaData {
     tags: string[]
   }
   escopo: PropostaItem[]
+  opcoes?: PropostaOpcao[]
   tecnologias: string[]
   tecnologiasTitulo?: string
   planejamentoVisual?: PropostaPlanejamentoVisual

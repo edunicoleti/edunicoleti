@@ -62,6 +62,7 @@ export default function PropostaPDF() {
     tecnologiasTitulo,
     planejamentoVisual,
     prazoEntrega,
+    opcoes,
     valorTotal,
     mensalidade,
     investimento,
@@ -236,6 +237,39 @@ export default function PropostaPDF() {
           <div className="pdf-section__title">Investimento</div>
           <div className="pdf-invest">
 
+            {/* Escopos alternativos: substitui os passos pela comparação */}
+            {opcoes && opcoes.length > 0 ? (
+              <div className="pdf-hosp-grid">
+                {opcoes.map((op) => (
+                  <div
+                    key={op.id}
+                    className={`pdf-hosp-card${op.recomendada ? ' pdf-hosp-card--featured' : ''}`}
+                  >
+                    {op.recomendada && (
+                      <div style={{ fontSize: '7pt', color: '#16a34a', fontWeight: 700, marginBottom: '1mm', fontFamily: 'Arial, sans-serif', textTransform: 'uppercase' }}>
+                        Recomendada
+                      </div>
+                    )}
+                    <div className="pdf-hosp-card__label">{op.titulo}</div>
+                    <div className="pdf-hosp-card__value">{formatBRL(op.valorTotal)}</div>
+                    {op.mensalidade && op.mensalidade > 0 ? (
+                      <div className="pdf-hosp-card__desc">
+                        + {formatBRL(op.mensalidade)} / mês de infraestrutura e manutenção
+                      </div>
+                    ) : null}
+                    {op.resumo && <div className="pdf-hosp-card__desc">{op.resumo}</div>}
+                    {op.destaques && op.destaques.length > 0 && (
+                      <ul className="pdf-invest__step-features">
+                        {op.destaques.map((d) => (
+                          <li key={d}>{d}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+            <>
             {/* Passo 1 */}
             <div className="pdf-invest__step">
               <div className="pdf-invest__step-label pdf-invest__step-label--accent">Passo 1</div>
@@ -289,6 +323,8 @@ export default function PropostaPDF() {
                   </div>
                 ) : null}
               </div>
+            )}
+            </>
             )}
           </div>
         </div>

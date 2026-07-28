@@ -66,6 +66,7 @@ export default function Proposta() {
     cliente,
     projeto,
     escopo,
+    opcoes,
     tecnologias,
     tecnologiasTitulo,
     planejamentoVisual,
@@ -269,8 +270,49 @@ export default function Proposta() {
           <div className="proposta-invest">
             <h2 className="proposta-section__title" style={{ marginBottom: '1.5rem' }}>Investimento</h2>
             
+            {/* Escopos alternativos: o cliente compara e escolhe */}
+            {opcoes && opcoes.length > 0 ? (
+              <>
+                <div className="proposta-opcoes">
+                  {opcoes.map((op) => (
+                    <div
+                      key={op.id}
+                      className={`proposta-opcao${op.recomendada ? ' proposta-opcao--rec' : ''}`}
+                    >
+                      {op.recomendada && <span className="proposta-opcao__badge">Recomendada</span>}
+                      <h3 className="proposta-opcao__titulo">{op.titulo}</h3>
+                      {op.resumo && <p className="proposta-opcao__resumo">{op.resumo}</p>}
+                      <div className="proposta-opcao__valor">{formatBRL(op.valorTotal)}</div>
+                      <div className="proposta-opcao__label">Investimento único</div>
+                      {op.mensalidade && op.mensalidade > 0 ? (
+                        <div className="proposta-opcao__mensal">
+                          + {formatBRL(op.mensalidade)} <span>/ mês</span>
+                        </div>
+                      ) : null}
+                      {op.destaques && op.destaques.length > 0 && (
+                        <ul className="proposta-opcao__lista">
+                          {op.destaques.map((d) => (
+                            <li key={d}>{d}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="proposta-opcoes__nota">
+                  <span className="text-label">{mensalidadeTitulo}</span>
+                  <p>{mensalidadeDescricao}</p>
+                  <ul className="proposta-invest__features">
+                    {mensalidadeRecursos.map((r) => (
+                      <li key={r}>{r}</li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            ) : (
             <div className="proposta-invest__steps" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              
+
               {/* PASSO 1 */}
               <div className="proposta-step-card">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -339,7 +381,8 @@ export default function Proposta() {
                 </>
               )}
             </div>
-            
+            )}
+
             {mostrarDetalhesComerciais && (
               <div className="proposta-invest__details" style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginTop: '2.5rem' }}>
               <div className="proposta-invest__card" style={{ background: 'var(--color-bg-alt)', borderRadius: '12px', padding: '1.25rem', border: '1px solid var(--color-border-light)' }}>
