@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F8F8F6">
+<title>Proposta | Criare Construtora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8F8F6; --surface:#FFFFFF; --alt:#F1F0EC;
+  --line:#E4E2DC; --line-soft:#EDECEA;
+  --ink:#16150F; --ink-2:#57544C; --ink-3:#9B9788;
+  --blue:#2047C9; --blue-soft:#EBF0FF; --blue-line:rgba(32,71,201,.22);
+  --green:#1F7A4D; --green-soft:#E9F4EE;
+  --amber:#B4791A; --amber-soft:#FBF3E2;
+  --dark:#191C22;
+  --f:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --pad:clamp(18px,5vw,52px);
+  --r:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+body{font-family:var(--f);background:var(--bg);color:var(--ink);line-height:1.6;
+     font-size:clamp(15px,.4vw + 14px,16px);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+img,svg{max-width:100%;}
+
+.wrap{width:min(1120px,100%);margin:0 auto;padding-inline:var(--pad);}
+section{padding-block:clamp(40px,7vw,76px);}
+.sep{border-top:1px solid var(--line);}
+
+h1{font-size:clamp(29px,6.2vw,54px);font-weight:700;letter-spacing:-.032em;line-height:1.08;}
+h2{font-size:clamp(23px,3.6vw,36px);font-weight:700;letter-spacing:-.028em;line-height:1.18;}
+h3{font-size:clamp(16px,1.5vw,18px);font-weight:700;letter-spacing:-.012em;margin-bottom:6px;}
+p{color:var(--ink-2);}
+b,strong{color:var(--ink);font-weight:600;}
+.eyebrow{font-size:clamp(11px,1.2vw,12px);font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+         color:var(--blue);margin-bottom:14px;}
+.eyebrow--mute{color:var(--ink-3);}
+.lead{font-size:clamp(15.5px,1.7vw,18px);line-height:1.65;margin-top:14px;max-width:62ch;}
+.txt{font-size:clamp(14px,1.4vw,15.5px);line-height:1.6;}
+.small{font-size:clamp(12.5px,1.2vw,13.5px);color:var(--ink-3);line-height:1.55;}
+
+/* ── HERO ── */
+.hero{background:radial-gradient(680px 420px at 88% 6%,rgba(32,71,201,.08),transparent 62%);
+      padding-block:clamp(28px,6vw,54px) clamp(40px,7vw,72px);}
+.brandbar{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;
+          margin-bottom:clamp(34px,7vw,64px);}
+.logo{font-size:clamp(17px,2vw,19px);font-weight:700;letter-spacing:-.03em;}
+.logo i{color:var(--blue);font-style:normal;}
+.hero h1{max-width:17ch;}
+.hero .sub{font-size:clamp(15.5px,1.9vw,19px);line-height:1.6;margin-top:18px;max-width:48ch;}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:clamp(24px,4vw,34px);}
+.pill{font-size:clamp(12px,1.3vw,13px);font-weight:500;color:var(--ink-2);padding:8px 15px;
+      border:1px solid var(--line);border-radius:100px;background:var(--surface);}
+
+/* ── utilitários ── */
+.grid{display:grid;gap:clamp(14px,2vw,22px);}
+.g2{grid-template-columns:repeat(auto-fit,minmax(270px,1fr));}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+.split{display:grid;gap:clamp(24px,4vw,44px);grid-template-columns:1fr;align-items:center;}
+@media(min-width:900px){ .split{grid-template-columns:1.1fr 1fr;} .split--wide{grid-template-columns:1.35fr 1fr;} }
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,2.4vw,24px);}
+.card--on{border:1.5px solid var(--blue-line);background:var(--blue-soft);}
+.ic{width:36px;height:36px;border-radius:10px;background:var(--blue-soft);color:var(--blue);
+    display:grid;place-items:center;font-size:16px;margin-bottom:12px;}
+.card--on .ic{background:var(--surface);}
+.ck{list-style:none;display:grid;gap:10px;}
+.ck li{display:flex;gap:10px;font-size:clamp(14px,1.4vw,15.5px);color:var(--ink-2);line-height:1.5;align-items:flex-start;}
+.ck li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+.note{background:var(--blue-soft);border:1px solid var(--blue-line);border-radius:13px;padding:15px 17px;}
+.note p{font-size:clamp(13.5px,1.35vw,14.5px);line-height:1.55;}
+
+/* ══ MOCKUPS: tudo em em, escala com a raiz fluida ══ */
+.show{display:flex;align-items:flex-end;justify-content:center;}
+.brw{position:relative;flex:1;min-width:0;border:1px solid var(--line);border-radius:.9em;overflow:hidden;
+     background:var(--surface);box-shadow:0 10px 32px rgba(22,21,15,.11);
+     font-size:clamp(8px,1.15vw,11px);}
+.brw__bar{background:var(--alt);border-bottom:1px solid var(--line);padding:.7em 1.1em;display:flex;align-items:center;gap:.45em;}
+.brw__d{width:.72em;height:.72em;border-radius:50%;background:#CFCCC4;flex-shrink:0;}
+.brw__u{flex:1;margin-left:.6em;background:var(--surface);border:1px solid var(--line);border-radius:.45em;
+        font-size:.92em;color:var(--ink-3);padding:.25em .7em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.mk__nav{display:flex;align-items:center;padding:.9em 1.3em;border-bottom:1px solid var(--line-soft);gap:1em;}
+.mk__logo{font-size:1em;font-weight:800;letter-spacing:.1em;}
+.mk__links{margin-left:auto;display:flex;gap:1em;font-size:.8em;color:var(--ink-3);}
+.mk__cta{background:var(--ink);color:#fff;font-size:.74em;padding:.4em .8em;border-radius:.4em;white-space:nowrap;}
+.mk__hero{aspect-ratio:16/5.2;background:linear-gradient(135deg,#2A2E36,#3D434E);position:relative;
+          display:flex;flex-direction:column;justify-content:center;padding:0 1.7em;}
+.mk__hero::after{content:'';position:absolute;inset:0;opacity:.15;
+  background-image:linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px);
+  background-size:1.9em 1.9em;}
+.mk__hero b{color:#fff;font-size:1.62em;font-weight:700;letter-spacing:-.02em;position:relative;z-index:1;line-height:1.15;}
+.mk__hero span{color:rgba(255,255,255,.72);font-size:.84em;margin-top:.5em;position:relative;z-index:1;line-height:1.4;}
+.mk__sec{padding:1.1em 1.3em;}
+.mk__st{font-size:.76em;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.85em;}
+.mk__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75em;}
+.mk__c{border:1px solid var(--line-soft);border-radius:.55em;overflow:hidden;}
+.mk__img{aspect-ratio:16/9;background:linear-gradient(135deg,#DEDBD3,#EDEBE5);}
+.mk__cb{padding:.55em .65em;}
+.mk__bd{display:inline-block;font-size:.58em;font-weight:700;letter-spacing:.05em;padding:.25em .5em;border-radius:2em;margin-bottom:.5em;}
+.bd-o{background:var(--blue-soft);color:var(--blue);}
+.bd-l{background:var(--amber-soft);color:var(--amber);}
+.bd-e{background:var(--green-soft);color:var(--green);}
+.mk__t{height:.38em;background:var(--line);border-radius:.3em;width:78%;}
+.mk__t2{height:.3em;background:var(--line-soft);border-radius:.3em;width:52%;margin-top:.3em;}
+.wa{position:absolute;right:3.6em;bottom:.9em;width:2em;height:2em;border-radius:50%;background:#25D366;
+    display:grid;place-items:center;box-shadow:0 .2em .6em rgba(0,0,0,.22);z-index:3;}
+.wa svg{width:1.15em;height:1.15em;fill:#fff;}
+
+/* celular */
+.phone{flex-shrink:0;width:11.5em;border:.45em solid #22262E;border-radius:1.7em;background:#fff;overflow:hidden;
+       box-shadow:0 .9em 2.4em rgba(22,21,15,.22);margin-left:-2.6em;margin-bottom:-1.2em;position:relative;z-index:2;
+       font-size:clamp(8px,1.15vw,11px);}
+.phone__top{height:1.1em;background:#22262E;position:relative;}
+.phone__top::after{content:'';position:absolute;left:50%;top:.28em;transform:translateX(-50%);
+  width:2.7em;height:.35em;border-radius:2em;background:rgba(255,255,255,.25);}
+.ph__nav{display:flex;align-items:center;padding:.6em .8em;border-bottom:1px solid var(--line-soft);}
+.ph__nav b{font-size:.7em;font-weight:800;letter-spacing:.08em;}
+.ph__nav i{margin-left:auto;font-style:normal;color:var(--ink-3);font-size:.78em;letter-spacing:.1em;}
+.ph__hero{aspect-ratio:16/11;background:linear-gradient(135deg,#2A2E36,#3D434E);display:flex;align-items:center;padding:0 .85em;}
+.ph__hero b{color:#fff;font-size:.8em;font-weight:700;line-height:1.25;}
+.ph__sec{padding:.8em;}
+.ph__c{border:1px solid var(--line-soft);border-radius:.45em;overflow:hidden;margin-bottom:.55em;}
+.ph__img{aspect-ratio:16/8;background:linear-gradient(135deg,#DEDBD3,#EDEBE5);}
+.ph__cb{padding:.45em .55em;}
+.wa--sm{right:.55em;bottom:.55em;width:1.5em;height:1.5em;}
+.wa--sm svg{width:.9em;height:.9em;}
+@media(max-width:639px){ .show .brw{display:none;} .phone{margin:0 auto;font-size:13px;width:11.5em;} }
+
+/* painel */
+.adm{display:grid;grid-template-columns:9.5em 1fr;}
+.adm__sb{background:var(--dark);padding:1.1em .9em;}
+.adm__brand{color:#fff;font-size:.78em;font-weight:800;letter-spacing:.1em;padding-bottom:.9em;
+  border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:.9em;}
+.adm__i{font-size:.85em;color:rgba(255,255,255,.5);padding:.45em .6em;border-radius:.45em;margin-bottom:.25em;}
+.adm__i.on{background:var(--blue);color:#fff;font-weight:600;}
+.adm__m{padding:1.2em 1.4em;background:var(--bg);}
+.adm__h{display:flex;align-items:center;margin-bottom:1em;gap:.6em;}
+.adm__h b{font-size:1.1em;font-weight:700;letter-spacing:-.01em;}
+.adm__h span{margin-left:auto;background:var(--blue);color:#fff;font-size:.74em;font-weight:600;padding:.35em .8em;border-radius:.45em;white-space:nowrap;}
+.adm__k{font-size:.68em;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.7em;}
+.adm__row{background:var(--surface);border:1px solid var(--line);border-radius:.55em;padding:.6em .9em;margin-bottom:.45em;
+  display:grid;grid-template-columns:7em 1fr 3.2em 2.8em;gap:.8em;align-items:center;}
+.adm__n{font-size:.85em;font-weight:600;}
+.adm__sl{position:relative;height:.45em;background:var(--line);border-radius:2em;}
+.adm__sl i{display:block;height:100%;background:var(--blue);border-radius:2em;}
+.adm__sl i.full{background:var(--green);}
+.adm__sl u{position:absolute;top:50%;width:1em;height:1em;border-radius:50%;background:#fff;border:.22em solid var(--blue);
+  transform:translate(-50%,-50%);box-shadow:0 .1em .3em rgba(0,0,0,.2);}
+.adm__sl u.full{border-color:var(--green);}
+.adm__v{font-size:.88em;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;
+  border:1px solid var(--line);border-radius:.35em;padding:.2em .4em;background:var(--surface);}
+.adm__dl{font-size:.72em;font-weight:700;text-align:center;padding:.2em .4em;border-radius:2em;background:var(--green-soft);color:var(--green);}
+.adm__tot{background:var(--dark);border-radius:.6em;padding:.85em 1em;margin-top:.7em;}
+.adm__tot .l{font-size:.66em;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.adm__tot .v{font-size:1.9em;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1;margin-top:.15em;}
+.pa__h{background:var(--dark);padding:.7em .8em;}
+.pa__h b{color:#fff;font-size:.78em;font-weight:700;display:block;}
+.pa__h span{color:rgba(255,255,255,.45);font-size:.6em;letter-spacing:.1em;text-transform:uppercase;}
+.pa__b{padding:.7em;background:var(--bg);}
+.pa__r{background:#fff;border:1px solid var(--line);border-radius:.45em;padding:.45em .6em;margin-bottom:.45em;}
+.pa__t{display:flex;justify-content:space-between;font-size:.68em;margin-bottom:.35em;}
+.pa__sl{position:relative;height:.35em;background:var(--line);border-radius:2em;}
+.pa__sl i{display:block;height:100%;background:var(--blue);border-radius:2em;}
+.pa__sl i.full{background:var(--green);}
+.pa__sl u{position:absolute;top:50%;width:.8em;height:.8em;border-radius:50%;background:#fff;border:.18em solid var(--blue);transform:translate(-50%,-50%);}
+.pa__sl u.full{border-color:var(--green);}
+.pa__tot{background:var(--dark);border-radius:.45em;padding:.6em .7em;}
+.pa__tot span{font-size:.55em;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;display:block;}
+.pa__tot b{font-size:1.3em;color:#fff;font-weight:800;letter-spacing:-.02em;}
+
+/* busca Google */
+.serp{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+      padding:clamp(16px,2.2vw,22px);box-shadow:0 10px 30px rgba(22,21,15,.09);}
+.serp__q{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:100px;
+         padding:9px 15px;margin-bottom:18px;}
+.serp__q b{font-size:clamp(13px,1.4vw,14px);font-weight:500;}
+.serp__r{margin-bottom:15px;}
+.serp__r:last-child{margin-bottom:0;}
+.serp__u{font-size:clamp(10.5px,1.1vw,11.5px);color:var(--ink-2);margin-bottom:3px;word-break:break-word;}
+.serp__t{font-size:clamp(14px,1.6vw,16px);color:#1a0dab;font-weight:500;margin-bottom:4px;letter-spacing:-.2px;line-height:1.3;}
+.serp__d{font-size:clamp(11.5px,1.2vw,12.5px);color:var(--ink-2);line-height:1.5;}
+.serp__r--dim{opacity:.42;}
+.serp__r--dim .serp__t{color:var(--ink-2);}
+.gmb{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--alt);}
+.gmb__n{font-size:clamp(15px,1.6vw,16px);font-weight:700;letter-spacing:-.2px;margin-bottom:4px;}
+.gmb__st{color:#F5A623;font-size:12px;margin-bottom:9px;}
+.gmb__st span{color:var(--ink-3);margin-left:5px;}
+.gmb__l{font-size:12px;color:var(--ink-2);line-height:1.75;}
+.gmb__b{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap;}
+.gmb__b i{font-style:normal;font-size:11px;font-weight:600;color:var(--blue);
+  border:1px solid var(--blue-line);border-radius:100px;padding:5px 12px;}
+.gmb__ph{aspect-ratio:16/5;background:linear-gradient(135deg,#DEDBD3,#EDEBE5);border-radius:7px;margin-top:12px;}
+
+/* ── partes da plataforma ── */
+.parts{display:grid;gap:clamp(12px,2vw,18px);grid-template-columns:1fr;}
+@media(min-width:820px){ .parts{grid-template-columns:repeat(3,1fr);} }
+.part{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;}
+.part--1{border:1.5px solid var(--blue-line);}
+.part__h{padding:clamp(16px,2.2vw,20px);border-bottom:1px solid var(--line-soft);background:var(--surface);}
+.part--1 .part__h{background:var(--blue-soft);}
+.part--3 .part__h{background:var(--alt);}
+.part__k{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;}
+.part--1 .part__k{color:var(--blue);}
+.part__n{font-size:clamp(17px,1.8vw,19px);font-weight:700;letter-spacing:-.025em;}
+.part__d{font-size:13px;color:var(--ink-2);margin-top:3px;line-height:1.4;}
+.part__l{list-style:none;padding:clamp(12px,1.8vw,16px);display:grid;gap:7px;}
+.part__l li{font-size:clamp(13.5px,1.35vw,14.5px);color:var(--ink-2);background:var(--bg);
+  border:1px solid var(--line-soft);border-radius:9px;padding:9px 12px;}
+.linkto{display:flex;align-items:center;justify-content:center;gap:9px;color:var(--blue);
+  font-size:12px;font-weight:600;padding:2px 0;}
+.linkto::before{content:'↓';font-size:14px;}
+@media(min-width:820px){ .linkto{display:none;} }
+
+/* ── plano de trabalho ── */
+.steps{display:grid;gap:0;grid-template-columns:1fr;}
+.step{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);}
+.step:last-child{border-bottom:none;}
+.step__d{width:34px;height:34px;border-radius:50%;background:var(--surface);border:1.5px solid var(--blue);
+  color:var(--blue);display:grid;place-items:center;font-size:14px;font-weight:700;flex-shrink:0;}
+.step__d--on{background:var(--blue);color:#fff;}
+.step__w{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;}
+.step__t{font-size:clamp(15px,1.6vw,16.5px);font-weight:700;letter-spacing:-.015em;margin-bottom:4px;}
+.step__p{font-size:clamp(13.5px,1.35vw,14.5px);line-height:1.5;}
+@media(min-width:900px){
+  .steps{grid-template-columns:repeat(5,1fr);gap:18px;position:relative;}
+  .steps::before{content:'';position:absolute;top:17px;left:8%;right:8%;height:1px;background:var(--line);}
+  .step{display:block;padding:0;border-bottom:none;position:relative;}
+  .step__d{margin-bottom:16px;position:relative;z-index:1;}
+}
+
+/* ── investimento ── */
+.price{border:1.5px solid var(--blue-line);background:var(--blue-soft);border-radius:18px;
+       padding:clamp(24px,3.4vw,34px);}
+.price__k{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.price__v{font-size:clamp(44px,8vw,66px);font-weight:800;letter-spacing:-.045em;line-height:1;}
+.price__v small{font-size:.38em;font-weight:700;letter-spacing:-.02em;}
+.price__d{font-size:clamp(14px,1.4vw,15px);line-height:1.6;margin-top:14px;}
+.incbadge{display:inline-flex;align-items:center;background:var(--green-soft);color:var(--green);
+  border:1px solid rgba(31,122,77,.28);border-radius:100px;padding:7px 14px;
+  font-size:clamp(12px,1.25vw,12.5px);font-weight:600;margin-top:14px;line-height:1.3;}
+.price__pay{margin-top:18px;padding-top:15px;border-top:1px solid var(--blue-line);
+  font-size:clamp(13.5px,1.35vw,14.5px);color:var(--ink-2);}
+
+/* ── hospedagem ── */
+.hc{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:15px 17px;
+    display:flex;gap:13px;align-items:flex-start;}
+.hc__i{width:30px;height:30px;border-radius:8px;background:var(--blue-soft);color:var(--blue);
+  display:grid;place-items:center;font-size:14px;flex-shrink:0;}
+.hc__t{font-size:14.5px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px;}
+.hc__p{font-size:13px;color:var(--ink-2);line-height:1.45;}
+.incl{border:1.5px solid var(--green);background:var(--green-soft);border-radius:var(--r);padding:19px 21px;}
+.incl__k{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--green);margin-bottom:5px;}
+.incl__t{font-size:clamp(17px,1.9vw,20px);font-weight:700;letter-spacing:-.03em;line-height:1.2;}
+.incl__p{font-size:13px;color:var(--ink-2);line-height:1.45;margin-top:7px;}
+.yr2{font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin:16px 0 10px;}
+.prow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+  border:1px solid var(--line);border-radius:12px;padding:13px 17px;background:var(--surface);margin-bottom:10px;}
+.prow--on{border-color:var(--green);}
+.prow .n{font-size:14px;color:var(--ink-2);}
+.prow .v{font-size:clamp(18px,2vw,20px);font-weight:700;letter-spacing:-.03em;}
+.prow--on .v{color:var(--green);}
+.prow .v small{font-size:.62em;font-weight:500;color:var(--ink-3);letter-spacing:0;}
+.eco{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  background:var(--green-soft);color:var(--green);padding:2px 8px;border-radius:100px;margin-left:6px;}
+
+/* ── fechamento ── */
+.close{background:var(--alt);}
+.numsteps{display:grid;gap:0;margin-top:22px;}
+.numsteps div{display:grid;grid-template-columns:34px 1fr;gap:14px;padding:14px 0;
+  border-bottom:1px solid var(--line);align-items:baseline;}
+.numsteps div:last-child{border-bottom:none;}
+.numsteps .k{font-size:13px;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums;}
+.numsteps p{font-size:clamp(14px,1.45vw,15px);line-height:1.45;}
+.vcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;
+       padding:clamp(24px,3vw,30px);box-shadow:0 8px 28px rgba(22,21,15,.07);}
+.vcard__n{font-size:clamp(19px,2.1vw,21px);font-weight:700;letter-spacing:-.03em;}
+.vcard__r{font-size:13.5px;color:var(--ink-3);margin-top:3px;margin-bottom:20px;}
+.vcard__l{display:grid;gap:11px;font-size:14px;color:var(--ink-2);}
+.vcard__l a{color:var(--ink-2);text-decoration:none;display:flex;gap:11px;align-items:center;word-break:break-word;}
+.vcard__l a:hover{color:var(--blue);}
+.vcard__l i{font-style:normal;color:var(--blue);width:17px;text-align:center;flex-shrink:0;}
+.vcard__f{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3);line-height:1.5;}
+.cta{display:inline-flex;align-items:center;gap:9px;background:#25D366;color:#fff;text-decoration:none;
+  font-size:15px;font-weight:600;padding:14px 24px;border-radius:100px;margin-top:22px;
+  box-shadow:0 4px 16px rgba(37,211,102,.32);}
+.cta svg{width:17px;height:17px;fill:#fff;}
+
+footer{padding-block:26px 34px;border-top:1px solid var(--line);}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3);}
+
+/* botão flutuante */
+.float{position:fixed;right:16px;bottom:16px;z-index:50;display:flex;align-items:center;gap:9px;
+  background:#25D366;color:#fff;text-decoration:none;font-size:14.5px;font-weight:600;
+  padding:13px 20px;border-radius:100px;box-shadow:0 6px 22px rgba(37,211,102,.4);}
+.float svg{width:17px;height:17px;fill:#fff;}
+@media(max-width:520px){ .float{padding:13px;} .float span{display:none;} }
+
+@media print{
+  @page{size:A4;margin:12mm;}
+  body{background:#fff;}
+  .float,.cta{display:none !important;}
+  section{padding-block:14pt;break-inside:avoid;}
+  .card,.part,.price,.incl,.vcard{break-inside:avoid;}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="brandbar">
+      <div class="logo">eduardo nicoleti<i>.</i></div>
+      <div class="small">Criare Construtora · Julho de 2026</div>
+    </div>
+    <div class="eyebrow">Proposta comercial</div>
+    <h1>Site institucional da Criare, com painel para gerenciar projetos e andamento das obras.</h1>
+    <p class="sub">Nesta proposta você vê como a plataforma vai funcionar, como vamos trabalhar juntos e quanto custa.</p>
+    <div class="pills">
+      <span class="pill">Site institucional</span>
+      <span class="pill">Portfólio de empreendimentos</span>
+      <span class="pill">Painel de gestão de obras</span>
+      <span class="pill">Cadastro no Google</span>
+    </div>
+  </div>
+</header>
+
+<!-- SITE PÚBLICO -->
+<section class="sep">
+  <div class="wrap">
+    <div class="eyebrow eyebrow--mute">A plataforma · parte 1</div>
+    <h2>O site que o público vai ver.</h2>
+    <p class="lead">Funciona bem no computador, no tablet e no celular. Como a maior parte das visitas vem do Instagram, o celular recebe atenção especial.</p>
+
+    <div class="split split--wide" style="margin-top:clamp(26px,4vw,40px)">
+      <div class="show">
+        <div class="brw">
+          <div class="brw__bar"><span class="brw__d"></span><span class="brw__d"></span><span class="brw__d"></span>
+            <span class="brw__u">criareconstrutora.com.br</span></div>
+          <div class="mk__nav"><span class="mk__logo">CRIARE</span>
+            <span class="mk__links"><span>Empreendimentos</span><span>A empresa</span><span>Contato</span></span>
+            <span class="mk__cta">Fale conosco</span></div>
+          <div class="mk__hero"><b>Criare Construtora e Incorporadora</b>
+            <span>Construímos espaços para viver, investir e prosperar em Chapecó e região.</span></div>
+          <div class="mk__sec">
+            <div class="mk__st">Empreendimentos</div>
+            <div class="mk__grid">
+              <div class="mk__c"><div class="mk__img"></div><div class="mk__cb"><span class="mk__bd bd-o">EM OBRAS</span><div class="mk__t"></div><div class="mk__t2"></div></div></div>
+              <div class="mk__c"><div class="mk__img"></div><div class="mk__cb"><span class="mk__bd bd-l">LANÇAMENTO</span><div class="mk__t"></div><div class="mk__t2"></div></div></div>
+              <div class="mk__c"><div class="mk__img"></div><div class="mk__cb"><span class="mk__bd bd-e">ENTREGUE</span><div class="mk__t"></div><div class="mk__t2"></div></div></div>
+            </div>
+          </div>
+          <div class="wa"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.5-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.4-.5-3.6 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg></div>
+        </div>
+        <div class="phone">
+          <div class="phone__top"></div>
+          <div class="ph__nav"><b>CRIARE</b><i>≡</i></div>
+          <div class="ph__hero"><b>Criare Construtora<br>e Incorporadora</b></div>
+          <div class="ph__sec">
+            <div class="ph__c"><div class="ph__img"></div><div class="ph__cb"><span class="mk__bd bd-o">EM OBRAS</span><div class="mk__t"></div></div></div>
+            <div class="ph__c" style="margin-bottom:0"><div class="ph__img"></div><div class="ph__cb"><span class="mk__bd bd-l">LANÇAMENTO</span><div class="mk__t"></div></div></div>
+          </div>
+          <div class="wa wa--sm"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.5-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.4-.5-3.6 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg></div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card"><div class="ic">◈</div><h3>Endereço próprio</h3>
+          <p class="txt">A empresa passa a ter um site seu, e não depender só de perfil de rede social.</p></div>
+        <div class="card"><div class="ic">▦</div><h3>Uma página por obra</h3>
+          <p class="txt">Fotos, vídeos, ficha técnica, localização e o andamento da construção, tudo reunido.</p></div>
+        <div class="card"><div class="ic">◎</div><h3>Aparece no Google</h3>
+          <p class="txt">Site preparado para busca e perfil da empresa cadastrado no Google Meu Negócio.</p></div>
+        <div class="card"><div class="ic">◉</div><h3>Contato fácil</h3>
+          <p class="txt">Botão de WhatsApp e formulário em todas as páginas, para quem quiser falar com vocês.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAINEL -->
+<section class="sep">
+  <div class="wrap">
+    <div class="eyebrow eyebrow--mute">A plataforma · parte 2</div>
+    <h2>O painel que vocês vão usar.</h2>
+    <p class="lead">Também funciona no celular e no tablet. O engenheiro consegue atualizar a medição direto do canteiro, sem precisar voltar ao escritório.</p>
+
+    <div class="split split--wide" style="margin-top:clamp(26px,4vw,40px)">
+      <div class="show">
+        <div class="brw">
+          <div class="brw__bar"><span class="brw__d"></span><span class="brw__d"></span><span class="brw__d"></span>
+            <span class="brw__u">criareconstrutora.com.br/painel</span></div>
+          <div class="adm">
+            <div class="adm__sb">
+              <div class="adm__brand">CRIARE</div>
+              <div class="adm__i">Visão geral</div>
+              <div class="adm__i">Projetos</div>
+              <div class="adm__i on">Andamento</div>
+              <div class="adm__i">Linha do tempo</div>
+              <div class="adm__i">Equipe</div>
+            </div>
+            <div class="adm__m">
+              <div class="adm__h"><b>Gran Moritz Residence</b><span>Publicar</span></div>
+              <div class="adm__k">Etapas da obra</div>
+              <div class="adm__row"><span class="adm__n">Fundações</span>
+                <span class="adm__sl"><i class="full" style="width:100%"></i><u class="full" style="left:100%"></u></span>
+                <span class="adm__v">100</span><span class="adm__dl">+0</span></div>
+              <div class="adm__row"><span class="adm__n">Estrutura</span>
+                <span class="adm__sl"><i style="width:81%"></i><u style="left:81%"></u></span>
+                <span class="adm__v">81</span><span class="adm__dl">+7</span></div>
+              <div class="adm__row"><span class="adm__n">Alvenaria</span>
+                <span class="adm__sl"><i style="width:34%"></i><u style="left:34%"></u></span>
+                <span class="adm__v">34</span><span class="adm__dl">+5</span></div>
+              <div class="adm__row" style="margin-bottom:0"><span class="adm__n">Instalações</span>
+                <span class="adm__sl"><i style="width:18%"></i><u style="left:18%"></u></span>
+                <span class="adm__v">18</span><span class="adm__dl">+2</span></div>
+              <div class="adm__tot"><div class="l">Conclusão total</div><div class="v">41,2%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="phone__top"></div>
+          <div class="pa__h"><span>Andamento</span><b>Gran Moritz Residence</b></div>
+          <div class="pa__b">
+            <div class="pa__r"><div class="pa__t"><span>Fundações</span><b>100%</b></div>
+              <div class="pa__sl"><i class="full" style="width:100%"></i><u class="full" style="left:100%"></u></div></div>
+            <div class="pa__r"><div class="pa__t"><span>Estrutura</span><b>81%</b></div>
+              <div class="pa__sl"><i style="width:81%"></i><u style="left:81%"></u></div></div>
+            <div class="pa__r"><div class="pa__t"><span>Alvenaria</span><b>34%</b></div>
+              <div class="pa__sl"><i style="width:34%"></i><u style="left:34%"></u></div></div>
+            <div class="pa__tot"><span>Conclusão total</span><b>41,2%</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="txt" style="margin-bottom:18px">Todo mês a engenharia mede quanto cada etapa avançou. Vocês colocam esses números no painel e a página da obra se atualiza sozinha.</p>
+        <ul class="ck">
+          <li>Abre já com os números do mês anterior preenchidos</li>
+          <li>Mostra quanto cada etapa avançou desde a última medição</li>
+          <li>Calcula a conclusão total considerando o peso de cada etapa</li>
+          <li>Guarda todas as medições anteriores</li>
+          <li>Também dá para cadastrar projetos, subir fotos e vídeos</li>
+        </ul>
+        <div class="note" style="margin-top:18px">
+          <p>Mais de uma pessoa da equipe pode ter acesso ao painel, cada uma com o próprio e-mail e senha.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOOGLE -->
+<section class="sep">
+  <div class="wrap">
+    <div class="eyebrow eyebrow--mute">Presença no Google</div>
+    <h2>Como as pessoas vão encontrar vocês.</h2>
+    <p class="lead">Hoje a Criare não tem perfil no Google. Isso é criado e configurado dentro do projeto, junto com os ajustes que ajudam o site a aparecer nas buscas da região.</p>
+
+    <div class="split split--wide" style="margin-top:clamp(26px,4vw,40px);align-items:start">
+      <div class="serp">
+        <div class="serp__q"><span>⌕</span><b>construtora em Chapecó</b></div>
+        <div class="serp__r">
+          <div class="serp__u">criareconstrutora.com.br</div>
+          <div class="serp__t">Criare Construtora | Empreendimentos em Chapecó</div>
+          <div class="serp__d">Construtora e incorporadora com empreendimentos residenciais e comerciais. Veja os projetos em obras, lançamentos e entregas.</div>
+        </div>
+        <div class="serp__r serp__r--dim">
+          <div class="serp__u">portal-de-terceiros.com.br</div>
+          <div class="serp__t">Lista de construtoras na região</div>
+          <div class="serp__d">Diretório genérico, onde vocês não controlam a informação.</div>
+        </div>
+        <div class="serp__r serp__r--dim">
+          <div class="serp__u">criare-outraregiao.com.br</div>
+          <div class="serp__t">Criare (empresa de outro estado)</div>
+          <div class="serp__d">A homônima que hoje aparece quando procuram por vocês.</div>
+        </div>
+      </div>
+      <div>
+        <div class="gmb">
+          <div class="gmb__n">Criare Construtora</div>
+          <div class="gmb__st">★★★★★ <span>Construtora</span></div>
+          <div class="gmb__l">Chapecó, Santa Catarina<br>Aberto · Fecha às 18h<br>(49) 0000-0000</div>
+          <div class="gmb__b"><i>Site</i><i>Rotas</i><i>Ligar</i></div>
+          <div class="gmb__ph"></div>
+        </div>
+        <p class="small" style="margin-top:11px">É este cartão que aparece no Google e no Maps quando alguém busca pela empresa.</p>
+      </div>
+    </div>
+
+    <div class="grid g3" style="margin-top:clamp(24px,3.4vw,34px)">
+      <div><h3>Google Meu Negócio</h3><p class="txt">Perfil da empresa no Google e no Maps, com endereço, telefone, horários e fotos das obras.</p></div>
+      <div><h3>SEO técnico</h3><p class="txt">Títulos, descrições, dados estruturados, velocidade e adequação para celular.</p></div>
+      <div><h3>Foco regional</h3><p class="txt">Otimização para a área de atuação, resolvendo a confusão com empresas de nome parecido.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTES -->
+<section class="sep">
+  <div class="wrap">
+    <div class="eyebrow eyebrow--mute">Escopo técnico</div>
+    <h2>Do que a plataforma é feita.</h2>
+    <p class="lead">São três partes que trabalham juntas. O visitante entra pela primeira, vocês operam a segunda, e a terceira é o que mantém tudo funcionando.</p>
+
+    <div class="parts" style="margin-top:clamp(24px,3.6vw,36px)">
+      <div class="part part--1">
+        <div class="part__h"><div class="part__k">Parte 1</div><div class="part__n">Site público</div>
+          <div class="part__d">O que o cliente e o investidor veem</div></div>
+        <ul class="part__l">
+          <li>Home</li><li>A empresa</li><li>Portfólio de empreendimentos</li>
+          <li>Página de cada obra</li><li>Formulário de contato</li><li>Botão de WhatsApp</li>
+        </ul>
+      </div>
+      <div class="linkto">gerenciado por</div>
+      <div class="part part--2">
+        <div class="part__h"><div class="part__k">Parte 2</div><div class="part__n">Painel de gestão</div>
+          <div class="part__d">Onde a equipe da Criare trabalha</div></div>
+        <ul class="part__l">
+          <li>Cadastro de projetos</li><li>Medições de obra em percentual</li>
+          <li>Fotos e vídeos</li><li>Linha do tempo da obra</li>
+        </ul>
+      </div>
+      <div class="linkto">roda sobre</div>
+      <div class="part part--3">
+        <div class="part__h"><div class="part__k">Parte 3</div><div class="part__n">Infraestrutura</div>
+          <div class="part__d">A base que fica ligada o tempo todo</div></div>
+        <ul class="part__l">
+          <li>Servidor</li><li>Banco de dados</li><li>Arquivos e mídia</li>
+          <li>Backup</li><li>Segurança e certificado</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANO -->
+<section class="sep">
+  <div class="wrap">
+    <div class="eyebrow eyebrow--mute">Como vamos trabalhar</div>
+    <h2>Seis semanas, com vocês acompanhando o caminho.</h2>
+    <p class="lead">Vocês não recebem o site só no final. A partir da terceira etapa, tudo o que eu construo passa por vocês antes de ir para o ar.</p>
+
+    <div class="steps" style="margin-top:clamp(24px,3.6vw,36px)">
+      <div class="step"><div class="step__d">1</div>
+        <div><div class="step__w">Semana 1</div><div class="step__t">Alinhamento</div>
+          <p class="step__p">Conversamos sobre o que vocês querem mostrar. Recebo a marca, as fotos e os textos.</p></div></div>
+      <div class="step"><div class="step__d">2</div>
+        <div><div class="step__w">Semanas 2 a 4</div><div class="step__t">Design e desenvolvimento</div>
+          <p class="step__p">Desenho as telas com a nova identidade e construo o site e o painel.</p></div></div>
+      <div class="step"><div class="step__d step__d--on">3</div>
+        <div><div class="step__w">Semana 5</div><div class="step__t">Primeira entrega</div>
+          <p class="step__p">Vocês recebem um link e navegam à vontade, no computador e no celular.</p></div></div>
+      <div class="step"><div class="step__d step__d--on">4</div>
+        <div><div class="step__w">Semanas 5 e 6</div><div class="step__t">Rodadas de ajuste</div>
+          <p class="step__p">Vocês apontam o que mudar e eu aplico. Repetimos até ficar do jeito de vocês.</p></div></div>
+      <div class="step"><div class="step__d">5</div>
+        <div><div class="step__w">Semana 6</div><div class="step__t">Treinamento e publicação</div>
+          <p class="step__p">Ensino a equipe a usar o painel, configuro o Google e colocamos o site no ar.</p></div></div>
+    </div>
+
+    <div class="grid g2" style="margin-top:clamp(24px,3.4vw,32px)">
+      <div class="card"><h3>O que preciso de vocês no começo</h3>
+        <p class="txt">Arquivos da marca nova, fotos e vídeos das obras, textos sobre a empresa e os dados para o cadastro no Google.</p></div>
+      <div class="card card--on"><h3>Os empreendimentos, vocês cadastram</h3>
+        <p class="txt">No treinamento, a equipe cadastra os primeiros projetos com meu acompanhamento. É a melhor forma de aprender e de testar a plataforma antes de publicar.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTIMENTO -->
+<section class="sep">
+  <div class="wrap">
+    <div class="eyebrow eyebrow--mute">Investimento</div>
+    <h2>Quanto custa para construir a plataforma.</h2>
+
+    <div class="split" style="margin-top:clamp(24px,3.4vw,34px);align-items:stretch">
+      <div class="price">
+        <div class="price__k">Valor único de implantação</div>
+        <div class="price__v"><small>R$</small> 6.000</div>
+        <p class="price__d">Inclui o projeto inteiro, do desenho das telas até o site publicado, com a equipe de vocês treinada para usar o painel.</p>
+        <div class="incbadge">Com o primeiro ano de hospedagem incluído</div>
+        <div class="price__pay"><b>50%</b> na aprovação e <b>50%</b> quando o site for publicado. Se preferir parcelar, a gente combina.</div>
+      </div>
+      <div class="card" style="background:var(--alt)">
+        <div class="price__k" style="color:var(--ink-3)">O que está incluído</div>
+        <ul class="ck" style="margin-top:14px">
+          <li>Site institucional completo, adaptado para celular e tablet</li>
+          <li>Portfólio com uma página para cada empreendimento</li>
+          <li>Painel de gestão com o andamento das obras em percentual</li>
+          <li>Linha do tempo da obra, com fotos e datas</li>
+          <li>Acesso ao painel para mais de uma pessoa da equipe</li>
+          <li>Cadastro no Google Meu Negócio e ajustes de busca</li>
+          <li>Rodadas de ajuste antes da publicação</li>
+          <li>Treinamento da equipe no uso do painel</li>
+          <li><b>Primeiro ano de hospedagem</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOSPEDAGEM -->
+<section class="sep">
+  <div class="wrap">
+    <div class="eyebrow eyebrow--mute">Hospedagem</div>
+    <h2>O que mantém o site funcionando todos os dias.</h2>
+    <p class="lead">Depois de publicado, o site fica em um servidor ligado o tempo todo. O primeiro ano desse serviço já está incluído no valor do projeto.</p>
+
+    <div class="split split--wide" style="margin-top:clamp(24px,3.4vw,34px);align-items:start">
+      <div>
+        <div class="price__k" style="color:var(--ink-3);margin-bottom:12px">O que está incluído</div>
+        <div class="grid g2" style="gap:11px">
+          <div class="hc"><div class="hc__i">◈</div><div><div class="hc__t">Site rápido</div>
+            <p class="hc__p">Servidor com disco rápido e cache. Páginas cheias de foto e vídeo abrem sem travar.</p></div></div>
+          <div class="hc"><div class="hc__i">◍</div><div><div class="hc__t">Site 24h disponível</div>
+            <p class="hc__p">Servidor monitorado o tempo todo, para o site ficar sempre no ar para quem procurar vocês.</p></div></div>
+          <div class="hc"><div class="hc__i">▦</div><div><div class="hc__t">Espaço para as obras</div>
+            <p class="hc__p">Banco de dados das medições e armazenamento das fotos e vídeos dos empreendimentos.</p></div></div>
+          <div class="hc"><div class="hc__i">↺</div><div><div class="hc__t">Backup semanal</div>
+            <p class="hc__p">Cópia de segurança toda semana. Se algo der errado, o conteúdo volta como estava.</p></div></div>
+          <div class="hc"><div class="hc__i">⚿</div><div><div class="hc__t">Site protegido</div>
+            <p class="hc__p">Certificado de segurança, o cadeado no navegador e proteção da área com senha.</p></div></div>
+          <div class="hc"><div class="hc__i">✉</div><div><div class="hc__t">E-mail da empresa</div>
+            <p class="hc__p">Contas no domínio de vocês, como contato@criareconstrutora.com.br.</p></div></div>
+        </div>
+        <p class="small" style="margin-top:12px">Também estão inclusos o acompanhamento do site no ar, as atualizações de segurança e os pequenos ajustes do dia a dia.</p>
+      </div>
+
+      <div>
+        <div class="price__k" style="color:var(--ink-3);margin-bottom:12px">Como fica o custo</div>
+        <div class="incl">
+          <div class="incl__k">Primeiro ano</div>
+          <div class="incl__t">Já incluído no valor do projeto</div>
+          <p class="incl__p">Os 12 primeiros meses de hospedagem entram no R$ 6.000. Nesse período vocês não pagam nenhuma mensalidade.</p>
+        </div>
+        <div class="yr2">A partir do segundo ano</div>
+        <div class="prow"><span class="n">Plano mensal</span><span class="v">R$ 120 <small>/mês</small></span></div>
+        <div class="prow prow--on"><span class="n">Plano anual <span class="eco">economia de R$ 440</span></span>
+          <span class="v">R$ 1.000 <small>/ano</small></span></div>
+        <div class="note"><p>A escolha entre mensal e anual só precisa ser feita perto do fim do primeiro ano.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FECHAMENTO -->
+<section class="close">
+  <div class="wrap">
+    <div class="split" style="align-items:start">
+      <div>
+        <div class="eyebrow">Para começar</div>
+        <h2>Se fizer sentido, a gente começa na semana que vem.</h2>
+        <p class="lead">São três passos simples. Qualquer dúvida sobre a proposta, é só me chamar que eu explico com calma.</p>
+        <div class="numsteps">
+          <div><span class="k">01</span><p>Vocês aprovam a proposta e a gente assina o contrato</p></div>
+          <div><span class="k">02</span><p>Vocês me enviam a marca, as fotos e os textos por um link do Drive</p></div>
+          <div><span class="k">03</span><p>Marcamos a primeira conversa e o projeto começa</p></div>
+        </div>
+        <a class="cta" href="https://wa.me/5549999531382?text=Ol%C3%A1%20Eduardo%2C%20vi%20a%20proposta%20da%20Criare%20e%20quero%20conversar." target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.5-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.4-.5-3.6 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg>
+          Falar pelo WhatsApp
+        </a>
+      </div>
+      <div class="vcard">
+        <div class="vcard__n">Eduardo Nicoleti</div>
+        <div class="vcard__r">Sites e sistemas sob medida</div>
+        <div class="vcard__l">
+          <a href="tel:+5549999531382"><i>◉</i>+55 (49) 99953-1382</a>
+          <a href="mailto:edunicoleti@gmail.com"><i>✉</i>edunicoleti@gmail.com</a>
+          <a href="https://www.edunicoleti.com.br" target="_blank" rel="noopener"><i>◈</i>edunicoleti.com.br</a>
+          <span style="display:flex;gap:11px;align-items:center"><i>⌂</i>Chapecó, Santa Catarina</span>
+        </div>
+        <div class="vcard__f">Proposta válida por 15 dias a partir de 28 de julho de 2026.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span>Proposta comercial · Criare Construtora</span>
+    <span>© 2026 Eduardo Nicoleti</span>
+  </div>
+</footer>
+
+<a class="float" href="https://wa.me/5549999531382?text=Ol%C3%A1%20Eduardo%2C%20vi%20a%20proposta%20da%20Criare%20e%20quero%20conversar." target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.5-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.4-.5-3.6 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg>
+  <span>Falar pelo WhatsApp</span>
+</a>
+
+</body>
+</html>
