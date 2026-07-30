@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F8F8F6">
+<title>Proposta | Cardápios: Um Livro Vivo</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!--
+  Proposta estatica da Lucia (Cardapios: Um Livro Vivo), congelada em
+  29/07/2026 a partir da rota /proposta/lucia-cardapios do SPA.
+
+  Pagina autonoma: nao depende de Supabase nem do build da aplicacao. O
+  .htaccess so cai no fallback do SPA quando o caminho nao existe em disco,
+  entao este diretorio real tem precedencia e as rotas dinamicas
+  /proposta/:slug continuam funcionando para os outros clientes.
+
+  O CSS abaixo e copia de src/index.css (tokens do design system) +
+  src/pages/Proposta.css. Se o design da proposta mudar no app, esta pagina
+  NAO acompanha — e uma foto, nao um espelho.
+-->
+<style>
+/* ===== src/index.css ===== */
+/* ====================================
+   DESIGN SYSTEM — edunicoleti.com.br
+   ==================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Tokens --- */
+:root {
+  --color-bg: #F8F8F6;
+  --color-bg-alt: #F1F0EC;
+  --color-surface: #FFFFFF;
+  --color-border: #E4E2DC;
+  --color-border-light: #EDECEA;
+
+  --color-text: #16150F;
+  --color-text-secondary: #57544C;
+  --color-text-muted: #9B9788;
+
+  /* Brand */
+  --color-accent: #2047C9;
+  --color-accent-hover: #1A3BAF;
+  --color-accent-light: #EBF0FF;
+  --color-accent-subtle: rgba(32, 71, 201, 0.07);
+
+  /* Indigo/AI secondary */
+  --color-indigo: #4F46E5;
+  --color-indigo-light: rgba(79, 70, 229, 0.08);
+
+  /* Teal tech accent */
+  --color-teal: #0D9488;
+  --color-teal-light: rgba(13, 148, 136, 0.08);
+
+  /* Gradient tokens */
+  --gradient-brand: linear-gradient(135deg, #2047C9 0%, #4F46E5 50%, #7C3AED 100%);
+  --gradient-surface: linear-gradient(160deg, #F8F8F6 0%, #EEF1FF 100%);
+  --gradient-hero: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(79, 70, 229, 0.09) 0%, rgba(32, 71, 201, 0.05) 40%, transparent 70%);
+
+  --color-tag-bg: #EBF0FF;
+  --color-tag-text: #2047C9;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.75rem;
+  --text-5xl: 3.75rem;
+  --text-6xl: 5rem;
+
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-accent: 0 8px 32px rgba(32, 71, 201, 0.18);
+
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+  --transition-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --max-width: 1100px;
+  --section-padding: 6rem 1.5rem;
+  --section-padding-sm: 4rem 1.5rem;
+}
+
+/* --- Base --- */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* --- Layout utilities --- */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.container--wide {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* --- Typography --- */
+.text-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.text-serif {
+  font-family: var(--font-serif);
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.02em;
+  transition: all var(--transition-base);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.btn--primary {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.btn--primary:hover {
+  background: #333;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--color-text);
+  border: 1.5px solid var(--color-border);
+}
+
+.btn--outline:hover {
+  border-color: var(--color-text);
+  background: var(--color-bg-alt);
+  transform: translateY(-1px);
+}
+
+.btn--accent {
+  background: var(--gradient-brand);
+  color: #fff;
+}
+
+.btn--accent:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-accent);
+}
+
+/* --- Tag / Badge --- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  background: var(--color-tag-bg);
+  color: var(--color-tag-text);
+  letter-spacing: 0.02em;
+}
+
+/* --- Divider --- */
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 0;
+}
+
+/* --- Scroll reveal animation base --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  :root {
+    --section-padding: 5rem 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --text-5xl: 2.5rem;
+    --text-6xl: 3rem;
+    --section-padding: 4rem 1.25rem;
+    --section-padding-sm: 3rem 1.25rem;
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --section-padding: 3.5rem 1rem;
+  }
+}
+
+
+/* ====================================
+   CANVAS DE FUNDO — tech/AI ambient
+   ==================================== */
+
+/* Orbs animados para uso em seções */
+.ambient-orbs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.45;
+}
+
+.orb--blue {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(32, 71, 201, 0.18) 0%, transparent 70%);
+  top: -100px;
+  right: -60px;
+  animation: orbFloat1 14s ease-in-out infinite;
+}
+
+.orb--indigo {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.12) 0%, transparent 70%);
+  bottom: 40px;
+  left: 5%;
+  animation: orbFloat2 18s ease-in-out 2s infinite;
+}
+
+.orb--teal {
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.1) 0%, transparent 70%);
+  top: 30%;
+  left: 50%;
+  animation: orbFloat3 22s ease-in-out 4s infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-30px, 20px) scale(1.06); }
+  66% { transform: translate(20px, -25px) scale(0.96); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(25px, -30px) scale(1.05); }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(-50%, 0) scale(1); }
+  50% { transform: translate(-50%, 20px) scale(0.92); }
+}
+
+/* Grid lines (subtle tech pattern) */
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(32, 71, 201, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 71, 201, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 20%, transparent 80%);
+}
+
+/* ===== src/pages/Proposta.css ===== */
+/* ---- Proposta Page ---- */
+
+.proposta-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Not found */
+.proposta-notfound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1.5rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.proposta-notfound h1 {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+/* Header */
+.proposta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 3rem;
+}
+
+.proposta-header__logo {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.proposta-header__logo span {
+  color: var(--color-accent);
+}
+
+.proposta-header__type {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: var(--weight-medium);
+}
+
+.proposta-header__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.proposta-header__date {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Main */
+.proposta-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Hero */
+.proposta-hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3rem;
+  align-items: start;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.proposta-hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.proposta-hero__title {
+  font-size: clamp(1.75rem, 3.5vw, var(--text-4xl));
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.03em;
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.proposta-hero__desc {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: 500px;
+}
+
+/* Client card */
+.proposta-card {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  background: var(--color-surface);
+  min-width: 220px;
+}
+
+.proposta-card__name {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  margin-bottom: 0.25rem;
+}
+
+.proposta-card__company {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.proposta-card__role {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+/* Visual planning */
+.proposta-visual-plan {
+  gap: 1rem;
+}
+
+.proposta-infographic {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, rgba(32, 71, 201, 0.05), transparent 42%),
+    var(--color-surface);
+}
+
+.proposta-infographic__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.proposta-infographic__heading p {
+  max-width: 520px;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.proposta-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.proposta-outcomes.proposta-outcomes--full {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.proposta-outcomes--full .proposta-outcome {
+  border-left: none;
+  padding: 1.1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--color-border-light);
+  border-top: 3px solid var(--color-border);
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.proposta-outcomes--full .proposta-outcome--conservador { border-top-color: #f59e0b; }
+.proposta-outcomes--full .proposta-outcome--realista    { border-top-color: var(--color-accent); }
+.proposta-outcomes--full .proposta-outcome--otimista    { border-top-color: #16a34a; }
+
+.proposta-status-card {
+  min-height: 160px;
+  padding: 1rem;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.72);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.proposta-status-card__index {
+  width: fit-content;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+  background: var(--color-bg-alt);
+  color: var(--color-accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.proposta-status-card h3 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.proposta-status-card p {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+}
+
+.proposta-roadmap {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.proposta-execution {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.proposta-execution__details {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 0.85rem;
+}
+
+.proposta-execution__panel {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  padding: 1.1rem;
+}
+
+.proposta-execution__panel h3 {
+  font-size: 0.95rem;
+  font-weight: 750;
+  color: var(--color-text);
+  margin-bottom: 0.85rem;
+}
+
+.proposta-compact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.proposta-compact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.86rem;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+}
+
+.proposta-compact-list li::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex: 0 0 auto;
+  margin-top: 0.43rem;
+}
+
+.proposta-roadmap__item {
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  padding: 1.1rem;
+  min-height: 142px;
+}
+
+.proposta-roadmap__item span {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: var(--color-accent);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.proposta-roadmap__item p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.proposta-outcomes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.proposta-outcome {
+  border-left: 3px solid var(--color-border);
+  padding-left: 0.75rem;
+}
+
+.proposta-outcome strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  margin-bottom: 0.15rem;
+}
+
+.proposta-outcome span {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: 0.25rem;
+}
+
+.proposta-outcome p {
+  font-size: 0.86rem;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+}
+
+.proposta-outcome--conservador {
+  border-left-color: #f59e0b;
+}
+
+.proposta-outcome--realista {
+  border-left-color: var(--color-accent);
+}
+
+.proposta-outcome--otimista {
+  border-left-color: #16a34a;
+}
+
+/* Section */
+.proposta-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.proposta-section__title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Escopo */
+.proposta-escopo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: start;
+}
+
+.proposta-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.proposta-list__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.proposta-list__item--yes {
+  color: var(--color-text);
+}
+
+.proposta-list__item--no {
+  color: var(--color-text-muted);
+}
+
+.proposta-list__icon {
+  font-size: var(--text-sm);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.proposta-list__item--yes .proposta-list__icon {
+  color: #22C55E;
+  font-weight: bold;
+}
+
+.proposta-list__item--no .proposta-list__icon {
+  color: var(--color-text-muted);
+}
+
+.proposta-not-included {
+  padding: 1.25rem;
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+  min-width: 200px;
+}
+
+/* Tags */
+.proposta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Investment */
+.proposta-invest {
+  padding: 2rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.proposta-invest .proposta-section__title {
+  color: var(--color-text-muted);
+}
+
+.proposta-invest__features {
+  margin-top: 1rem;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.proposta-invest__features li {
+  display: flex;
+  align-items: flex-start;
+}
+
+.proposta-invest__features li::before {
+  content: '✓';
+  color: #22C55E;
+  margin-right: 0.45rem;
+  font-weight: 700;
+}
+
+.proposta-step-card {
+  background: var(--color-bg-alt);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--color-border-light);
+}
+
+/* ── Escopos alternativos (comparação de opções) ── */
+.proposta-opcoes {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+
+.proposta-opcao {
+  position: relative;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.proposta-opcao--rec {
+  background: var(--color-bg);
+  border: 2px solid var(--color-accent);
+}
+
+.proposta-opcao__badge {
+  position: absolute;
+  top: -12px;
+  left: 1.75rem;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.proposta-opcao__titulo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.4rem;
+}
+
+.proposta-opcao__resumo {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.proposta-opcao__valor {
+  font-size: clamp(2rem, 6vw, 2.6rem);
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.proposta-opcao__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-top: 0.4rem;
+}
+
+.proposta-opcao__mensal {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--color-border);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.proposta-opcao__mensal span {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.proposta-opcao__lista {
+  margin-top: 1.5rem;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.proposta-opcao__lista li {
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.45;
+}
+
+.proposta-opcao__lista li::before {
+  content: '✓';
+  color: #22C55E;
+  margin-right: 0.45rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.proposta-opcoes__nota {
+  margin-top: 2rem;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
+  padding: 1.75rem;
+}
+
+.proposta-opcoes__nota p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  margin-top: 0.5rem;
+  max-width: 640px;
+}
+
+.proposta-opcoes__nota .proposta-invest__features {
+  margin-top: 1.25rem;
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+@media (max-width: 700px) {
+  .proposta-step-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Observações */
+.proposta-obs__text {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  padding: 1.25rem;
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+  border-left: 3px solid var(--color-accent);
+}
+
+/* CTA */
+.proposta-cta {
+  padding-top: 3rem;
+  padding-bottom: 4rem; /* space for floating button */
+}
+
+.proposta-cta__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.proposta-cta__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.025em;
+  color: var(--color-text);
+  margin-bottom: 0.35rem;
+}
+
+.proposta-cta__sub {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.proposta-cta__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.proposta-cta__btn {
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.proposta-cta__btn.btn--primary {
+  background: #22C55E;
+  color: white;
+}
+
+.proposta-cta__btn.btn--primary:hover {
+  background: #16A34A;
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
+}
+
+/* Footer */
+.proposta-footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.proposta-footer a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.proposta-footer a:hover {
+  color: var(--color-accent);
+}
+
+/* Floating WhatsApp */
+@keyframes whatsappPulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+.floating-whatsapp-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #25D366;
+  color: white;
+  border-radius: 50px;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.3);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-fast);
+  z-index: 100;
+  animation: whatsappPulse 2s infinite;
+}
+
+.floating-whatsapp-btn svg {
+  width: 26px;
+  height: 26px;
+}
+
+.floating-whatsapp-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  background: #20BA56;
+  box-shadow: 0 16px 40px rgba(37, 211, 102, 0.4);
+  animation: none;
+}
+
+/* Print styles */
+@media print {
+  .floating-whatsapp-btn { display: none !important; }
+  .proposta-page { max-width: 100%; padding: 0; }
+  .proposta-header { margin-bottom: 1.5rem; }
+  .proposta-cta { display: none; }
+
+  /* Cores com contraste adequado no fundo branco */
+  .proposta-section__title {
+    color: #444 !important;
+  }
+
+  .proposta-header__type,
+  .proposta-card__role,
+  .proposta-footer {
+    color: #555 !important;
+  }
+
+  .proposta-hero__desc,
+  .proposta-card__company,
+  .proposta-list__item--no,
+  .proposta-obs__text {
+    color: #555 !important;
+  }
+
+  /* Evitar corte de conteúdo entre páginas */
+  .proposta-hero,
+  .proposta-section,
+  .proposta-card,
+  .proposta-invest,
+  .proposta-step-card,
+  .proposta-invest__card,
+  .proposta-invest__details,
+  .proposta-hosp-card,
+  .proposta-obs__text,
+  .proposta-footer {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Garantir que títulos de seção fiquem junto ao conteúdo seguinte */
+  .proposta-section__title,
+  .proposta-hero__title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Seções começam em nova página apenas quando necessário */
+  .proposta-section {
+    break-before: auto;
+    page-break-before: auto;
+  }
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .proposta-header {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .proposta-header__meta {
+    align-items: flex-start;
+  }
+
+  .proposta-hero {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 2.5rem;
+  }
+
+  .proposta-card--client {
+    min-width: unset;
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 2rem;
+    margin-bottom: -1rem;
+  }
+
+  .proposta-escopo {
+    grid-template-columns: 1fr;
+  }
+
+  .proposta-infographic__heading {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .proposta-status-grid,
+  .proposta-roadmap,
+  .proposta-execution__details,
+  .proposta-outcomes--full {
+    grid-template-columns: 1fr;
+  }
+
+  .proposta-cta__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .proposta-cta__actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .proposta-cta__btn {
+    width: 100%;
+  }
+
+  .floating-whatsapp-btn {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+  }
+  
+  .floating-whatsapp-btn svg {
+    margin: 0;
+  }
+  
+  .floating-whatsapp-btn__text {
+    display: none;
+  }
+  
+  .proposta-cta {
+    padding-bottom: 5rem;
+  }
+}
+
+/* ===== Ajuste proprio desta pagina ===== */
+/* No componente React as duas colunas do Passo 2 levam flex:1 1 300px inline;
+   somado ao padding do cartao isso estoura a viewport de 375px e cria rolagem
+   horizontal. Aqui o flex-basis cede no mobile. A pagina do app tem o mesmo
+   problema e precisa da correcao no Proposta.css. */
+@media (max-width: 700px) {
+  .proposta-step__col {
+    flex-basis: 100% !important;
+    min-width: 0 !important;
+  }
+  .proposta-step__col--price > div {
+    padding: 1.25rem 1rem !important;
+  }
+  .proposta-step__col--price span:first-child {
+    font-size: 2rem !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="proposta-page" id="proposta-page">
+
+<header class="proposta-header"><span class="proposta-header__type">PROPOSTA DE PROJETO</span><div class="proposta-header__logo">edunicoleti<span>.</span></div></header>
+
+<main class="proposta-main">
+
+<section class="proposta-hero" aria-label="Resumo do projeto"><div class="proposta-hero__left"><h1 class="proposta-hero__title">Cardápios: Um Livro Vivo, o Produto Completo</h1><p class="proposta-hero__desc">O Cardápios: Um Livro Vivo ganha uma nova dimensão com os cursos em vídeo da Lucia, onde o Livro Vivo funciona como o material de referência permanente e sempre atualizado. Nutricionistas aprendem com as aulas e consultam o livro no dia a dia. Para colocar esse produto no mercado, a proposta inclui a estruturação da plataforma de cursos, tráfego pago no Meta Ads para gerar vendas consistentes e presença semanal no Instagram.</p><div class="proposta-hero__features" style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem;"><div style="display: flex; align-items: center; gap: 0.35rem; background: var(--color-bg-alt); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-text-secondary); font-weight: 500;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Meta Ads</div><div style="display: flex; align-items: center; gap: 0.35rem; background: var(--color-bg-alt); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-text-secondary); font-weight: 500;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Conteúdo Orgânico</div><div style="display: flex; align-items: center; gap: 0.35rem; background: var(--color-bg-alt); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-text-secondary); font-weight: 500;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Plataforma de Cursos</div><div style="display: flex; align-items: center; gap: 0.35rem; background: var(--color-bg-alt); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-text-secondary); font-weight: 500;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Edição de Vídeos</div></div></div><div class="proposta-hero__right"><div class="proposta-card proposta-card--client"><p class="text-label" style="margin-bottom: 0.75rem;">Preparada para</p><p class="proposta-card__name">Lucia Chaise Borjes</p><p class="proposta-card__company">Cardápios: Um Livro Vivo</p></div></div></section>
+
+<section class="proposta-section proposta-visual-plan" aria-label="Planejamento visual"><div class="proposta-infographic"><div class="proposta-infographic__heading"><span class="proposta-section__title">Situação atual</span></div><div class="proposta-status-grid"><article class="proposta-status-card"><span class="proposta-status-card__index">01</span><h3>Produto pronto para venda</h3><p>O Livro Vivo está desenvolvido e disponível com acesso vitalício. A landing page está publicada e recebendo visitas.</p></article><article class="proposta-status-card"><span class="proposta-status-card__index">02</span><h3>Base orgânica construída</h3><p>Três meses de conteúdo no @cardapioslivrovivo apresentaram o produto, criaram contexto e geraram os primeiros seguidores.</p></article><article class="proposta-status-card"><span class="proposta-status-card__index">03</span><h3>Sem tráfego pago ainda</h3><p>Todas as vendas dependem do alcance orgânico. Nenhuma campanha paga foi rodada, e é aí que está o maior espaço para crescer.</p></article></div></div><div class="proposta-infographic"><div class="proposta-infographic__heading"><span class="proposta-section__title">Plano de execução</span></div><div style="display: flex; flex-direction: column; gap: 1rem;"><div class="proposta-outcomes proposta-outcomes--full"><article class="proposta-outcome proposta-outcome--conservador"><strong>O produto completo</strong><span>Curso em vídeo + Livro Vivo</span><p>Nutricionistas aprendem com a Lucia nas aulas e têm o Livro Vivo como material de consulta permanente. Um produto mais completo, com mais valor percebido no mercado.</p></article><article class="proposta-outcome proposta-outcome--realista"><strong>Vendas via tráfego pago</strong><span>Campanhas ativas no Meta Ads</span><p>Anúncios segmentados para nutricionistas e estudantes levando direto à página de venda — compras independentes do alcance orgânico.</p></article><article class="proposta-outcome proposta-outcome--otimista"><strong>Presença e receita contínuas</strong><span>Instagram + Anúncios + Cursos</span><p>Conteúdo semanal gerando autoridade, tráfego pago gerando vendas e a plataforma de cursos entregando uma experiência que se diferencia no mercado.</p></article></div><div class="proposta-execution__panel"><h3>O que está incluído</h3><ul class="proposta-compact-list"><li>Estruturação da plataforma de cursos em vídeo com o Livro Vivo como material de referência do curso</li><li>Edição dos vídeos gravados pela Lucia e upload na plataforma de cursos</li><li>Criação e configuração do painel de anúncios no Meta Ads com instalação do Pixel na landing page</li><li>Definição de estratégia de venda e estruturação de públicos-alvo para nutricionistas e estudantes</li><li>Criação de criativos (imagens e textos) para as campanhas de tráfego pago</li><li>Gerenciamento mensal das campanhas com relatórios e ajustes de otimização</li><li>1 post semanal no Instagram (@cardapioslivrovivo) para manutenção da presença orgânica</li></ul></div></div></div></section>
+
+<section class="proposta-section" aria-label="Tecnologias"><h2 class="proposta-section__title">Canais e ferramentas</h2><div class="proposta-tags"><span class="tag">Meta Ads</span><span class="tag">Instagram</span><span class="tag">Pixel da Meta</span><span class="tag">Plataforma de Cursos</span><span class="tag">Landing Page</span><span class="tag">Relatórios de desempenho</span></div></section>
+
+<section class="proposta-section" aria-label="Investimento e Prazos"><div class="proposta-invest"><h2 class="proposta-section__title" style="margin-bottom: 1.5rem;">Investimento</h2><div class="proposta-invest__steps" style="display: flex; flex-direction: column; gap: 1rem;"><div class="proposta-step-card"><div style="display: flex; flex-direction: column; gap: 0.5rem;"><div style="display: inline-flex; align-items: center; gap: 6px; background: var(--color-accent); color: var(--color-bg); padding: 4px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; width: fit-content; text-transform: uppercase; letter-spacing: 0.05em;">Passo 1</div><span class="text-label" style="font-size: 1rem; margin-top: 0.5rem;">Implantação (Mês 1)</span><span style="font-size: clamp(2.25rem, 8vw, 3rem); font-weight: 800; color: var(--color-text); line-height: 1;">R$&nbsp;1.500,00</span><p style="color: var(--color-text-secondary); font-size: 0.95rem; margin-top: 0.5rem; max-width: 600px;">Cobrado na aprovação e executado ao longo do primeiro mês. Inclui a criação da plataforma de cursos, configuração do painel Meta Ads e elaboração dos criativos das campanhas.</p><ul class="proposta-invest__features" style="margin-top: 1.5rem; display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));"><li>Estruturação da plataforma de cursos em vídeo</li><li>Criação e configuração do painel Meta Ads</li><li>Instalação do Pixel na landing page</li><li>Elaboração dos criativos iniciais das campanhas</li><li>Definição da estratégia de públicos-alvo</li></ul></div></div><div style="text-align: center; margin: 0.5rem 0px;"><div style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: var(--color-bg-alt); color: var(--color-text); border: 1px solid var(--color-border-light);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div></div><div class="proposta-step-card"><div style="display: flex; flex-direction: column; gap: 0.5rem;"><div style="display: inline-flex; align-items: center; gap: 6px; background: var(--color-text); color: var(--color-bg); padding: 4px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; width: fit-content; text-transform: uppercase; letter-spacing: 0.05em;">Passo 2</div><div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; margin-top: 0.5rem;"><div class="proposta-step__col proposta-step__col--text" style="flex: 1 1 300px;"><span class="text-label" style="font-size: 1rem;">Gestão Mensal (a partir do Mês 2)</span><p style="color: var(--color-text-secondary); font-size: 0.95rem; margin-top: 0.5rem; max-width: 400px; line-height: 1.5;">Inicia no segundo mês, após a conclusão da implantação, com a plataforma de cursos pronta e os anúncios no ar. Contrato mínimo de 3 meses com renovação automática por mais 3 meses, tempo suficiente para acumular dados, otimizar campanhas e gerar resultado consistente.</p><ul class="proposta-invest__features" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;"><li>Gestão e otimização das campanhas Meta Ads</li><li>1 post semanal no Instagram (@cardapioslivrovivo)</li><li>Relatório mensal de tráfego pago e conversões</li><li>Edição de vídeos gravados pela Lucia + upload na plataforma de cursos</li><li>Verba de anúncios: mínimo R$ 500,00/mês depositada diretamente na conta Meta Ads</li></ul></div><div class="proposta-step__col proposta-step__col--price" style="flex: 1 1 300px;"><div style="background: var(--color-bg); border: 2px solid var(--color-accent); border-radius: 12px; padding: 1.5rem; display: flex; align-items: baseline; justify-content: center; gap: 0.25rem;"><span style="font-size: 2.5rem; font-weight: 800; color: var(--color-text); line-height: 1;">R$&nbsp;1.200,00</span><span style="font-size: 1.1rem; font-weight: 600; color: var(--color-text-secondary);">/ mês</span></div></div></div></div></div></div><div style="margin-top: 2.5rem; text-align: center; font-size: 0.85rem; color: var(--color-text-muted); border-top: 1px solid var(--color-border-light); padding-top: 1.5rem;">Emitida em 17 de maio de 2026 • Válida por 30 dias</div></div></section>
+
+<section class="proposta-cta" aria-label="Próximos passos"><div class="proposta-cta__inner"><div class="proposta-cta__content" style="flex: 1 1 0%; min-width: 280px;"><h2 class="proposta-cta__title">Pronto para começar?</h2><p class="proposta-cta__sub">Entre em contato para aprovar a proposta e dar início ao projeto.</p></div><div class="proposta-cta__actions" style="flex: 1 1 auto; justify-content: flex-end; gap: 0.75rem;"><button type="button" id="btn-pdf" class="btn btn--outline proposta-cta__btn">Salvar proposta em PDF</button><a href="https://wa.me/5549999531382?text=Ol%C3%A1%2C%20Eduardo!%20Referente%20%C3%A0%20proposta%20do%20projeto." target="_blank" rel="noopener noreferrer" class="btn btn--primary proposta-cta__btn">Aprovar pelo WhatsApp</a></div></div></section>
+
+</main>
+
+<footer class="proposta-footer"><div style="font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; color: var(--color-text); margin-bottom: 1rem;">edunicoleti<span style="color: var(--color-accent);">.</span></div><p>Este é um documento confidencial gerado para Cardápios: Um Livro Vivo.<br><a href="https://www.edunicoleti.com.br" target="_blank" rel="noopener noreferrer">edunicoleti.com.br</a> · <a href="https://wa.me/5549999531382">+55 (49) 99953-1382</a> · <a href="mailto:edunicoleti@gmail.com">edunicoleti@gmail.com</a></p><p style="margin-top: 0.25rem;">© 2026 Eduardo Nicoleti.</p></footer>
+
+<a href="https://wa.me/5549999531382?text=Ol%C3%A1%2C%20Eduardo!%20Referente%20%C3%A0%20proposta%20do%20projeto." target="_blank" rel="noopener noreferrer" class="floating-whatsapp-btn" aria-label="Aprovar pelo WhatsApp"><span class="floating-whatsapp-btn__text">Aprovar pelo WhatsApp</span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.299 1.262.478 1.694.611.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path></svg></a>
+
+</div>
+
+<script>
+  /* A pagina e autonoma: nao existe rota /pdf aqui, entao o botao usa a
+     impressao do proprio navegador — o @media print herdado do Proposta.css
+     ja esconde CTA e botao flutuante e evita cortes entre paginas. */
+  document.getElementById('btn-pdf').addEventListener('click', function () {
+    window.print()
+  })
+</script>
+</body>
+</html>
