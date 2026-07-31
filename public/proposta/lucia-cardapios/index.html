@@ -1234,12 +1234,28 @@ button {
   }
 }
 
-/* ===== Ajuste proprio desta pagina ===== */
-/* No componente React as duas colunas do Passo 2 levam flex:1 1 300px inline;
-   somado ao padding do cartao isso estoura a viewport de 375px e cria rolagem
-   horizontal. Aqui o flex-basis cede no mobile. A pagina do app tem o mesmo
-   problema e precisa da correcao no Proposta.css. */
+/* ===== Ajustes proprios desta pagina ===== */
+/* Os dois problemas abaixo existem igualmente na pagina do app: a correcao
+   definitiva e no src/pages/Proposta.css. Aqui ela fica local. */
 @media (max-width: 700px) {
+  /* 1. Plano de execucao em coluna unica.
+     O Proposta.css ja tenta isso no mobile, mas com o seletor de uma classe
+     so (.proposta-outcomes--full), que perde para a regra base de duas
+     classes (.proposta-outcomes.proposta-outcomes--full) — media query nao
+     soma especificidade. Repetido aqui com a mesma especificidade da base,
+     e depois dela, para valer: em 375px as tres colunas espremiam o texto a
+     ponto de quebrar uma palavra por linha. */
+  .proposta-outcomes.proposta-outcomes--full {
+    grid-template-columns: 1fr;
+  }
+
+  .proposta-outcomes--full .proposta-outcome {
+    min-height: 0;
+  }
+
+  /* 2. As duas colunas do Passo 2 levam flex:1 1 300px inline; somado ao
+     padding do cartao isso estoura a viewport de 375px e cria rolagem
+     horizontal. Aqui o flex-basis cede. */
   .proposta-step__col {
     flex-basis: 100% !important;
     min-width: 0 !important;
