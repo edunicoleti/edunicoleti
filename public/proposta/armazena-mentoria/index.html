@@ -12,8 +12,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!--
   Proposta estatica de mentoria para o Elias Junior (Armazena / Motopoint).
-  Emitida em 13/09/2026. Dois pacotes: 6 encontros por R$ 3.000 e 10 encontros
-  por R$ 4.500, encontros de 1h30, segunda a quarta a partir das 19h.
+  Emitida em 13/09/2026. Pacote unico e fechado: 6 encontros de 1h30 por
+  R$ 3.000, segunda a quarta a partir das 19h. A continuidade e opcional e
+  so entra depois do sexto encontro (bloco de 4 por R$ 1.500 ou avulso a
+  R$ 450), por isso a timeline termina num no tracejado.
 
   Pagina autonoma: nao depende de Supabase nem do build da aplicacao. O
   .htaccess so cai no fallback do SPA quando o caminho nao existe em disco,
@@ -22,8 +24,9 @@
 
   O CSS abaixo e copia de src/index.css (tokens do design system) +
   src/pages/Proposta.css, seguido dos componentes proprios desta pagina
-  (trilha de encontros e grade de formato). Se o design da proposta mudar no
-  app, esta pagina NAO acompanha: e uma foto, nao um espelho.
+  (bloco escuro da estrategia, timeline, grade de formato e cartoes de
+  investimento). Se o design da proposta mudar no app, esta pagina NAO
+  acompanha: e uma foto, nao um espelho.
 -->
 <style>
 /* ===== src/index.css ===== */
@@ -1232,7 +1235,7 @@ button {
 /* ===== Componentes proprios desta pagina ===== */
 
 /* Pills do hero: o template da Lucia repetia esse bloco inline em cada item.
-   Aqui vira classe, porque sao cinco. */
+   Aqui vira classe, porque sao quatro. */
 .hero-feats {
   display: flex;
   gap: 0.75rem;
@@ -1253,78 +1256,391 @@ button {
   font-weight: 500;
 }
 
-/* Trilha de encontros */
-.trilha {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+/* ── Estrategia: o bloco escuro da pagina ──
+   Mesmo padrao do Contact da Home (bloco escuro dentro de pagina clara):
+   fundo na cor da tinta, orbs indigo e teal em baixa opacidade, titulo em
+   Fraunces. E o unico ponto de contraste forte da proposta, entao concentra o
+   peso visual aqui. Sem borda colorida nos cards: a separacao entre os pilares
+   e um fio de 1px, nao uma tarja. */
+.estrategia {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-xl);
+  padding: clamp(2.25rem, 5vw, 3.75rem);
 }
 
-.encontro {
+.estrategia::before,
+.estrategia::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.estrategia::before {
+  top: -120px;
+  right: -90px;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.26) 0%, transparent 65%);
+}
+
+.estrategia::after {
+  bottom: -150px;
+  left: -110px;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.11) 0%, transparent 65%);
+}
+
+.estrategia__head {
+  position: relative;
+  z-index: 1;
+  max-width: 660px;
+}
+
+.estrategia__eyebrow {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+  margin-bottom: 1.1rem;
+}
+
+.estrategia__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3.6vw, 2.4rem);
+  font-weight: var(--weight-bold);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.estrategia__sub {
+  font-size: 0.95rem;
+  line-height: var(--leading-relaxed);
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.estrategia__pilares {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: 42px 1fr;
-  gap: 1rem;
-  align-items: start;
-  padding: 1rem;
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.72);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(2rem, 4vw, 2.75rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.encontro__num {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--color-accent-light);
-  color: var(--color-accent);
-  font-size: 0.82rem;
-  font-weight: 800;
+.pilar {
+  padding-right: 1.75rem;
 }
 
-.encontro__body h3 {
-  font-size: 0.98rem;
-  font-weight: 700;
-  color: var(--color-text);
+.pilar + .pilar {
+  padding-left: 1.75rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pilar:last-child {
+  padding-right: 0;
+}
+
+.pilar__num {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: rgba(255, 255, 255, 0.16);
+  margin-bottom: 0.9rem;
+}
+
+.pilar__title {
+  font-size: 1.15rem;
+  font-weight: var(--weight-bold);
+  color: #fff;
+  letter-spacing: -0.01em;
   margin-bottom: 0.3rem;
 }
 
-.encontro__body p {
+.pilar__lead {
+  font-size: 0.84rem;
+  font-weight: var(--weight-semibold);
+  color: #9DB4FF;
+  margin-bottom: 0.75rem;
+}
+
+.pilar__desc {
   font-size: 0.86rem;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+/* ── Timeline dos encontros ──
+   So as etapas, sem descricao: a proposta ja explica o metodo no bloco de
+   estrategia. O ultimo no e tracejado e representa a extensao opcional, que
+   nao esta contratada. */
+.timeline__intro {
+  font-size: 0.9rem;
   color: var(--color-text-secondary);
-  line-height: 1.5;
+  line-height: var(--leading-normal);
+  max-width: 620px;
+  margin-top: -0.35rem;
 }
 
-.encontro--extra {
-  background: transparent;
-  border-style: dashed;
+.timeline {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin-top: 1.25rem;
 }
 
-.encontro--extra .encontro__num {
-  background: var(--color-bg-alt);
-  color: var(--color-text-secondary);
+.timeline__step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 0.3rem;
 }
 
-.trilha__marco {
+/* Trilho entre um no e o proximo. Fica atras do circulo, que carrega um anel
+   na cor do fundo para mascarar a linha. */
+.timeline__step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: calc(50% + 22px);
+  right: calc(-50% + 22px);
+  height: 2px;
+  background: rgba(32, 71, 201, 0.28);
+}
+
+.timeline__step.timeline__step--pre::after {
+  background: none;
+  background-image: linear-gradient(90deg, var(--color-text-muted) 0 5px, transparent 5px 11px);
+  background-size: 11px 2px;
+  background-repeat: repeat-x;
+}
+
+.timeline__dot {
+  position: relative;
+  z-index: 1;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin: 1.1rem 0 0.5rem;
-  font-size: 0.72rem;
+  justify-content: center;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.78rem;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
+  box-shadow: 0 0 0 5px var(--color-bg);
 }
 
-.trilha__marco::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--color-border);
+.timeline__dot--open {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px dashed var(--color-border);
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.timeline__label {
+  margin-top: 0.8rem;
+  font-size: 0.78rem;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  line-height: 1.35;
+}
+
+.timeline__step--open .timeline__label {
+  color: var(--color-text-muted);
+  font-weight: var(--weight-regular);
+}
+
+/* ── Investimento: pacote unico + extensao ── */
+.pacote {
+  display: grid;
+  grid-template-columns: 1.12fr 0.88fr;
+  gap: 2rem;
+  align-items: start;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
+  padding: clamp(1.5rem, 3.5vw, 2.25rem);
+}
+
+.pacote__badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pacote__titulo {
+  font-size: 1.2rem;
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  margin: 0.9rem 0 0.5rem;
+}
+
+.pacote__desc {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.pacote__precos {
+  background: var(--color-bg);
+  border: 2px solid var(--color-accent);
+  border-radius: 12px;
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+}
+
+.pacote__valor {
+  font-size: clamp(2.25rem, 6.5vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.pacote__parcela {
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--color-border);
+  font-size: 1.05rem;
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+.pacote__unit {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+}
+
+.extensao {
+  margin-top: 1.25rem;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
+  padding: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+.extensao__desc {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 640px;
+  margin-top: 0.5rem;
+}
+
+.extensao__opcoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+.extensao__card {
+  position: relative;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.35rem;
+}
+
+.extensao__card--rec {
+  border: 2px solid var(--color-accent);
+}
+
+.extensao__badge {
+  position: absolute;
+  top: -11px;
+  left: 1.35rem;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.extensao__titulo {
+  font-size: 0.92rem;
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+.extensao__valor {
+  margin-top: 0.5rem;
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.extensao__unit {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+@media print {
+  /* O bloco escuro imprime claro: em papel ele viraria uma mancha de tinta e
+     o texto branco sumiria em impressora monocromatica. */
+  .estrategia {
+    background: #fff !important;
+    color: #16150F !important;
+    border: 1px solid #ddd;
+  }
+
+  .estrategia::before,
+  .estrategia::after {
+    display: none !important;
+  }
+
+  .estrategia__eyebrow { color: #666 !important; }
+  .estrategia__title,
+  .pilar__title { color: #16150F !important; }
+  .estrategia__sub,
+  .pilar__desc { color: #555 !important; }
+  .pilar__num { color: #ccc !important; }
+  .pilar__lead { color: #2047C9 !important; }
+  .estrategia__pilares { border-top-color: #ddd !important; }
+  .pilar + .pilar { border-left-color: #ddd !important; }
+
+  .timeline__dot { box-shadow: none !important; }
+
+  .estrategia,
+  .timeline,
+  .pacote,
+  .extensao,
+  .formato-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 }
 
 /* Grade de formato (dias, horario, duracao, ritmo) */
@@ -1366,54 +1682,73 @@ button {
   margin-top: 0.3rem;
 }
 
-/* Comparativo de pacotes: a base do Proposta.css ja resolve o cartao, aqui
-   entram so o valor por encontro e o parcelamento. */
-.proposta-opcao__parcela {
-  margin-top: 0.9rem;
-  padding-top: 0.9rem;
-  border-top: 1px dashed var(--color-border);
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-}
+@media (max-width: 820px) {
+  .estrategia__pilares {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
 
-.proposta-opcao__parcela strong {
-  display: block;
-  font-size: 1.05rem;
-  color: var(--color-text);
-  font-weight: 700;
-}
+  .pilar {
+    padding-right: 0;
+  }
 
-@media print {
-  .encontro,
-  .formato-item,
-  .proposta-opcao {
-    break-inside: avoid;
-    page-break-inside: avoid;
+  .pilar + .pilar {
+    padding-left: 0;
+    padding-top: 1.75rem;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .pilar__num {
+    font-size: 2rem;
+    margin-bottom: 0.6rem;
   }
 }
 
 @media (max-width: 700px) {
-  /* Herdado do Proposta.css: a regra mobile de coluna unica usa um seletor de
-     uma classe so e perde para a base de duas classes, porque media query nao
-     soma especificidade. Repetida aqui com a mesma especificidade da base. */
-  .proposta-outcomes.proposta-outcomes--full {
+  /* Timeline vira vertical: sete colunas em 375px espremeriam o rotulo a uma
+     palavra por linha. */
+  .timeline {
     grid-template-columns: 1fr;
   }
 
-  .proposta-outcomes--full .proposta-outcome {
-    min-height: 0;
+  .timeline__step {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    gap: 0.9rem;
+    padding: 0 0 1.35rem 0;
   }
 
-  .encontro {
-    grid-template-columns: 34px 1fr;
-    gap: 0.75rem;
-    padding: 0.9rem;
+  .timeline__step:not(:last-child)::after {
+    top: 38px;
+    bottom: 0;
+    left: 18px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: rgba(32, 71, 201, 0.28);
   }
 
-  .encontro__num {
-    width: 34px;
-    height: 34px;
-    font-size: 0.75rem;
+  .timeline__step.timeline__step--pre::after {
+    background: none;
+    background-image: linear-gradient(180deg, var(--color-text-muted) 0 5px, transparent 5px 11px);
+    background-size: 2px 11px;
+    background-repeat: repeat-y;
+  }
+
+  .timeline__dot {
+    flex: 0 0 auto;
+    box-shadow: none;
+  }
+
+  .timeline__label {
+    margin-top: 0.5rem;
+  }
+
+  .pacote {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
 </style>
@@ -1432,7 +1767,7 @@ button {
 <section class="proposta-hero" aria-label="Resumo da mentoria">
   <div class="proposta-hero__left">
     <h1 class="proposta-hero__title">Mentoria individual de Claude, aplicada à operação da Armazena</h1>
-    <p class="proposta-hero__desc">A Armazena já usa Claude na prática: o Matheus automatizou boa parte da operação dentro do ArmazenaHub e esse sistema hoje sustenta a venda no Mercado Livre. A ferramenta está validada dentro de casa. Esta mentoria existe para colocar o Elias no mesmo nível de uso, com duas frentes caminhando juntas: domínio da plataforma (o que o Claude faz, como conversar com ele, onde ele se conecta) e aplicação em casos reais da rotina de gestão, construídos ao vivo durante os encontros.</p>
+    <p class="proposta-hero__desc">Na Armazena o Claude já é realidade: o Matheus usa a ferramenta no dia a dia e ela está validada dentro de casa. Esta mentoria existe para colocar o Elias no mesmo nível de uso, com duas frentes caminhando juntas: domínio da plataforma (o que o Claude faz, como conversar com ele, onde ele se conecta) e aplicação em casos reais da rotina de gestão, construídos ao vivo durante os encontros.</p>
     <div class="hero-feats">
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Encontros 1 a 1</div>
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Casos de uso reais</div>
@@ -1450,136 +1785,68 @@ button {
   </div>
 </section>
 
-<!-- SITUACAO ATUAL + ESTRATEGIA -->
-<section class="proposta-section proposta-visual-plan" aria-label="Contexto e estratégia">
-
-  <div class="proposta-infographic">
-    <div class="proposta-infographic__heading">
-      <span class="proposta-section__title">Ponto de partida</span>
-    </div>
-    <div class="proposta-status-grid">
-      <article class="proposta-status-card">
-        <span class="proposta-status-card__index">01</span>
-        <h3>Claude já roda na operação</h3>
-        <p>O Matheus usa a ferramenta no dia a dia e construiu o ArmazenaHub, o sistema próprio que organiza a venda no Mercado Livre. Não é uma aposta a ser testada, é algo que a empresa já provou que funciona.</p>
-      </article>
-      <article class="proposta-status-card">
-        <span class="proposta-status-card__index">02</span>
-        <h3>A gerência precisa acompanhar esse nível</h3>
-        <p>O Elias assumiu a gerência há pouco tempo e quer usar Claude com a mesma profundidade: ganhar velocidade nas próprias tarefas, entender o que o sistema faz e participar das decisões de tecnologia com repertório.</p>
-      </article>
-      <article class="proposta-status-card">
-        <span class="proposta-status-card__index">03</span>
-        <h3>Tudo passa pelo Mercado Livre</h3>
-        <p>A operação vive de várias páginas de venda no ML: anúncios, preço, estoque, atendimento e pós-venda. É exatamente o tipo de rotina que rende quando alguém sabe pedir as coisas certas para o Claude.</p>
-      </article>
-    </div>
+<!-- ESTRATEGIA: bloco escuro, ponto alto da pagina -->
+<section class="estrategia" aria-label="Estratégia da mentoria">
+  <div class="estrategia__head">
+    <span class="estrategia__eyebrow">Estratégia da mentoria</span>
+    <h2 class="estrategia__title">Três frentes que avançam juntas, encontro a encontro.</h2>
+    <p class="estrategia__sub">A Armazena vende em várias páginas no Mercado Livre, e a rotina da gerência é feita de anúncio, preço, estoque, atendimento e número. Nada aqui é exercício de manual: todo exemplo sai dessa operação, e o que for construído durante o encontro fica funcionando.</p>
   </div>
-
-  <div class="proposta-infographic">
-    <div class="proposta-infographic__heading">
-      <span class="proposta-section__title">Estratégia da mentoria</span>
-      <p>Três frentes que avançam em paralelo, encontro a encontro. Nada de curso gravado ou exercício de manual: todo exemplo sai da operação da Armazena.</p>
-    </div>
-    <div class="proposta-outcomes proposta-outcomes--full">
-      <article class="proposta-outcome proposta-outcome--conservador">
-        <strong>Plataforma</strong>
-        <span>Saber o que existe e até onde vai</span>
-        <p>Claude não é só a caixa de conversa. São projetos com contexto, memória, leitura de arquivos, conexão com outras ferramentas, comandos próprios e agentes. A primeira frente é dominar esse terreno.</p>
-      </article>
-      <article class="proposta-outcome proposta-outcome--realista">
-        <strong>Rotina</strong>
-        <span>Aplicar nas tarefas da gerência</span>
-        <p>Relatórios, planilhas, análise de anúncios, respostas, textos e acompanhamento de indicadores. Pegamos o que mais consome o tempo do Elias e resolvemos cada caso durante o encontro, com dados reais.</p>
-      </article>
-      <article class="proposta-outcome proposta-outcome--otimista">
-        <strong>Operação</strong>
-        <span>Conversar de igual para igual com o Hub</span>
-        <p>Entender como um sistema assim é construído e mantido, o que dá para pedir, o que dá para propor e como levar ideias novas para o Matheus já em formato de projeto. O objetivo é autonomia, não dependência.</p>
-      </article>
-    </div>
+  <div class="estrategia__pilares">
+    <article class="pilar">
+      <span class="pilar__num">01</span>
+      <h3 class="pilar__title">Plataforma</h3>
+      <p class="pilar__lead">Saber o que existe e até onde vai</p>
+      <p class="pilar__desc">Claude não é só a caixa de conversa. São projetos com contexto, memória, leitura de arquivos, conexão com outras ferramentas, comandos próprios e agentes. A primeira frente é dominar esse terreno.</p>
+    </article>
+    <article class="pilar">
+      <span class="pilar__num">02</span>
+      <h3 class="pilar__title">Rotina</h3>
+      <p class="pilar__lead">Aplicar nas tarefas da gerência</p>
+      <p class="pilar__desc">Relatórios, planilhas, análise de anúncios, respostas, textos e acompanhamento de indicadores. Pegamos o que mais consome o tempo do Elias e resolvemos cada caso durante o encontro, com dados reais.</p>
+    </article>
+    <article class="pilar">
+      <span class="pilar__num">03</span>
+      <h3 class="pilar__title">Operação</h3>
+      <p class="pilar__lead">Chegar junto nas decisões de tecnologia</p>
+      <p class="pilar__desc">Entender como um sistema é construído e mantido, o que dá para pedir, o que dá para propor e como levar uma ideia nova já em formato de projeto. O objetivo é autonomia, não dependência.</p>
+    </article>
   </div>
-
 </section>
 
 <!-- CRONOGRAMA -->
 <section class="proposta-section" aria-label="Cronograma dos encontros">
   <h2 class="proposta-section__title">Cronograma dos encontros</h2>
-  <p style="font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.6; max-width: 640px; margin-top: -0.35rem;">Os seis primeiros encontros formam a trilha completa e estão nos dois pacotes. Os quatro últimos são exclusivos do Pacote Imersão. A ordem é um plano, não uma amarra: se um caso de uso da Armazena pedir mais tempo, o cronograma se ajusta.</p>
+  <p class="timeline__intro">Seis encontros, um por semana, do diagnóstico ao playbook. A ordem é um plano e se ajusta ao que a operação pedir.</p>
 
-  <ol class="trilha">
-    <li class="encontro">
-      <div class="encontro__num">01</div>
-      <div class="encontro__body">
-        <h3>Diagnóstico e ambiente</h3>
-        <p>Mapeamento da rotina do Elias, das tarefas que mais consomem tempo e do que já existe pronto na Armazena. Na sequência, montagem do ambiente: contas, aplicativos, primeiro projeto e primeiro uso prático ainda dentro do encontro.</p>
-      </div>
+  <ol class="timeline">
+    <li class="timeline__step">
+      <span class="timeline__dot">01</span>
+      <span class="timeline__label">Diagnóstico e ambiente</span>
     </li>
-    <li class="encontro">
-      <div class="encontro__num">02</div>
-      <div class="encontro__body">
-        <h3>Como o Claude entende a empresa</h3>
-        <p>Projetos, contexto, memória e leitura de arquivos. Montamos o espaço de trabalho do Elias já carregado com documentos e dados reais da operação, que é o que separa uma resposta genérica de uma resposta útil.</p>
-      </div>
+    <li class="timeline__step">
+      <span class="timeline__dot">02</span>
+      <span class="timeline__label">Contexto da operação</span>
     </li>
-    <li class="encontro">
-      <div class="encontro__num">03</div>
-      <div class="encontro__body">
-        <h3>Primeiro caso de uso real</h3>
-        <p>Escolhemos uma tarefa da rotina e resolvemos ao vivo, do começo ao fim. O Elias termina o encontro com a coisa funcionando e sabendo refazer sozinho.</p>
-      </div>
+    <li class="timeline__step">
+      <span class="timeline__dot">03</span>
+      <span class="timeline__label">Primeiro caso real</span>
     </li>
-    <li class="encontro">
-      <div class="encontro__num">04</div>
-      <div class="encontro__body">
-        <h3>Dados do Mercado Livre</h3>
-        <p>Relatórios, planilhas e cruzamento de números: vendas, anúncios, estoque e desempenho por página. Como transformar exportação bruta em leitura de gestão, sem passar a tarde montando tabela dinâmica.</p>
-      </div>
+    <li class="timeline__step">
+      <span class="timeline__dot">04</span>
+      <span class="timeline__label">Dados de venda</span>
     </li>
-    <li class="encontro">
-      <div class="encontro__num">05</div>
-      <div class="encontro__body">
-        <h3>Segundo caso de uso e o ArmazenaHub</h3>
-        <p>Um caso mais próximo do sistema: entender a lógica de como o Hub foi construído, o que dá para estender e como pedir ou propor melhorias com clareza técnica suficiente para a conversa render.</p>
-      </div>
+    <li class="timeline__step">
+      <span class="timeline__dot">05</span>
+      <span class="timeline__label">Segundo caso real</span>
     </li>
-    <li class="encontro">
-      <div class="encontro__num">06</div>
-      <div class="encontro__body">
-        <h3>Consolidação</h3>
-        <p>Revisão de tudo, montagem do playbook pessoal do Elias (os prompts, comandos e rotinas que funcionaram na Armazena) e definição da rotina de uso para as semanas seguintes.</p>
-      </div>
+    <li class="timeline__step timeline__step--pre">
+      <span class="timeline__dot">06</span>
+      <span class="timeline__label">Consolidação e playbook</span>
     </li>
-
-    <li class="trilha__marco">Somente no Pacote Imersão</li>
-
-    <li class="encontro encontro--extra">
-      <div class="encontro__num">07</div>
-      <div class="encontro__body">
-        <h3>Comandos e agentes próprios</h3>
-        <p>O que virou rotina vira comando salvo. Tarefas repetitivas passam a rodar sempre do mesmo jeito, com o mesmo padrão de saída, sem reescrever o pedido toda vez.</p>
-      </div>
-    </li>
-    <li class="encontro encontro--extra">
-      <div class="encontro__num">08</div>
-      <div class="encontro__body">
-        <h3>Conexões e integrações</h3>
-        <p>Ligar o Claude às ferramentas que a operação já usa: planilhas, arquivos na nuvem, documentos e serviços externos. A partir daqui ele trabalha com dado vivo, não com o que foi colado na conversa.</p>
-      </div>
-    </li>
-    <li class="encontro encontro--extra">
-      <div class="encontro__num">09</div>
-      <div class="encontro__body">
-        <h3>Terceiro caso de uso, em escala</h3>
-        <p>Um projeto maior, escolhido junto com o Elias. Pode ser um painel de acompanhamento, uma automação de rotina da operação ou uma frente nova de análise para as páginas de venda.</p>
-      </div>
-    </li>
-    <li class="encontro encontro--extra">
-      <div class="encontro__num">10</div>
-      <div class="encontro__body">
-        <h3>Time e plano de 90 dias</h3>
-        <p>Como levar o uso para a equipe, o que padronizar, o que documentar e qual é a sequência dos próximos passos depois que a mentoria terminar.</p>
-      </div>
+    <li class="timeline__step timeline__step--open">
+      <span class="timeline__dot timeline__dot--open">+</span>
+      <span class="timeline__label">Extensão opcional</span>
     </li>
   </ol>
 </section>
@@ -1644,56 +1911,51 @@ button {
   <div class="proposta-invest">
     <h2 class="proposta-section__title" style="margin-bottom: 1.5rem;">Investimento</h2>
 
-    <div class="proposta-opcoes">
-      <div class="proposta-opcao">
-        <p class="proposta-opcao__titulo">Pacote Base</p>
-        <p class="proposta-opcao__resumo">6 encontros. A trilha completa, do diagnóstico à consolidação, com dois casos de uso reais construídos junto. Indicado para quem quer resolver o uso diário e seguir com autonomia a partir daí.</p>
-        <p class="proposta-opcao__valor">R$&nbsp;3.000</p>
-        <p class="proposta-opcao__label">6 encontros · 9 horas ao vivo</p>
-        <div class="proposta-opcao__parcela">
-          <strong>2x de R$ 1.500</strong>
-          R$ 500 por encontro
-        </div>
-        <ul class="proposta-opcao__lista">
-          <li>6 encontros individuais de 1h30</li>
-          <li>Encontros 01 a 06 do cronograma</li>
-          <li>2 casos de uso reais da Armazena</li>
-          <li>Playbook pessoal e gravações</li>
+    <div class="pacote">
+      <div class="pacote__info">
+        <span class="pacote__badge">Mentoria completa</span>
+        <p class="pacote__titulo">6 encontros, do diagnóstico ao playbook</p>
+        <p class="pacote__desc">É o treinamento completo, não uma introdução. Ao fim dos seis encontros o Elias tem o ambiente montado, dois casos de uso da Armazena funcionando e o playbook próprio para seguir sozinho.</p>
+        <ul class="proposta-invest__features" style="margin-top: 1.5rem;">
+          <li>6 encontros individuais de 1h30, ao vivo</li>
+          <li>Diagnóstico da rotina e montagem do ambiente</li>
+          <li>2 casos de uso reais construídos junto</li>
+          <li>Playbook pessoal com prompts, comandos e rotinas</li>
+          <li>Gravação de todos os encontros</li>
           <li>Suporte por WhatsApp durante o período</li>
         </ul>
       </div>
-
-      <div class="proposta-opcao proposta-opcao--rec">
-        <span class="proposta-opcao__badge">Recomendado</span>
-        <p class="proposta-opcao__titulo">Pacote Imersão</p>
-        <p class="proposta-opcao__resumo">10 encontros. Tudo do Pacote Base e mais quatro encontros para transformar uso em sistema: comandos próprios, integrações com as ferramentas da empresa e um projeto maior para a operação.</p>
-        <p class="proposta-opcao__valor">R$&nbsp;4.500</p>
-        <p class="proposta-opcao__label">10 encontros · 15 horas ao vivo</p>
-        <div class="proposta-opcao__parcela">
-          <strong>3x de R$ 1.500</strong>
-          R$ 450 por encontro
-        </div>
-        <ul class="proposta-opcao__lista">
-          <li>10 encontros individuais de 1h30</li>
-          <li>Tudo o que está no Pacote Base</li>
-          <li>Comandos e agentes próprios para tarefas repetitivas</li>
-          <li>Integração com planilhas, arquivos e serviços da operação</li>
-          <li>3 casos de uso reais, um deles em escala</li>
-          <li>Plano de 90 dias e caminho para levar ao time</li>
-        </ul>
+      <div class="pacote__precos">
+        <p class="pacote__valor">R$&nbsp;3.000</p>
+        <p class="pacote__parcela">2x de R$ 1.500</p>
+        <p class="pacote__unit">R$ 500 por encontro<br>9 horas ao vivo</p>
       </div>
     </div>
 
-    <div class="proposta-opcoes__nota">
-      <span class="proposta-section__title">Qual escolher</span>
-      <p>Os dois pacotes começam igual. A diferença aparece depois que o uso diário já está resolvido: o Pacote Imersão é o que leva o Claude de ferramenta pessoal do Elias para rotina da operação, e é por isso que ele é a recomendação. O Pacote Base entrega autonomia no dia a dia e pode ser estendido depois, com encontros avulsos a R$ 500.</p>
-      <ul class="proposta-invest__features">
-        <li>Primeira parcela na aprovação, as demais a cada 30 dias</li>
-        <li>Pix, boleto ou cartão, com nota fiscal em nome da empresa</li>
-        <li>Pacote Base concluído em cerca de 6 semanas</li>
-        <li>Pacote Imersão concluído em cerca de 10 semanas</li>
-      </ul>
+    <div class="extensao">
+      <span class="proposta-section__title">Extensão opcional</span>
+      <p class="extensao__desc">A mentoria fecha no sexto encontro. Se fizer sentido continuar, seja para atacar um projeto maior, criar comandos próprios ou levar o uso para o time, dá para contratar mais encontros por um valor menor. O diagnóstico, o ambiente e o playbook já estarão feitos, então cada encontro novo é tempo de trabalho direto.</p>
+      <div class="extensao__opcoes">
+        <div class="extensao__card extensao__card--rec">
+          <span class="extensao__badge">Melhor valor</span>
+          <p class="extensao__titulo">Bloco de 4 encontros</p>
+          <p class="extensao__valor">R$&nbsp;1.500</p>
+          <p class="extensao__unit">R$ 375 por encontro</p>
+        </div>
+        <div class="extensao__card">
+          <p class="extensao__titulo">Encontro avulso</p>
+          <p class="extensao__valor">R$&nbsp;450</p>
+          <p class="extensao__unit">contratado quando precisar</p>
+        </div>
+      </div>
     </div>
+
+    <ul class="proposta-invest__features" style="margin-top: 1.75rem; display: grid; gap: 0.6rem 1.5rem; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));">
+      <li>Primeira parcela na aprovação, a segunda 30 dias depois</li>
+      <li>Pix, boleto ou cartão, com nota fiscal em nome da empresa</li>
+      <li>Mentoria concluída em cerca de 6 semanas</li>
+      <li>A extensão só é contratada se o Elias quiser, sem compromisso agora</li>
+    </ul>
 
     <div style="margin-top: 2.5rem; text-align: center; font-size: 0.85rem; color: var(--color-text-muted); border-top: 1px solid var(--color-border-light); padding-top: 1.5rem;">Emitida em 13 de setembro de 2026 • Válida por 30 dias</div>
   </div>
@@ -1702,7 +1964,7 @@ button {
 <!-- OBSERVACOES -->
 <section class="proposta-section" aria-label="Observações">
   <h2 class="proposta-section__title">Observações</h2>
-  <p class="proposta-obs__text">As datas dos encontros são combinadas em conjunto e podem ser remarcadas com até 24h de antecedência, sem custo. Encontro desmarcado com menos de 24h conta como realizado. As assinaturas do Claude usadas pelo Elias e pela empresa são contratadas pela Armazena e não estão incluídas neste valor. Tudo o que for visto durante a mentoria (dados, números e o funcionamento interno do ArmazenaHub) é tratado como confidencial.</p>
+  <p class="proposta-obs__text">As datas dos encontros são combinadas em conjunto e podem ser remarcadas com até 24h de antecedência, sem custo. Encontro desmarcado com menos de 24h conta como realizado. As assinaturas do Claude usadas pelo Elias e pela empresa são contratadas pela Armazena e não estão incluídas neste valor. Tudo o que for visto durante a mentoria, dados, números e sistemas internos, é tratado como confidencial.</p>
 </section>
 
 <!-- CTA -->
@@ -1710,7 +1972,7 @@ button {
   <div class="proposta-cta__inner">
     <div class="proposta-cta__content" style="flex: 1 1 0%; min-width: 280px;">
       <h2 class="proposta-cta__title">Vamos marcar o primeiro?</h2>
-      <p class="proposta-cta__sub">Escolha o pacote e a gente já fecha a data do encontro de diagnóstico.</p>
+      <p class="proposta-cta__sub">É só confirmar a proposta e a gente já fecha a data do encontro de diagnóstico.</p>
     </div>
     <div class="proposta-cta__actions" style="flex: 1 1 auto; justify-content: flex-end; gap: 0.75rem;">
       <button type="button" id="btn-pdf" class="btn btn--outline proposta-cta__btn">Salvar proposta em PDF</button>
