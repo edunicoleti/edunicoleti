@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F8F8F6">
-<title>Proposta | Mentoria de Claude para a Armazena</title>
+<title>Proposta | Mentoria de Claude para Elias Junior</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
 
   O CSS abaixo e copia de src/index.css (tokens do design system) +
   src/pages/Proposta.css, seguido dos componentes proprios desta pagina
-  (bloco escuro da estrategia, timeline, grade de formato e cartoes de
+  (bloco da estrategia, timeline, grade de formato e cartoes de
   investimento). Se o design da proposta mudar no app, esta pagina NAO
   acompanha: e uma foto, nao um espelho.
 -->
@@ -1256,42 +1256,35 @@ button {
   font-weight: 500;
 }
 
-/* ── Estrategia: o bloco escuro da pagina ──
-   Mesmo padrao do Contact da Home (bloco escuro dentro de pagina clara):
-   fundo na cor da tinta, orbs indigo e teal em baixa opacidade, titulo em
-   Fraunces. E o unico ponto de contraste forte da proposta, entao concentra o
-   peso visual aqui. Sem borda colorida nos cards: a separacao entre os pilares
-   e um fio de 1px, nao uma tarja. */
+/* ── Estrategia: o ponto alto da pagina ──
+   Claro, no espirito da referencia visual do Eduardo (docs/referencia-visual):
+   papel quase branco puxando para um azul palido, malha de blueprint apagando
+   no topo, hairlines no lugar de tarja colorida e o azul da marca so onde
+   precisa marcar. A versao escura anterior pesava demais no meio da pagina. */
 .estrategia {
   position: relative;
   overflow: hidden;
-  background: var(--color-text);
-  color: var(--color-bg);
+  background:
+    radial-gradient(ellipse 75% 70% at 88% 0%, rgba(79, 70, 229, 0.11) 0%, transparent 62%),
+    radial-gradient(ellipse 65% 70% at 2% 100%, rgba(32, 71, 201, 0.07) 0%, transparent 62%),
+    linear-gradient(165deg, #FFFFFF 0%, #F3F5FF 100%);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: clamp(2.25rem, 5vw, 3.75rem);
 }
 
-.estrategia::before,
-.estrategia::after {
+/* Malha de blueprint: so no topo, apagada antes de chegar no texto. */
+.estrategia::before {
   content: '';
   position: absolute;
+  inset: 0;
   pointer-events: none;
-}
-
-.estrategia::before {
-  top: -120px;
-  right: -90px;
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, rgba(79, 70, 229, 0.26) 0%, transparent 65%);
-}
-
-.estrategia::after {
-  bottom: -150px;
-  left: -110px;
-  width: 340px;
-  height: 340px;
-  background: radial-gradient(circle, rgba(13, 148, 136, 0.11) 0%, transparent 65%);
+  background-image:
+    linear-gradient(rgba(32, 71, 201, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 71, 201, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 85% 70% at 50% 0%, #000 12%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 70% at 50% 0%, #000 12%, transparent 78%);
 }
 
 .estrategia__head {
@@ -1306,7 +1299,7 @@ button {
   font-weight: var(--weight-semibold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.42);
+  color: var(--color-accent);
   margin-bottom: 1.1rem;
 }
 
@@ -1316,14 +1309,14 @@ button {
   font-weight: var(--weight-bold);
   line-height: 1.18;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--color-text);
   margin-bottom: 1rem;
 }
 
 .estrategia__sub {
   font-size: 0.95rem;
   line-height: var(--leading-relaxed);
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--color-text-secondary);
 }
 
 .estrategia__pilares {
@@ -1333,16 +1326,16 @@ button {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: clamp(2rem, 4vw, 3rem);
   padding-top: clamp(2rem, 4vw, 2.75rem);
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 1px solid var(--color-border);
 }
 
 .pilar {
-  padding-right: 1.75rem;
+  padding-right: 1.35rem;
 }
 
 .pilar + .pilar {
-  padding-left: 1.75rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  padding-left: 1.35rem;
+  border-left: 1px solid var(--color-border);
 }
 
 .pilar:last-child {
@@ -1356,14 +1349,14 @@ button {
   font-weight: var(--weight-bold);
   line-height: 1;
   letter-spacing: -0.03em;
-  color: rgba(255, 255, 255, 0.16);
+  color: rgba(32, 71, 201, 0.2);
   margin-bottom: 0.9rem;
 }
 
 .pilar__title {
   font-size: 1.15rem;
   font-weight: var(--weight-bold);
-  color: #fff;
+  color: var(--color-text);
   letter-spacing: -0.01em;
   margin-bottom: 0.3rem;
 }
@@ -1371,14 +1364,14 @@ button {
 .pilar__lead {
   font-size: 0.84rem;
   font-weight: var(--weight-semibold);
-  color: #9DB4FF;
+  color: var(--color-accent);
   margin-bottom: 0.75rem;
 }
 
 .pilar__desc {
   font-size: 0.86rem;
   line-height: 1.62;
-  color: rgba(255, 255, 255, 0.58);
+  color: var(--color-text-secondary);
 }
 
 /* ── Timeline dos encontros ──
@@ -1552,38 +1545,21 @@ button {
   margin-top: 0.5rem;
 }
 
-.extensao__opcoes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 0.85rem;
-  margin-top: 1.5rem;
-}
-
 .extensao__card {
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
   background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 1.35rem;
-}
-
-.extensao__card--rec {
   border: 2px solid var(--color-accent);
+  border-radius: 12px;
+  padding: 1.5rem;
 }
 
-.extensao__badge {
-  position: absolute;
-  top: -11px;
-  left: 1.35rem;
-  background: var(--color-accent);
-  color: var(--color-bg);
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 100px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
+.extensao__preco {
+  text-align: right;
 }
 
 .extensao__titulo {
@@ -1608,29 +1584,6 @@ button {
 }
 
 @media print {
-  /* O bloco escuro imprime claro: em papel ele viraria uma mancha de tinta e
-     o texto branco sumiria em impressora monocromatica. */
-  .estrategia {
-    background: #fff !important;
-    color: #16150F !important;
-    border: 1px solid #ddd;
-  }
-
-  .estrategia::before,
-  .estrategia::after {
-    display: none !important;
-  }
-
-  .estrategia__eyebrow { color: #666 !important; }
-  .estrategia__title,
-  .pilar__title { color: #16150F !important; }
-  .estrategia__sub,
-  .pilar__desc { color: #555 !important; }
-  .pilar__num { color: #ccc !important; }
-  .pilar__lead { color: #2047C9 !important; }
-  .estrategia__pilares { border-top-color: #ddd !important; }
-  .pilar + .pilar { border-left-color: #ddd !important; }
-
   .timeline__dot { box-shadow: none !important; }
 
   .estrategia,
@@ -1696,7 +1649,7 @@ button {
     padding-left: 0;
     padding-top: 1.75rem;
     border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid var(--color-border);
   }
 
   .pilar__num {
@@ -1750,6 +1703,13 @@ button {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+
+  /* O cartao de extensao quebra em duas linhas aqui: sem o alinhamento a
+     esquerda o preco ficaria solto, porque o flex item encolhe ate o conteudo
+     e o text-align da direita nao teria onde agir. */
+  .extensao__preco {
+    text-align: left;
+  }
 }
 </style>
 </head>
@@ -1766,13 +1726,12 @@ button {
 <!-- HERO -->
 <section class="proposta-hero" aria-label="Resumo da mentoria">
   <div class="proposta-hero__left">
-    <h1 class="proposta-hero__title">Mentoria individual de Claude, aplicada à operação da Armazena</h1>
+    <h1 class="proposta-hero__title">Mentoria individual de Claude para Elias Junior</h1>
     <p class="proposta-hero__desc">Na Armazena o Claude já é realidade: o Matheus usa a ferramenta no dia a dia e ela está validada dentro de casa. Esta mentoria existe para colocar o Elias no mesmo nível de uso, com duas frentes caminhando juntas: domínio da plataforma (o que o Claude faz, como conversar com ele, onde ele se conecta) e aplicação em casos reais da rotina de gestão, construídos ao vivo durante os encontros.</p>
     <div class="hero-feats">
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Encontros 1 a 1</div>
+      <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Mentoria personalizada</div>
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Casos de uso reais</div>
-      <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Foco em Mercado Livre</div>
-      <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Encontros gravados</div>
     </div>
   </div>
   <div class="proposta-hero__right">
@@ -1785,7 +1744,7 @@ button {
   </div>
 </section>
 
-<!-- ESTRATEGIA: bloco escuro, ponto alto da pagina -->
+<!-- ESTRATEGIA: ponto alto da pagina -->
 <section class="estrategia" aria-label="Estratégia da mentoria">
   <div class="estrategia__head">
     <span class="estrategia__eyebrow">Estratégia da mentoria</span>
@@ -1876,34 +1835,6 @@ button {
       <p>Dá para marcar dois na mesma semana quando houver pressa em destravar algo.</p>
     </div>
   </div>
-
-  <div class="proposta-execution__panel" style="margin-top: 0.25rem;">
-    <h3>O que fica com o Elias depois da mentoria</h3>
-    <ul class="proposta-compact-list">
-      <li>Ambiente configurado e pronto para uso no dia a dia, com os projetos da Armazena montados</li>
-      <li>Os casos de uso construídos durante os encontros, funcionando e documentados</li>
-      <li>Playbook pessoal: os prompts, comandos e rotinas que funcionaram na operação</li>
-      <li>Gravação de todos os encontros, para rever qualquer passo quando precisar</li>
-      <li>Suporte por WhatsApp entre os encontros, para dúvidas pontuais durante o período da mentoria</li>
-    </ul>
-  </div>
-</section>
-
-<!-- TEMAS -->
-<section class="proposta-section" aria-label="Temas cobertos">
-  <h2 class="proposta-section__title">Temas cobertos</h2>
-  <div class="proposta-tags">
-    <span class="tag">Claude no navegador e no computador</span>
-    <span class="tag">Projetos e contexto</span>
-    <span class="tag">Claude Code</span>
-    <span class="tag">Análise de planilhas</span>
-    <span class="tag">Relatórios de gestão</span>
-    <span class="tag">Dados do Mercado Livre</span>
-    <span class="tag">Comandos e agentes próprios</span>
-    <span class="tag">Integrações com as ferramentas da empresa</span>
-    <span class="tag">Leitura de sistema</span>
-    <span class="tag">Boas práticas e segurança de dados</span>
-  </div>
 </section>
 
 <!-- INVESTIMENTO -->
@@ -1934,18 +1865,15 @@ button {
 
     <div class="extensao">
       <span class="proposta-section__title">Extensão opcional</span>
-      <p class="extensao__desc">A mentoria fecha no sexto encontro. Se fizer sentido continuar, seja para atacar um projeto maior, criar comandos próprios ou levar o uso para o time, dá para contratar mais encontros por um valor menor. O diagnóstico, o ambiente e o playbook já estarão feitos, então cada encontro novo é tempo de trabalho direto.</p>
-      <div class="extensao__opcoes">
-        <div class="extensao__card extensao__card--rec">
-          <span class="extensao__badge">Melhor valor</span>
-          <p class="extensao__titulo">Bloco de 4 encontros</p>
-          <p class="extensao__valor">R$&nbsp;1.500</p>
-          <p class="extensao__unit">R$ 375 por encontro</p>
+      <p class="extensao__desc">A mentoria termina no sexto encontro, com tudo entregue. Se depois disso aparecer um ponto específico para aprofundar ou um projeto para tirar do papel, dá para contratar um bloco extra de quatro encontros. É opcional e não precisa ser decidido agora.</p>
+      <div class="extensao__card">
+        <div>
+          <p class="extensao__titulo">Bloco extra de 4 encontros</p>
+          <p class="extensao__unit">Contratado só depois da mentoria concluída, se fizer sentido</p>
         </div>
-        <div class="extensao__card">
-          <p class="extensao__titulo">Encontro avulso</p>
-          <p class="extensao__valor">R$&nbsp;450</p>
-          <p class="extensao__unit">contratado quando precisar</p>
+        <div class="extensao__preco">
+          <p class="extensao__valor">R$&nbsp;1.200</p>
+          <p class="extensao__unit">R$ 300 por encontro</p>
         </div>
       </div>
     </div>
@@ -1959,12 +1887,6 @@ button {
 
     <div style="margin-top: 2.5rem; text-align: center; font-size: 0.85rem; color: var(--color-text-muted); border-top: 1px solid var(--color-border-light); padding-top: 1.5rem;">Emitida em 13 de setembro de 2026 • Válida por 30 dias</div>
   </div>
-</section>
-
-<!-- OBSERVACOES -->
-<section class="proposta-section" aria-label="Observações">
-  <h2 class="proposta-section__title">Observações</h2>
-  <p class="proposta-obs__text">As datas dos encontros são combinadas em conjunto e podem ser remarcadas com até 24h de antecedência, sem custo. Encontro desmarcado com menos de 24h conta como realizado. As assinaturas do Claude usadas pelo Elias e pela empresa são contratadas pela Armazena e não estão incluídas neste valor. Tudo o que for visto durante a mentoria, dados, números e sistemas internos, é tratado como confidencial.</p>
 </section>
 
 <!-- CTA -->
