@@ -14,8 +14,8 @@
   Proposta estatica de mentoria para o Elias Junior (Armazena / Motopoint).
   Emitida em 13/09/2026. Pacote unico e fechado: 6 encontros de 1h30 por
   R$ 3.000, segunda a quarta a partir das 19h. A continuidade e opcional e
-  so entra depois do sexto encontro (bloco de 4 por R$ 1.500 ou avulso a
-  R$ 450), por isso a timeline termina num no tracejado.
+  so entra depois do sexto encontro (bloco extra de 4 por R$ 1.200), por isso
+  a timeline termina num no tracejado.
 
   Pagina autonoma: nao depende de Supabase nem do build da aplicacao. O
   .htaccess so cai no fallback do SPA quando o caminho nao existe em disco,
@@ -1236,6 +1236,10 @@ button {
 
 /* Pills do hero: o template da Lucia repetia esse bloco inline em cada item.
    Aqui vira classe, porque sao quatro. */
+.proposta-hero__desc + .proposta-hero__desc {
+  margin-top: 0.9rem;
+}
+
 .hero-feats {
   display: flex;
   gap: 0.75rem;
@@ -1727,7 +1731,8 @@ button {
 <section class="proposta-hero" aria-label="Resumo da mentoria">
   <div class="proposta-hero__left">
     <h1 class="proposta-hero__title">Mentoria individual de Claude para Elias Junior</h1>
-    <p class="proposta-hero__desc">Na Armazena o Claude já é realidade: o Matheus usa a ferramenta no dia a dia e ela está validada dentro de casa. Esta mentoria existe para colocar o Elias no mesmo nível de uso, com duas frentes caminhando juntas: domínio da plataforma (o que o Claude faz, como conversar com ele, onde ele se conecta) e aplicação em casos reais da rotina de gestão, construídos ao vivo durante os encontros.</p>
+    <p class="proposta-hero__desc">Na Armazena a ferramenta já provou que funciona. O que falta é ela entrar na rotina da gerência: a maioria de quem usa Claude fica no primeiro nível, perguntar e receber resposta. É útil, e é uma fração do que ele faz.</p>
+    <p class="proposta-hero__desc">O salto vem quando ele passa a trabalhar com os dados da operação, dentro das tarefas que ocupam o seu dia. É isso que esta mentoria entrega, em encontros individuais: pegamos a sua rotina, escolhemos o que mais consome tempo e resolvemos ali, junto. O que sai do encontro sai funcionando.</p>
     <div class="hero-feats">
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Encontros 1 a 1</div>
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Mentoria personalizada</div>
@@ -1762,7 +1767,7 @@ button {
       <span class="pilar__num">02</span>
       <h3 class="pilar__title">Rotina</h3>
       <p class="pilar__lead">Aplicar nas tarefas da gerência</p>
-      <p class="pilar__desc">Relatórios, planilhas, análise de anúncios, respostas, textos e acompanhamento de indicadores. Pegamos o que mais consome o tempo do Elias e resolvemos cada caso durante o encontro, com dados reais.</p>
+      <p class="pilar__desc">Relatórios, planilhas, análise de anúncios, respostas, textos e acompanhamento de indicadores. Pegamos o que mais consome o seu tempo e resolvemos cada caso durante o encontro, com dados reais.</p>
     </article>
     <article class="pilar">
       <span class="pilar__num">03</span>
@@ -1846,7 +1851,7 @@ button {
       <div class="pacote__info">
         <span class="pacote__badge">Mentoria completa</span>
         <p class="pacote__titulo">6 encontros, do diagnóstico ao playbook</p>
-        <p class="pacote__desc">É o treinamento completo, não uma introdução. Ao fim dos seis encontros o Elias tem o ambiente montado, dois casos de uso da Armazena funcionando e o playbook próprio para seguir sozinho.</p>
+        <p class="pacote__desc">É o treinamento completo, não uma introdução. Ao fim dos seis encontros você tem o ambiente montado, dois casos de uso da Armazena funcionando e o playbook próprio para seguir sozinho.</p>
         <ul class="proposta-invest__features" style="margin-top: 1.5rem;">
           <li>6 encontros individuais de 1h30, ao vivo</li>
           <li>Diagnóstico da rotina e montagem do ambiente</li>
@@ -1882,7 +1887,7 @@ button {
       <li>Primeira parcela na aprovação, a segunda 30 dias depois</li>
       <li>Pix, boleto ou cartão, com nota fiscal em nome da empresa</li>
       <li>Mentoria concluída em cerca de 6 semanas</li>
-      <li>A extensão só é contratada se o Elias quiser, sem compromisso agora</li>
+      <li>A extensão só é contratada se você quiser, sem compromisso agora</li>
     </ul>
 
     <div style="margin-top: 2.5rem; text-align: center; font-size: 0.85rem; color: var(--color-text-muted); border-top: 1px solid var(--color-border-light); padding-top: 1.5rem;">Emitida em 13 de setembro de 2026 • Válida por 30 dias</div>
