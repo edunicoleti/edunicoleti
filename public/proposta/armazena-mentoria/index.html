@@ -1576,9 +1576,6 @@ button {
   padding: 1.5rem;
 }
 
-.extensao__preco {
-  text-align: right;
-}
 
 .extensao__titulo {
   font-size: 0.92rem;
@@ -1723,13 +1720,6 @@ button {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-
-  /* O cartao de extensao quebra em duas linhas aqui: sem o alinhamento a
-     esquerda o preco ficaria solto, porque o flex item encolhe ate o conteudo
-     e o text-align da direita nao teria onde agir. */
-  .extensao__preco {
-    text-align: left;
-  }
 }
 </style>
 </head>
@@ -1747,8 +1737,8 @@ button {
 <section class="proposta-hero" aria-label="Resumo da mentoria">
   <div class="proposta-hero__left">
     <h1 class="proposta-hero__title">Mentoria individual de Claude para Elias Junior</h1>
-    <p class="proposta-hero__desc">O objetivo é um só: usar Claude para potencializar a operação da Armazena. Automatizar o que hoje é feito na mão, tirar leitura rápida dos números de venda e destravar as coisas que ficam paradas por falta de tempo.</p>
-    <p class="proposta-hero__desc">São mentorias individuais, uma por semana, sempre em cima de alguma coisa que você precisa resolver de verdade. No fim, o ambiente está montado, as primeiras tarefas já rodam sozinhas e você sabe montar as próximas.</p>
+    <p class="proposta-hero__desc">A maior parte do que Claude faz não está na conversa do dia a dia. A primeira parte do trabalho é passar por tudo que a plataforma oferece, funcionalidade por funcionalidade, até ficar claro o que dá para pedir e como pedir.</p>
+    <p class="proposta-hero__desc">A segunda é colocar isso para rodar na Armazena: automatizar o que hoje é feito na mão, tirar leitura rápida dos números de venda e destravar o que fica parado por falta de tempo. No fim, o ambiente está montado, as primeiras tarefas já rodam sozinhas e você sabe montar as próximas.</p>
     <div class="hero-feats">
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Mentoria personalizada</div>
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Tarefas reais da operação</div>
@@ -1849,18 +1839,17 @@ button {
     <div class="pacote">
       <div class="pacote__info">
         <span class="pacote__badge">Pacote completo</span>
-        <p class="pacote__titulo">6 mentorias, do diagnóstico à autonomia</p>
+        <p class="pacote__titulo">6 mentorias</p>
         <ul class="proposta-invest__features" style="margin-top: 1.25rem;">
-          <li>6 mentorias individuais de 1h30, ao vivo</li>
+          <li>6 mentorias individuais de 1h30, via Google Meet</li>
           <li>2 tarefas reais da Armazena resolvidas junto</li>
-          <li>Gravação de todas as mentorias</li>
           <li>Suporte por WhatsApp durante o período</li>
         </ul>
       </div>
       <div class="pacote__precos">
         <p class="pacote__valor">R$&nbsp;3.000</p>
         <p class="pacote__parcela">2x de R$ 1.500</p>
-        <p class="pacote__unit">R$ 500 por mentoria<br>9 horas ao vivo</p>
+        <p class="pacote__unit">9 horas via Google Meet</p>
       </div>
     </div>
 
@@ -1869,18 +1858,9 @@ button {
       <p class="extensao__desc">Se depois aparecer um projeto para tirar do papel, dá para contratar mais quatro. Não precisa decidir agora.</p>
       <div class="extensao__card">
         <p class="extensao__titulo">Bloco extra de 4 mentorias</p>
-        <div class="extensao__preco">
-          <p class="extensao__valor">R$&nbsp;1.200</p>
-          <p class="extensao__unit">R$ 300 por mentoria</p>
-        </div>
+        <p class="extensao__valor">R$&nbsp;1.200</p>
       </div>
     </div>
-
-    <ul class="proposta-invest__features" style="margin-top: 1.75rem; display: grid; gap: 0.6rem 1.5rem; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));">
-      <li>Primeira parcela na aprovação, a segunda 30 dias depois</li>
-      <li>Pix, boleto ou cartão, com nota fiscal em nome da empresa</li>
-      <li>Concluído em cerca de 6 semanas</li>
-    </ul>
 
     <div style="margin-top: 2.5rem; text-align: center; font-size: 0.85rem; color: var(--color-text-muted); border-top: 1px solid var(--color-border-light); padding-top: 1.5rem;">Emitida em 13 de setembro de 2026 • Válida por 30 dias</div>
   </div>
