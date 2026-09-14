@@ -1721,6 +1721,69 @@ button {
     gap: 1.5rem;
   }
 }
+
+/* ── Revisao mobile ──
+   Ajustes que so valem no telefone e por isso vivem depois de tudo. */
+@media (max-width: 700px) {
+  /* 1. Ordem de leitura. O Proposta.css inverte o hero com column-reverse e
+     joga o cartao do cliente para cima do titulo. Em 375px isso empurra o H1
+     uns 230px para baixo: quem abre o link ve para quem a proposta e antes de
+     saber o que ela e. O cartao passa a fechar o bloco, com o fio virando
+     para cima. */
+  .proposta-hero {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .proposta-card--client {
+    border-bottom: none;
+    border-top: 1px solid var(--color-border);
+    padding-bottom: 0;
+    padding-top: 1.75rem;
+    margin-bottom: 0;
+  }
+
+  /* 2. Corpo de texto no minimo 14px. A escala do desktop usa tamanhos
+     pequenos de proposito, mas no telefone o detalhe da timeline caia para
+     11,5px reais, abaixo do que se le confortavel em tela de mao. */
+  .pilar__desc,
+  .extensao__desc,
+  .proposta-invest__features,
+  .timeline__nota,
+  .timeline__detail,
+  .formato-item p,
+  .pacote__unit,
+  .hero-feat {
+    font-size: 0.9rem;
+  }
+
+  .timeline__label {
+    font-size: 0.95rem;
+  }
+
+  /* 3. Alvo de toque. O botao de PDF media 43px de altura, reprovando por 1px
+     no minimo de 44px. */
+  .btn {
+    min-height: 44px;
+    padding: 0.85rem 1.5rem;
+  }
+
+  /* 4. Os links de contato do rodape tinham 15px de altura de toque, longe do
+     minimo mesmo no criterio mais permissivo. */
+  .proposta-footer p {
+    line-height: 2.1;
+  }
+
+  .proposta-footer a {
+    display: inline-block;
+    padding: 0.3rem 0;
+  }
+
+  /* 5. O botao flutuante do WhatsApp cobria a linha de copyright. */
+  .proposta-footer {
+    padding-bottom: 5rem;
+  }
+}
 </style>
 </head>
 <body>
