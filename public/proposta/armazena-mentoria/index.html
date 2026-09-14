@@ -12,10 +12,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!--
   Proposta estatica de mentoria para o Elias Junior (Armazena / Motopoint).
-  Emitida em 13/09/2026. Pacote unico e fechado: 6 encontros de 1h30 por
+  Emitida em 13/09/2026. Pacote unico e fechado: 6 mentorias de 1h30 por
   R$ 3.000, segunda a quarta a partir das 19h. A continuidade e opcional e
-  so entra depois do sexto encontro (bloco extra de 4 por R$ 1.200), por isso
-  a timeline termina num no tracejado.
+  so entra depois da sexta (bloco extra de 4 por R$ 1.200), por isso a
+  timeline termina num no tracejado. O cliente escolheu chamar cada sessao
+  de "mentoria": onde a palavra nomeava o programa inteiro ela foi trocada
+  (objetivo, pacote, estrategia) para as duas leituras nao colidirem.
 
   Pagina autonoma: nao depende de Supabase nem do build da aplicacao. O
   .htaccess so cai no fallback do SPA quando o caminho nao existe em disco,
@@ -1314,13 +1316,7 @@ button {
   line-height: 1.18;
   letter-spacing: -0.02em;
   color: var(--color-text);
-  margin-bottom: 1rem;
-}
-
-.estrategia__sub {
-  font-size: 0.95rem;
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-secondary);
+  margin-bottom: 0;
 }
 
 .estrategia__pilares {
@@ -1363,14 +1359,7 @@ button {
   font-weight: var(--weight-bold);
   color: var(--color-text);
   letter-spacing: -0.01em;
-  margin-bottom: 0.3rem;
-}
-
-.pilar__lead {
-  font-size: 0.84rem;
-  font-weight: var(--weight-semibold);
-  color: var(--color-accent);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.55rem;
 }
 
 .pilar__desc {
@@ -1758,10 +1747,9 @@ button {
 <section class="proposta-hero" aria-label="Resumo da mentoria">
   <div class="proposta-hero__left">
     <h1 class="proposta-hero__title">Mentoria individual de Claude para Elias Junior</h1>
-    <p class="proposta-hero__desc">A mentoria tem um objetivo só: Claude trabalhando dentro da rotina da gerência, carregado com o contexto e os dados da Armazena, nas frentes que mais ocupam o seu tempo.</p>
-    <p class="proposta-hero__desc">Para chegar lá são encontros individuais, um por semana, cada um fechando uma frente da sua rotina. Você termina com o ambiente montado, os casos de uso rodando e autonomia para seguir criando depois que os encontros acabarem.</p>
+    <p class="proposta-hero__desc">O objetivo é um só: Claude trabalhando dentro da rotina da gerência, carregado com o contexto e os dados da Armazena, nas frentes que mais ocupam o seu tempo.</p>
+    <p class="proposta-hero__desc">Para chegar lá são mentorias individuais, uma por semana, cada uma fechando uma frente da sua rotina. Você termina com o ambiente montado, os casos de uso rodando e autonomia para seguir criando depois que elas acabarem.</p>
     <div class="hero-feats">
-      <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Encontros 1 a 1</div>
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Mentoria personalizada</div>
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Casos de uso reais</div>
     </div>
@@ -1779,22 +1767,19 @@ button {
 <!-- ESTRATEGIA + CRONOGRAMA: ponto alto da pagina -->
 <section class="estrategia" aria-label="Estratégia e cronograma da mentoria">
   <div class="estrategia__head">
-    <span class="estrategia__eyebrow">Estratégia da mentoria</span>
+    <span class="estrategia__eyebrow">Estratégia</span>
     <h2 class="estrategia__title">Duas frentes que avançam juntas.</h2>
-    <p class="estrategia__sub">Nada de exercício de manual: todo exemplo sai da operação da Armazena, e o que for construído durante o encontro fica funcionando.</p>
   </div>
 
   <div class="estrategia__pilares">
     <article class="pilar">
       <span class="pilar__icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path></svg></span>
-      <h3 class="pilar__title">Plataforma</h3>
-      <p class="pilar__lead">Aprender a ferramenta por completo</p>
+      <h3 class="pilar__title">Dominar a plataforma</h3>
       <p class="pilar__desc">Projetos, contexto, memória, leitura de arquivos, integrações, comandos próprios e agentes. O terreno inteiro, não só a conversa.</p>
     </article>
     <article class="pilar">
       <span class="pilar__icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg></span>
-      <h3 class="pilar__title">Rotina</h3>
-      <p class="pilar__lead">Aplicar na rotina real da gerência</p>
+      <h3 class="pilar__title">Aplicar na rotina real</h3>
       <p class="pilar__desc">Relatórios, planilhas, análise de anúncios e acompanhamento de indicadores, sempre com os dados de verdade da operação.</p>
     </article>
   </div>
@@ -1806,52 +1791,52 @@ button {
         <span class="timeline__dot">01</span>
         <div class="timeline__body">
           <span class="timeline__label">Domínio da plataforma</span>
-          <span class="timeline__detail">Encontros 1 e 2. Ambiente montado e o terreno da ferramenta conhecido.</span>
+          <span class="timeline__detail">1ª e 2ª mentorias. Ambiente montado e o terreno da ferramenta conhecido.</span>
         </div>
       </li>
       <li class="timeline__step">
         <span class="timeline__dot">02</span>
         <div class="timeline__body">
           <span class="timeline__label">Aplicação na rotina</span>
-          <span class="timeline__detail">Encontros 3 a 5. Tarefas reais resolvidas ao vivo, como um relatório ou uma análise de anúncios.</span>
+          <span class="timeline__detail">3ª a 5ª mentorias. Tarefas reais resolvidas ao vivo, como um relatório ou uma análise de anúncios.</span>
         </div>
       </li>
       <li class="timeline__step timeline__step--pre">
         <span class="timeline__dot">03</span>
         <div class="timeline__body">
           <span class="timeline__label">Consolidação</span>
-          <span class="timeline__detail">Encontro 6. Revisão do que foi construído e a rotina de uso definida.</span>
+          <span class="timeline__detail">6ª mentoria. Revisão do que foi construído e a rotina de uso definida.</span>
         </div>
       </li>
       <li class="timeline__step timeline__step--open">
         <span class="timeline__dot timeline__dot--open">+</span>
         <div class="timeline__body">
           <span class="timeline__label">Extensão opcional</span>
-          <span class="timeline__detail">Quatro encontros extras, se depois aparecer um projeto para tirar do papel.</span>
+          <span class="timeline__detail">Quatro mentorias extras, se depois aparecer um projeto para tirar do papel.</span>
         </div>
       </li>
     </ol>
-    <p class="timeline__nota">A divisão é um plano e se ajusta ao que a operação pedir. As tarefas citadas são exemplos: as de verdade a gente escolhe junto, no primeiro encontro.</p>
+    <p class="timeline__nota">A divisão é um plano e se ajusta ao que a operação pedir. As tarefas citadas são exemplos: as de verdade a gente escolhe junto, na primeira.</p>
   </div>
 </section>
 
 <!-- FORMATO -->
 <section class="proposta-section" aria-label="Formato dos encontros">
-  <h2 class="proposta-section__title">Como funcionam os encontros</h2>
+  <h2 class="proposta-section__title">Como funcionam as mentorias</h2>
   <div class="formato-grid">
     <div class="formato-item">
       <span class="formato-item__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg></span>
       <strong>Segunda a quarta, das 19h em diante</strong>
-      <p>Fora do expediente, para não disputar espaço com a operação do dia. A data de cada encontro é combinada com antecedência.</p>
+      <p>Fora do expediente, para não disputar espaço com a operação do dia. A data de cada uma é combinada com antecedência.</p>
     </div>
     <div class="formato-item">
       <span class="formato-item__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span>
-      <strong>1h30 por encontro</strong>
+      <strong>1h30 por mentoria</strong>
       <p>Alguns temas fecham em 1h. O tempo é do assunto, não do cronômetro.</p>
     </div>
     <div class="formato-item">
       <span class="formato-item__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"></path></svg></span>
-      <strong>1 encontro por semana</strong>
+      <strong>1 mentoria por semana</strong>
       <p>Dá para marcar dois na mesma semana quando houver pressa em destravar algo.</p>
     </div>
   </section>
@@ -1863,35 +1848,30 @@ button {
 
     <div class="pacote">
       <div class="pacote__info">
-        <span class="pacote__badge">Mentoria completa</span>
-        <p class="pacote__titulo">6 encontros, do diagnóstico à autonomia</p>
-        <p class="pacote__desc">É o treinamento completo, não uma introdução. Ao fim dos seis encontros você tem o ambiente montado, dois casos de uso da Armazena funcionando e autonomia para seguir sozinho.</p>
-        <ul class="proposta-invest__features" style="margin-top: 1.5rem;">
-          <li>6 encontros individuais de 1h30, ao vivo</li>
-          <li>Diagnóstico da rotina e montagem do ambiente</li>
-          <li>2 casos de uso reais construídos junto</li>
-          <li>Gravação de todos os encontros</li>
+        <span class="pacote__badge">Pacote completo</span>
+        <p class="pacote__titulo">6 mentorias, do diagnóstico à autonomia</p>
+        <ul class="proposta-invest__features" style="margin-top: 1.25rem;">
+          <li>6 mentorias individuais de 1h30, ao vivo</li>
+          <li>2 casos de uso da operação construídos junto</li>
+          <li>Gravação de todas as mentorias</li>
           <li>Suporte por WhatsApp durante o período</li>
         </ul>
       </div>
       <div class="pacote__precos">
         <p class="pacote__valor">R$&nbsp;3.000</p>
         <p class="pacote__parcela">2x de R$ 1.500</p>
-        <p class="pacote__unit">R$ 500 por encontro<br>9 horas ao vivo</p>
+        <p class="pacote__unit">R$ 500 por mentoria<br>9 horas ao vivo</p>
       </div>
     </div>
 
     <div class="extensao">
       <span class="proposta-section__title">Extensão opcional</span>
-      <p class="extensao__desc">A mentoria termina no sexto encontro, com tudo entregue. Se depois disso aparecer um ponto específico para aprofundar ou um projeto para tirar do papel, dá para contratar um bloco extra de quatro encontros. É opcional e não precisa ser decidido agora.</p>
+      <p class="extensao__desc">Se depois aparecer um projeto para tirar do papel, dá para contratar mais quatro. Não precisa decidir agora.</p>
       <div class="extensao__card">
-        <div>
-          <p class="extensao__titulo">Bloco extra de 4 encontros</p>
-          <p class="extensao__unit">Contratado só depois da mentoria concluída, se fizer sentido</p>
-        </div>
+        <p class="extensao__titulo">Bloco extra de 4 mentorias</p>
         <div class="extensao__preco">
           <p class="extensao__valor">R$&nbsp;1.200</p>
-          <p class="extensao__unit">R$ 300 por encontro</p>
+          <p class="extensao__unit">R$ 300 por mentoria</p>
         </div>
       </div>
     </div>
@@ -1899,8 +1879,7 @@ button {
     <ul class="proposta-invest__features" style="margin-top: 1.75rem; display: grid; gap: 0.6rem 1.5rem; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));">
       <li>Primeira parcela na aprovação, a segunda 30 dias depois</li>
       <li>Pix, boleto ou cartão, com nota fiscal em nome da empresa</li>
-      <li>Mentoria concluída em cerca de 6 semanas</li>
-      <li>A extensão só é contratada se você quiser, sem compromisso agora</li>
+      <li>Concluído em cerca de 6 semanas</li>
     </ul>
 
     <div style="margin-top: 2.5rem; text-align: center; font-size: 0.85rem; color: var(--color-text-muted); border-top: 1px solid var(--color-border-light); padding-top: 1.5rem;">Emitida em 13 de setembro de 2026 • Válida por 30 dias</div>
@@ -1911,8 +1890,8 @@ button {
 <section class="proposta-cta" aria-label="Próximos passos">
   <div class="proposta-cta__inner">
     <div class="proposta-cta__content" style="flex: 1 1 0%; min-width: 280px;">
-      <h2 class="proposta-cta__title">Vamos marcar o primeiro?</h2>
-      <p class="proposta-cta__sub">É só confirmar a proposta e a gente já fecha a data do encontro de diagnóstico.</p>
+      <h2 class="proposta-cta__title">Vamos marcar a primeira?</h2>
+      <p class="proposta-cta__sub">É só confirmar a proposta e a gente já fecha a data da primeira mentoria.</p>
     </div>
     <div class="proposta-cta__actions" style="flex: 1 1 auto; justify-content: flex-end; gap: 0.75rem;">
       <button type="button" id="btn-pdf" class="btn btn--outline proposta-cta__btn">Salvar proposta em PDF</button>
