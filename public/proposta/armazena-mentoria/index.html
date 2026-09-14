@@ -1346,15 +1346,16 @@ button {
   padding-right: 0;
 }
 
-.pilar__num {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: 2.6rem;
-  font-weight: var(--weight-bold);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: rgba(32, 71, 201, 0.2);
-  margin-bottom: 0.9rem;
+.pilar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  margin-bottom: 1rem;
 }
 
 .pilar__title {
@@ -1683,10 +1684,6 @@ button {
     border-top: 1px solid var(--color-border);
   }
 
-  .pilar__num {
-    font-size: 2rem;
-    margin-bottom: 0.6rem;
-  }
 }
 
 @media (max-width: 700px) {
@@ -1762,7 +1759,7 @@ button {
   <div class="proposta-hero__left">
     <h1 class="proposta-hero__title">Mentoria individual de Claude para Elias Junior</h1>
     <p class="proposta-hero__desc">A mentoria tem um objetivo só: Claude trabalhando dentro da rotina da gerência, carregado com o contexto e os dados da Armazena, nas frentes que mais ocupam o seu tempo.</p>
-    <p class="proposta-hero__desc">Para chegar lá são encontros individuais, um por semana, cada um fechando uma frente da sua rotina. Você termina com o ambiente montado, casos de uso rodando e um playbook seu, para continuar criando depois que os encontros acabarem.</p>
+    <p class="proposta-hero__desc">Para chegar lá são encontros individuais, um por semana, cada um fechando uma frente da sua rotina. Você termina com o ambiente montado, os casos de uso rodando e autonomia para seguir criando depois que os encontros acabarem.</p>
     <div class="hero-feats">
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Encontros 1 a 1</div>
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Mentoria personalizada</div>
@@ -1789,13 +1786,13 @@ button {
 
   <div class="estrategia__pilares">
     <article class="pilar">
-      <span class="pilar__num">01</span>
+      <span class="pilar__icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path></svg></span>
       <h3 class="pilar__title">Plataforma</h3>
       <p class="pilar__lead">Aprender a ferramenta por completo</p>
       <p class="pilar__desc">Projetos, contexto, memória, leitura de arquivos, integrações, comandos próprios e agentes. O terreno inteiro, não só a conversa.</p>
     </article>
     <article class="pilar">
-      <span class="pilar__num">02</span>
+      <span class="pilar__icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg></span>
       <h3 class="pilar__title">Rotina</h3>
       <p class="pilar__lead">Aplicar na rotina real da gerência</p>
       <p class="pilar__desc">Relatórios, planilhas, análise de anúncios e acompanhamento de indicadores, sempre com os dados de verdade da operação.</p>
@@ -1803,7 +1800,7 @@ button {
   </div>
 
   <div class="estrategia__cronograma">
-    <span class="estrategia__eyebrow">Os seis encontros</span>
+    <span class="estrategia__eyebrow">Cronograma geral</span>
     <ol class="timeline">
       <li class="timeline__step">
         <span class="timeline__dot">01</span>
@@ -1823,7 +1820,7 @@ button {
         <span class="timeline__dot">03</span>
         <div class="timeline__body">
           <span class="timeline__label">Consolidação</span>
-          <span class="timeline__detail">Encontro 6. Playbook próprio e rotina de uso definida.</span>
+          <span class="timeline__detail">Encontro 6. Revisão do que foi construído e a rotina de uso definida.</span>
         </div>
       </li>
       <li class="timeline__step timeline__step--open">
@@ -1867,13 +1864,12 @@ button {
     <div class="pacote">
       <div class="pacote__info">
         <span class="pacote__badge">Mentoria completa</span>
-        <p class="pacote__titulo">6 encontros, do diagnóstico ao playbook</p>
-        <p class="pacote__desc">É o treinamento completo, não uma introdução. Ao fim dos seis encontros você tem o ambiente montado, dois casos de uso da Armazena funcionando e o playbook próprio para seguir sozinho.</p>
+        <p class="pacote__titulo">6 encontros, do diagnóstico à autonomia</p>
+        <p class="pacote__desc">É o treinamento completo, não uma introdução. Ao fim dos seis encontros você tem o ambiente montado, dois casos de uso da Armazena funcionando e autonomia para seguir sozinho.</p>
         <ul class="proposta-invest__features" style="margin-top: 1.5rem;">
           <li>6 encontros individuais de 1h30, ao vivo</li>
           <li>Diagnóstico da rotina e montagem do ambiente</li>
           <li>2 casos de uso reais construídos junto</li>
-          <li>Playbook pessoal com prompts, comandos e rotinas</li>
           <li>Gravação de todos os encontros</li>
           <li>Suporte por WhatsApp durante o período</li>
         </ul>
