@@ -1382,12 +1382,26 @@ button {
    So as etapas, sem descricao: a proposta ja explica o metodo no bloco de
    estrategia. O ultimo no e tracejado e representa a extensao opcional, que
    nao esta contratada. */
-.timeline__intro {
-  font-size: 0.9rem;
+/* Cronograma vive dentro do cartao da estrategia: mesma seção, separada por
+   um fio, para o leitor ver as tres frentes e a sequencia de uma vez so. */
+.estrategia__cronograma {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  padding-top: clamp(2rem, 4vw, 2.75rem);
+  border-top: 1px solid var(--color-border);
+}
+
+.estrategia__cronograma .timeline {
+  margin-top: 0;
+}
+
+.timeline__nota {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
   color: var(--color-text-secondary);
-  line-height: var(--leading-normal);
-  max-width: 620px;
-  margin-top: -0.35rem;
+  line-height: 1.5;
+  max-width: 640px;
 }
 
 .timeline {
@@ -1438,7 +1452,6 @@ button {
   color: #fff;
   font-size: 0.78rem;
   font-weight: 800;
-  box-shadow: 0 0 0 5px var(--color-bg);
 }
 
 .timeline__dot--open {
@@ -1458,7 +1471,7 @@ button {
 }
 
 .timeline__step--open .timeline__label {
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   font-weight: var(--weight-regular);
 }
 
@@ -1588,8 +1601,6 @@ button {
 }
 
 @media print {
-  .timeline__dot { box-shadow: none !important; }
-
   .estrategia,
   .timeline,
   .pacote,
@@ -1696,7 +1707,6 @@ button {
 
   .timeline__dot {
     flex: 0 0 auto;
-    box-shadow: none;
   }
 
   .timeline__label {
@@ -1749,70 +1759,69 @@ button {
   </div>
 </section>
 
-<!-- ESTRATEGIA: ponto alto da pagina -->
-<section class="estrategia" aria-label="Estratégia da mentoria">
+<!-- ESTRATEGIA + CRONOGRAMA: ponto alto da pagina -->
+<section class="estrategia" aria-label="Estratégia e cronograma da mentoria">
   <div class="estrategia__head">
     <span class="estrategia__eyebrow">Estratégia da mentoria</span>
     <h2 class="estrategia__title">Três frentes que avançam juntas, encontro a encontro.</h2>
-    <p class="estrategia__sub">A Armazena vende em várias páginas no Mercado Livre, e a rotina da gerência é feita de anúncio, preço, estoque, atendimento e número. Nada aqui é exercício de manual: todo exemplo sai dessa operação, e o que for construído durante o encontro fica funcionando.</p>
+    <p class="estrategia__sub">Nada de exercício de manual: todo exemplo sai da operação da Armazena, e o que for construído durante o encontro fica funcionando.</p>
   </div>
+
   <div class="estrategia__pilares">
     <article class="pilar">
       <span class="pilar__num">01</span>
       <h3 class="pilar__title">Plataforma</h3>
       <p class="pilar__lead">Saber o que existe e até onde vai</p>
-      <p class="pilar__desc">Claude não é só a caixa de conversa. São projetos com contexto, memória, leitura de arquivos, conexão com outras ferramentas, comandos próprios e agentes. A primeira frente é dominar esse terreno.</p>
+      <p class="pilar__desc">Projetos, contexto, memória, leitura de arquivos, integrações, comandos próprios e agentes.</p>
     </article>
     <article class="pilar">
       <span class="pilar__num">02</span>
       <h3 class="pilar__title">Rotina</h3>
       <p class="pilar__lead">Aplicar nas tarefas da gerência</p>
-      <p class="pilar__desc">Relatórios, planilhas, análise de anúncios, respostas, textos e acompanhamento de indicadores. Pegamos o que mais consome o seu tempo e resolvemos cada caso durante o encontro, com dados reais.</p>
+      <p class="pilar__desc">Relatórios, planilhas, análise de anúncios e acompanhamento de indicadores, sempre com dados reais.</p>
     </article>
     <article class="pilar">
       <span class="pilar__num">03</span>
       <h3 class="pilar__title">Operação</h3>
       <p class="pilar__lead">Chegar junto nas decisões de tecnologia</p>
-      <p class="pilar__desc">Entender como um sistema é construído e mantido, o que dá para pedir, o que dá para propor e como levar uma ideia nova já em formato de projeto. O objetivo é autonomia, não dependência.</p>
+      <p class="pilar__desc">Entender como um sistema é construído, o que dá para pedir e o que dá para propor.</p>
     </article>
   </div>
-</section>
 
-<!-- CRONOGRAMA -->
-<section class="proposta-section" aria-label="Cronograma dos encontros">
-  <h2 class="proposta-section__title">Cronograma dos encontros</h2>
-  <p class="timeline__intro">Seis encontros, um por semana, do diagnóstico ao playbook. A ordem é um plano e se ajusta ao que a operação pedir.</p>
-
-  <ol class="timeline">
-    <li class="timeline__step">
-      <span class="timeline__dot">01</span>
-      <span class="timeline__label">Diagnóstico e ambiente</span>
-    </li>
-    <li class="timeline__step">
-      <span class="timeline__dot">02</span>
-      <span class="timeline__label">Contexto da operação</span>
-    </li>
-    <li class="timeline__step">
-      <span class="timeline__dot">03</span>
-      <span class="timeline__label">Primeiro caso real</span>
-    </li>
-    <li class="timeline__step">
-      <span class="timeline__dot">04</span>
-      <span class="timeline__label">Dados de venda</span>
-    </li>
-    <li class="timeline__step">
-      <span class="timeline__dot">05</span>
-      <span class="timeline__label">Segundo caso real</span>
-    </li>
-    <li class="timeline__step timeline__step--pre">
-      <span class="timeline__dot">06</span>
-      <span class="timeline__label">Consolidação e playbook</span>
-    </li>
-    <li class="timeline__step timeline__step--open">
-      <span class="timeline__dot timeline__dot--open">+</span>
-      <span class="timeline__label">Extensão opcional</span>
-    </li>
-  </ol>
+  <div class="estrategia__cronograma">
+    <span class="estrategia__eyebrow">Os seis encontros</span>
+    <ol class="timeline">
+      <li class="timeline__step">
+        <span class="timeline__dot">01</span>
+        <span class="timeline__label">Diagnóstico e ambiente</span>
+      </li>
+      <li class="timeline__step">
+        <span class="timeline__dot">02</span>
+        <span class="timeline__label">Contexto da operação</span>
+      </li>
+      <li class="timeline__step">
+        <span class="timeline__dot">03</span>
+        <span class="timeline__label">Primeiro caso real</span>
+      </li>
+      <li class="timeline__step">
+        <span class="timeline__dot">04</span>
+        <span class="timeline__label">Dados de venda</span>
+      </li>
+      <li class="timeline__step">
+        <span class="timeline__dot">05</span>
+        <span class="timeline__label">Segundo caso real</span>
+      </li>
+      <li class="timeline__step timeline__step--pre">
+        <span class="timeline__dot">06</span>
+        <span class="timeline__label">Consolidação e playbook</span>
+      </li>
+      <li class="timeline__step timeline__step--open">
+        <span class="timeline__dot timeline__dot--open">+</span>
+        <span class="timeline__label">Extensão opcional</span>
+      </li>
+    </ol>
+    <p class="timeline__nota">A ordem é um plano e se ajusta ao que a operação pedir. O bloco tracejado no fim é a extensão opcional, que só entra depois do sexto encontro.</p>
+  </div>
 </section>
 
 <!-- FORMATO -->
