@@ -1603,54 +1603,89 @@ button {
   .timeline,
   .pacote,
   .extensao,
-  .formato-item {
+  .agenda {
     break-inside: avoid;
     page-break-inside: avoid;
   }
 }
 
-/* Grade de formato: tres fatos, cada um com icone. Antes eram quatro caixas
-   com rotulo em caixa alta; dia e horario respondem a mesma pergunta (quando),
-   entao viraram um cartao so e o icone substitui o rotulo. */
-.formato-grid {
+/* Cartao unico de agenda. Antes eram tres cartoes respondendo dia, duracao e
+   ritmo separados; com o horario fechado os tres viraram um fato so, e a
+   faixa da semana mostra os dias em vez de descreve-los. */
+.agenda {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.85rem;
-}
-
-.formato-item {
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-md);
+  grid-template-columns: auto 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
   background: var(--color-surface);
-  padding: 1.35rem;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
 }
 
-.formato-item__icon {
+.agenda__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   background: var(--color-accent-light);
   color: var(--color-accent);
-  margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
-.formato-item strong {
-  display: block;
-  font-size: 1rem;
+.agenda__horario {
+  font-size: 1.15rem;
   font-weight: var(--weight-bold);
   color: var(--color-text);
-  line-height: 1.3;
   letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
-.formato-item p {
-  font-size: 0.82rem;
+.agenda__nota {
+  margin-top: 0.4rem;
+  font-size: 0.86rem;
   color: var(--color-text-secondary);
   line-height: 1.5;
-  margin-top: 0.4rem;
+}
+
+.agenda__semana {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.agenda__dia {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: var(--color-bg-alt);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-light);
+}
+
+.agenda__dia--on {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+/* Seta de scroll: so no telefone, onde a dobra corta a pagina no meio do
+   hero e nao ha barra de rolagem visivel para indicar que ha mais abaixo. */
+.scroll-hint {
+  display: none;
+}
+
+@keyframes scrollHint {
+  0%, 100% { transform: translateY(0); opacity: 0.45; }
+  50%      { transform: translateY(7px); opacity: 1; }
 }
 
 @media (max-width: 820px) {
@@ -1712,13 +1747,36 @@ button {
     margin-top: 0.35rem;
   }
 
-  .formato-grid {
-    grid-template-columns: 1fr;
-  }
-
   .pacote {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .agenda {
+    grid-template-columns: auto 1fr;
+    gap: 1rem 1.1rem;
+    padding: 1.35rem;
+  }
+
+  .agenda__semana {
+    grid-column: 1 / -1;
+    gap: 0.4rem;
+  }
+
+  .agenda__dia {
+    flex: 1;
+    width: auto;
+  }
+
+  .scroll-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 1.5rem auto 0;
+    color: var(--color-accent);
+    animation: scrollHint 1.8s ease-in-out infinite;
   }
 }
 
@@ -1751,7 +1809,7 @@ button {
   .proposta-invest__features,
   .timeline__nota,
   .timeline__detail,
-  .formato-item p,
+  .agenda__nota,
   .pacote__unit,
   .hero-feat {
     font-size: 0.9rem;
@@ -1784,6 +1842,12 @@ button {
     padding-bottom: 5rem;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint {
+    animation: none;
+  }
+}
 </style>
 </head>
 <body>
@@ -1800,12 +1864,13 @@ button {
 <section class="proposta-hero" aria-label="Resumo da mentoria">
   <div class="proposta-hero__left">
     <h1 class="proposta-hero__title">Mentoria individual de Claude para Elias Junior</h1>
-    <p class="proposta-hero__desc">Seis mentorias, uma por semana, para você dominar o Claude de ponta a ponta e usar isso na gestão da Armazena.</p>
+    <p class="proposta-hero__desc">Seis mentorias, duas por semana, para você dominar o Claude de ponta a ponta e usar isso na gestão da Armazena.</p>
     <p class="proposta-hero__desc">Tudo é feito em cima de tarefas reais da sua rotina, então o que a gente montar junto continua rodando na empresa depois, e você sai sabendo repetir isso sozinho em qualquer outra.</p>
     <div class="hero-feats">
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Mentoria personalizada</div>
       <div class="hero-feat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Tarefas reais da operação</div>
     </div>
+    <div class="scroll-hint" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div>
   </div>
   <div class="proposta-hero__right">
     <div class="proposta-card proposta-card--client">
@@ -1876,23 +1941,21 @@ button {
 <!-- FORMATO -->
 <section class="proposta-section" aria-label="Formato dos encontros">
   <h2 class="proposta-section__title">Como funcionam as mentorias</h2>
-  <div class="formato-grid">
-    <div class="formato-item">
-      <span class="formato-item__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg></span>
-      <strong>Segunda a quarta, das 19h em diante</strong>
-      <p>Fora do expediente, sem atrapalhar o dia na empresa, e a data de cada uma a gente combina antes.</p>
+  <div class="agenda">
+    <span class="agenda__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"></path><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h5"></path><circle cx="16.5" cy="16.5" r="5.5"></circle><path d="M16.5 14.5v2l1.5 1"></path></svg></span>
+    <div class="agenda__info">
+      <p class="agenda__horario">Segunda e quarta, das 19h30 às 21h</p>
+      <p class="agenda__nota">Duas mentorias por semana, 1h30 cada, fora do expediente. Nesse ritmo as seis fecham em três semanas.</p>
     </div>
-    <div class="formato-item">
-      <span class="formato-item__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span>
-      <strong>1h30 por mentoria</strong>
-      <p>Alguns assuntos fecham em 1h e tudo bem, ninguém aqui fica olhando o relógio.</p>
+    <div class="agenda__semana" aria-hidden="true">
+      <span class="agenda__dia agenda__dia--on">Seg</span>
+      <span class="agenda__dia">Ter</span>
+      <span class="agenda__dia agenda__dia--on">Qua</span>
+      <span class="agenda__dia">Qui</span>
+      <span class="agenda__dia">Sex</span>
     </div>
-    <div class="formato-item">
-      <span class="formato-item__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"></path></svg></span>
-      <strong>1 mentoria por semana</strong>
-      <p>Se precisar destravar alguma coisa mais rápido, dá para marcar duas na mesma semana.</p>
-    </div>
-  </section>
+  </div>
+</section>
 
 <!-- INVESTIMENTO -->
 <section class="proposta-section" aria-label="Investimento">
@@ -1933,8 +1996,8 @@ button {
 <section class="proposta-cta" aria-label="Próximos passos">
   <div class="proposta-cta__inner">
     <div class="proposta-cta__content" style="flex: 1 1 0%; min-width: 280px;">
-      <h2 class="proposta-cta__title">Vamos marcar a primeira?</h2>
-      <p class="proposta-cta__sub">É só confirmar a proposta e a gente já fecha a data da primeira mentoria.</p>
+      <h2 class="proposta-cta__title">Vamos marcar a primeira mentoria?</h2>
+      <p class="proposta-cta__sub">É só confirmar a proposta que a gente já combina a data.</p>
     </div>
     <div class="proposta-cta__actions" style="flex: 1 1 auto; justify-content: flex-end; gap: 0.75rem;">
       <button type="button" id="btn-pdf" class="btn btn--outline proposta-cta__btn">Salvar proposta em PDF</button>
