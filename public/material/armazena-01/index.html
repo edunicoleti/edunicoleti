@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F8F8F6">
+<title>Mentoria 1 · A plataforma | Armazena</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!--
+  Material da 1a mentoria do Elias (Armazena). Duas visoes na mesma pagina:
+
+  - Deck (padrao): um slide por vez, navegado por seta ou clique. E o que vai
+    na tela compartilhada, entao nao mostra nota de conducao nenhuma.
+  - Roteiro (tecla R): tudo empilhado, com os tempos e as notas de conducao
+    de cada bloco. E o que o Eduardo le antes e imprime.
+
+  As notas vivem no mesmo HTML dos slides de proposito: roteiro e slide que
+  discordam e o jeito mais facil de conduzir errado.
+-->
+<style>
+/* ── Tokens do design system (src/index.css) ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-bg: #F8F8F6;
+  --color-bg-alt: #F1F0EC;
+  --color-surface: #FFFFFF;
+  --color-border: #E4E2DC;
+  --color-border-light: #EDECEA;
+
+  --color-text: #16150F;
+  --color-text-secondary: #57544C;
+  --color-text-muted: #9B9788;
+
+  --color-accent: #2047C9;
+  --color-accent-light: #EBF0FF;
+  --color-indigo: #4F46E5;
+  --color-green: #16A34A;
+  --color-amber: #B45309;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+}
+
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* ══ DECK ══════════════════════════════════════════════════════════════ */
+
+.deck { position: relative; height: 100vh; width: 100vw; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2.5rem, 6vw, 6rem);
+  padding-bottom: clamp(4.5rem, 8vw, 7rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.slide.is-active { display: flex; }
+
+/* Malha de blueprint, mesma linguagem da proposta */
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(32, 71, 201, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 71, 201, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 65% at 50% 0%, #000 10%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 0%, #000 10%, transparent 75%);
+}
+
+.slide > * { position: relative; z-index: 1; }
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 1.25rem;
+}
+
+.slide h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.slide h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.7rem, 3.8vw, 2.9rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+}
+
+.slide .lead {
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: var(--color-text-secondary);
+  max-width: 46ch;
+  line-height: 1.65;
+}
+
+/* ── Capa ── */
+.slide--capa h1 { margin-bottom: 1.5rem; }
+
+.capa__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+/* ── Divisor de bloco ── */
+.slide--divisor { justify-content: center; }
+
+.divisor__num {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 13vw, 9rem);
+  font-weight: 700;
+  line-height: 0.85;
+  color: rgba(32, 71, 201, 0.16);
+  letter-spacing: -0.04em;
+  margin-bottom: 0.5rem;
+}
+
+.divisor__tempo {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+}
+
+/* ── Listas ── */
+.itens {
+  list-style: none;
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.itens--2col { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem 1.5rem; }
+
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: start;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.25rem;
+}
+
+.item__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.item__titulo {
+  font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.item__desc {
+  font-size: clamp(0.82rem, 1.1vw, 0.94rem);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-top: 0.2rem;
+}
+
+/* ── Slide de demo ── */
+.slide--demo .demo {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  overflow: hidden;
+  position: relative;
+}
+
+.demo__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.demo h2 { color: #fff; margin-bottom: 1.25rem; }
+
+.demo__passos {
+  list-style: none;
+  counter-reset: passo;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.demo__passos li {
+  counter-increment: passo;
+  position: relative;
+  padding-left: 2.5rem;
+  font-size: clamp(0.88rem, 1.2vw, 1rem);
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.55;
+}
+
+.demo__passos li::before {
+  content: counter(passo);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.demo__passos b { color: #fff; font-weight: 600; }
+
+.fala {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1.1vw, 0.92rem);
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 2px solid var(--color-accent);
+  border-radius: 0 6px 6px 0;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.4rem;
+  color: rgba(255, 255, 255, 0.92);
+  display: block;
+  line-height: 1.5;
+}
+
+/* ── Antes e depois ── */
+.confronto {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.confronto__lado {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  background: var(--color-surface);
+}
+
+.confronto__lado--ruim { background: var(--color-bg-alt); }
+.confronto__lado--bom { border: 2px solid var(--color-accent); }
+
+.confronto__rotulo {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.confronto__lado--ruim .confronto__rotulo { color: var(--color-text-muted); }
+.confronto__lado--bom .confronto__rotulo { color: var(--color-accent); }
+
+.confronto__prompt {
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1vw, 0.88rem);
+  line-height: 1.55;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.confronto__nota {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+
+/* ── Aviso ── */
+.aviso {
+  border-left: 3px solid var(--color-amber);
+  background: rgba(180, 83, 9, 0.06);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 1rem 1.25rem;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  margin-top: 1.25rem;
+}
+
+.aviso b { color: var(--color-text); }
+
+/* ── Notas de conducao: nunca na tela compartilhada ── */
+.notas { display: none; }
+
+/* ── Barra de navegacao ── */
+.barra {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem clamp(1rem, 4vw, 2.5rem);
+  background: linear-gradient(to top, var(--color-bg) 65%, transparent);
+  z-index: 10;
+}
+
+.barra__progresso {
+  flex: 1;
+  height: 3px;
+  background: var(--color-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barra__barra {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 999px;
+  transition: width 220ms ease;
+}
+
+.barra__contador {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.barra__btn {
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.barra__btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+.barra__setas { display: flex; gap: 0.4rem; }
+
+.barra__seta {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all 150ms ease;
+}
+
+.barra__seta:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.barra__seta[disabled] { opacity: 0.35; cursor: default; }
+.barra__seta[disabled]:hover { border-color: var(--color-border); color: var(--color-text-secondary); }
+
+/* ══ MODO ROTEIRO ══════════════════════════════════════════════════════
+   Tudo empilhado, com as notas de conducao. E o que se le antes e imprime. */
+
+body.roteiro { overflow: auto; }
+body.roteiro .deck { height: auto; }
+
+body.roteiro .slide {
+  position: static;
+  display: block;
+  min-height: 0;
+  max-width: 820px;
+  padding: 2.5rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+body.roteiro .slide::before { display: none; }
+body.roteiro .slide h1 { font-size: 2rem; }
+body.roteiro .slide h2 { font-size: 1.5rem; }
+body.roteiro .divisor__num { font-size: 3rem; }
+body.roteiro .itens--2col { grid-template-columns: 1fr; }
+body.roteiro .confronto { grid-template-columns: 1fr; }
+body.roteiro .barra__progresso,
+body.roteiro .barra__contador,
+body.roteiro .barra__setas { display: none; }
+
+body.roteiro .notas {
+  display: block;
+  margin-top: 1.5rem;
+  background: var(--color-accent-light);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 1.1rem 1.25rem;
+}
+
+.notas__titulo {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.6rem;
+}
+
+.notas ul { list-style: none; display: grid; gap: 0.5rem; }
+
+.notas li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+
+.notas li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.notas b { color: var(--color-text); }
+
+/* ── Impressao: sai o roteiro completo ── */
+@media print {
+  body { overflow: visible; }
+  .barra { display: none !important; }
+  .deck { height: auto; }
+  .slide {
+    position: static !important;
+    display: block !important;
+    max-width: 100%;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #ddd;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .slide::before { display: none !important; }
+  .notas { display: block !important; background: #f4f6ff !important; }
+  .demo { background: #fff !important; color: #16150F !important; border: 1px solid #ccc; }
+  .demo h2, .demo__passos b { color: #16150F !important; }
+  .demo__passos li { color: #444 !important; }
+  .demo__tag { background: #2047C9 !important; }
+  .fala { background: #f4f4f2 !important; color: #16150F !important; }
+}
+
+/* ── Telas pequenas: o deck vira o proprio roteiro ── */
+@media (max-width: 760px) {
+  body { overflow: auto; }
+  .deck { height: auto; }
+  .slide {
+    position: static;
+    display: block;
+    padding: 2rem 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .slide::before { display: none; }
+  .itens--2col, .confronto { grid-template-columns: 1fr; }
+  .barra__progresso, .barra__contador, .barra__setas { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- 01 CAPA -->
+<section class="slide slide--capa is-active">
+  <p class="eyebrow">Mentoria 1 de 6</p>
+  <h1>A plataforma,<br>de ponta a ponta.</h1>
+  <p class="lead">Hoje a gente passa por tudo que o Claude faz e monta o seu espaço de trabalho da Armazena, já com dado de verdade dentro.</p>
+  <div class="capa__meta">
+    <span class="chip">Elias Junior · Armazena</span>
+    <span class="chip">19h30 às 21h</span>
+    <span class="chip">1h30</span>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li><b>Não abra com teoria.</b> Comece perguntando o que ele fez com o Claude essa semana. A resposta já te diz o que dá para pular hoje.</li>
+      <li>Diga em uma frase o que sai de hoje: <b>o Projeto Armazena montado e respondendo</b>. Prometer entrega concreta na abertura segura a atenção.</li>
+      <li>Tenha a proposta aberta numa aba. Se ele perguntar do cronograma, mostra em vez de explicar.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 ROTEIRO -->
+<section class="slide">
+  <p class="eyebrow">Roteiro de hoje</p>
+  <h2>Seis blocos, um de cada vez.</h2>
+  <ul class="itens itens--2col">
+    <li class="item"><span class="item__mark">01</span><div><p class="item__titulo">Onde o Claude mora</p><p class="item__desc">As quatro portas de entrada e para que serve cada uma. 10 min</p></div></li>
+    <li class="item"><span class="item__mark">02</span><div><p class="item__titulo">Sua rotina hoje</p><p class="item__desc">O que mais toma seu tempo na semana. 15 min</p></div></li>
+    <li class="item"><span class="item__mark">03</span><div><p class="item__titulo">Contexto muda tudo</p><p class="item__desc">Por que a mesma pergunta dá respostas diferentes. 15 min</p></div></li>
+    <li class="item"><span class="item__mark">04</span><div><p class="item__titulo">Projetos</p><p class="item__desc">Montar a memória da Armazena. 20 min</p></div></li>
+    <li class="item"><span class="item__mark">05</span><div><p class="item__titulo">Dados de verdade</p><p class="item__desc">Planilha do Mercado Livre virando leitura de gestão. 15 min</p></div></li>
+    <li class="item"><span class="item__mark">06</span><div><p class="item__titulo">O mapa do que vem</p><p class="item__desc">O que fica para as próximas. 10 min</p></div></li>
+  </ul>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Mostre este slide rápido e siga. Roteiro é para <b>ele saber que tem fim</b>, não para ser discutido.</li>
+      <li><b>Bloco compressível é o 06.</b> Se as demos passarem do tempo, corte ele, não o 04.</li>
+      <li>Os 5 minutos de sobra são propositais. Demo ao vivo sempre atrasa.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 03 DIVISOR 1 -->
+<section class="slide slide--divisor">
+  <p class="divisor__num">01</p>
+  <h2>Onde o Claude mora.</h2>
+  <p class="lead">É a mesma inteligência nos quatro lugares. O que muda é o que ela consegue alcançar.</p>
+  <p class="divisor__tempo">19h35 · 10 min</p>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>A frase que sustenta o bloco: <b>é a mesma inteligência, muda o que ela consegue tocar.</b> Repita ela no fim.</li>
+      <li>Esse é o bloco que responde a dúvida que quase todo mundo tem sem verbalizar, que é "então o Claude Code é outro produto?".</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 04 AS QUATRO PORTAS -->
+<section class="slide">
+  <p class="eyebrow">Bloco 01</p>
+  <h2>Quatro portas, uma ferramenta.</h2>
+  <ul class="itens itens--2col">
+    <li class="item"><span class="item__mark">↗</span><div><p class="item__titulo">Navegador</p><p class="item__desc">claude.ai. É onde ficam as conversas e os Projetos. Seu lugar principal.</p></div></li>
+    <li class="item"><span class="item__mark">▣</span><div><p class="item__titulo">App de computador</p><p class="item__desc">O mesmo, com atalho de teclado e acesso a arquivos da máquina.</p></div></li>
+    <li class="item"><span class="item__mark">▸</span><div><p class="item__titulo">Claude Code</p><p class="item__desc">No terminal. Lê e escreve arquivos e projetos inteiros. É onde sistema se constrói.</p></div></li>
+    <li class="item"><span class="item__mark">◍</span><div><p class="item__titulo">Celular</p><p class="item__desc">Consulta rápida, foto de nota, pergunta no meio do galpão.</p></div></li>
+  </ul>
+  <div class="aviso"><b>Ponte com a Armazena.</b> Quando o Matheus construiu o ArmazenaHub, a porta usada foi a terceira. Guarda essa informação, ela volta no bloco 06.</div>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Não detalhe o Claude Code aqui. Só planta a semente e segue. Aprofundar agora derruba o ritmo.</li>
+      <li>Se ele usa só o navegador, <b>instale o app de desktop junto com ele agora</b>. Leva dois minutos e melhora o uso diário na hora.</li>
+      <li>Pergunte em qual porta ele está hoje. A resposta calibra o resto da noite.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 05 DEMO 1 -->
+<section class="slide slide--demo">
+  <div class="demo">
+    <span class="demo__tag">Demonstrar</span>
+    <h2>As janelas lado a lado.</h2>
+    <ol class="demo__passos">
+      <li>Abra o <b>navegador</b> e o <b>app de desktop</b> na mesma tela.</li>
+      <li>Faça a mesma pergunta simples nos dois, para ele ver que a conversa é a mesma.<span class="fala">Resuma em três linhas o que a Armazena vende.</span></li>
+      <li>Abra o <b>terminal com o Claude Code</b> numa pasta qualquer e peça algo que só ele consegue.<span class="fala">Liste os arquivos desta pasta e me diga o que cada um faz.</span></li>
+      <li>Feche dizendo a frase do bloco: mesma inteligência, alcance diferente.</li>
+    </ol>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li><b>Teto de 8 minutos.</b> Se o terminal travar, siga e volte no bloco 06.</li>
+      <li>Use uma pasta sem nada sensível. Você está com a tela compartilhada.</li>
+      <li>Se ele nunca viu terminal, o objetivo aqui é só tirar o mistério, não ensinar.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 06 DIVISOR 2 -->
+<section class="slide slide--divisor">
+  <p class="divisor__num">02</p>
+  <h2>Sua rotina hoje.</h2>
+  <p class="lead">Esse bloco não tem slide, tem pergunta. O que sair daqui vira o material das mentorias 3, 4 e 5.</p>
+  <p class="divisor__tempo">19h45 · 15 min</p>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li><b>Esse é o bloco mais importante da noite</b>, mesmo parecendo o mais simples. A proposta prometeu que as tarefas de verdade seriam escolhidas junto na primeira mentoria. É aqui.</li>
+      <li>Anote tudo <b>dentro do Claude, com a tela compartilhada</b>. Você ensina pelo exemplo e já tem o texto pronto para virar instrução do projeto no bloco 04.</li>
+      <li>Fale pouco. Se você estiver falando mais que ele neste bloco, está errado.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 07 AS PERGUNTAS -->
+<section class="slide">
+  <p class="eyebrow">Bloco 02</p>
+  <h2>Cinco perguntas.</h2>
+  <ul class="itens">
+    <li class="item"><span class="item__mark">?</span><div><p class="item__titulo">Me mostra a última conversa que você teve com o Claude.</p><p class="item__desc">Diz o nível real de uso em dez segundos, sem constranger ninguém.</p></div></li>
+    <li class="item"><span class="item__mark">?</span><div><p class="item__titulo">Qual tarefa da semana você gostaria de não precisar fazer?</p><p class="item__desc">Vai direto na dor, sem pedir para ele teorizar sobre automação.</p></div></li>
+    <li class="item"><span class="item__mark">?</span><div><p class="item__titulo">O que você precisa saber toda segunda de manhã?</p><p class="item__desc">Revela o relatório recorrente, que é sempre o primeiro caso fácil.</p></div></li>
+    <li class="item"><span class="item__mark">?</span><div><p class="item__titulo">Que número alguém te cobra e você monta na mão?</p><p class="item__desc">Achou trabalho braçal com prazo. É o melhor candidato a virar rotina.</p></div></li>
+    <li class="item"><span class="item__mark">?</span><div><p class="item__titulo">O que você queria fazer e não faz por falta de tempo?</p><p class="item__desc">Essa é a que abre a extensão lá na frente. Anote com carinho.</p></div></li>
+  </ul>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Saída obrigatória do bloco: <b>uma lista de 3 a 5 tarefas, escritas com as palavras dele</b>.</li>
+      <li>Ao fim, leia a lista em voz alta e peça para ele escolher <b>as duas primeiras</b>. Essas são as das mentorias 3 a 5, e o pacote promete exatamente duas.</li>
+      <li>Se ele travar, ofereça exemplos do mundo dele: preço, anúncio parado, resposta de comprador, estoque, relatório para a diretoria.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 08 DIVISOR 3 -->
+<section class="slide slide--divisor">
+  <p class="divisor__num">03</p>
+  <h2>Contexto muda tudo.</h2>
+  <p class="lead">O Claude não adivinha o que ele não vê. A qualidade da resposta é quase sempre a qualidade do que você deu antes.</p>
+  <p class="divisor__tempo">20h00 · 15 min</p>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Esse bloco desarma a frustração mais comum de quem já usa e acha as respostas genéricas. <b>O problema quase nunca é a ferramenta.</b></li>
+      <li>Cuide do tom. A ideia não é dizer que ele pergunta errado, é mostrar que a ferramenta trabalha com o que recebe.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 09 OS TRES NIVEIS -->
+<section class="slide">
+  <p class="eyebrow">Bloco 03</p>
+  <h2>Três níveis de contexto.</h2>
+  <div class="confronto">
+    <div class="confronto__lado confronto__lado--ruim">
+      <p class="confronto__rotulo">Nível 1 · pergunta solta</p>
+      <p class="confronto__prompt">como melhorar meus anúncios no mercado livre?</p>
+      <p class="confronto__nota">Resposta de blog. Serve para qualquer vendedor do país, e por isso não serve para nenhum.</p>
+    </div>
+    <div class="confronto__lado confronto__lado--bom">
+      <p class="confronto__rotulo">Nível 2 · pergunta com contexto</p>
+      <p class="confronto__prompt">Somos a Armazena, vendemos [categoria] no ML em [n] anúncios. Segue a exportação dos últimos 90 dias. Quais três anúncios caíram mais de conversão e o que você faria primeiro em cada um?</p>
+      <p class="confronto__nota">Mesma ferramenta, outra resposta. Nome, número, arquivo e pedido específico.</p>
+    </div>
+  </div>
+  <div class="aviso"><b>Nível 3 é o Projeto.</b> Tudo que você acabou de digitar como contexto fica gravado e não precisa ser repetido nunca mais. É o próximo bloco.</div>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Substitua os colchetes pelos dados reais dele <b>antes da sessão</b>, para o slide já sair certo.</li>
+      <li>Deixe <b>ele digitar</b> o nível 2, não você. Quem digita aprende.</li>
+      <li>Emende no bloco 04 sem pausa: o nível 3 é a resposta natural para "toda vez vou ter que escrever isso?".</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 10 DEMO 2 -->
+<section class="slide slide--demo">
+  <div class="demo">
+    <span class="demo__tag">Demonstrar</span>
+    <h2>A mesma pergunta, duas vezes.</h2>
+    <ol class="demo__passos">
+      <li>Pegue <b>uma tarefa que ele citou no bloco 02</b>. Não use exemplo inventado.</li>
+      <li>Peça do jeito vago, em uma linha. Leia a resposta em voz alta.<span class="fala">me ajuda com relatório de vendas</span></li>
+      <li>Peça de novo com contexto: quem é a empresa, o que vende, para quem é o relatório, o que decide com ele, e anexe o arquivo.</li>
+      <li>Coloque as duas respostas lado a lado na tela e deixe ele comentar primeiro.</li>
+    </ol>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Silêncio depois do passo 4. <b>A conclusão vale mais vinda dele.</b></li>
+      <li>Se a resposta vaga sair boa demais e estragar a demonstração, não insista: comente que o Claude foi bem no chute e siga para o contexto, que é onde a confiabilidade aparece.</li>
+      <li>Salve a segunda pergunta em texto. Ela vira a instrução do projeto daqui a pouco.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 11 DIVISOR 4 -->
+<section class="slide slide--divisor">
+  <p class="divisor__num">04</p>
+  <h2>Projetos.</h2>
+  <p class="lead">A memória da Armazena dentro do Claude. É o bloco que entrega o resultado prometido para hoje.</p>
+  <p class="divisor__tempo">20h15 · 20 min</p>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li><b>Bloco intocável.</b> Se o tempo apertar, corte o 06, nunca esse. É o que a proposta prometeu entregar funcionando hoje.</li>
+      <li>Confirme antes da sessão que a conta dele tem <b>plano pago</b>. Projetos não existem no plano gratuito, e descobrir isso ao vivo queima o bloco.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 12 O QUE E UM PROJETO -->
+<section class="slide">
+  <p class="eyebrow">Bloco 04</p>
+  <h2>Duas partes, só.</h2>
+  <ul class="itens">
+    <li class="item"><span class="item__mark">A</span><div><p class="item__titulo">Instruções</p><p class="item__desc">Quem é a empresa, o que vende, para quem, com que tom responder e o que sempre considerar. Escrito uma vez, vale em toda conversa do projeto.</p></div></li>
+    <li class="item"><span class="item__mark">B</span><div><p class="item__titulo">Base de conhecimento</p><p class="item__desc">Arquivos que ficam disponíveis para sempre. Exportação de vendas, lista de anúncios, política de preço, o que a empresa tiver escrito.</p></div></li>
+  </ul>
+  <div class="aviso"><b>A diferença prática.</b> Fora do projeto, você reexplica a Armazena toda vez. Dentro dele, você já começa a conversa no nível 2 sem digitar nada.</div>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Explique em dois minutos e vá para a demo. <b>Projeto se entende montando</b>, não ouvindo.</li>
+      <li>Um projeto por frente, não um projeto para tudo. Sugira começar com um só e separar quando incomodar.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 13 DEMO 3 -->
+<section class="slide slide--demo">
+  <div class="demo">
+    <span class="demo__tag">Demonstrar · entrega de hoje</span>
+    <h2>Montar o Projeto Armazena.</h2>
+    <ol class="demo__passos">
+      <li>Criar o projeto. Nome: <b>Armazena · Operação ML</b>.</li>
+      <li>Escrever as instruções junto com ele, usando o que saiu do bloco 02.<span class="fala">Você trabalha com a gerência da Armazena, que vende [categoria] no Mercado Livre em [n] anúncios. Responda sempre com número, e quando faltar dado, diga qual arquivo você precisa. Prefira tabela curta a texto longo.</span></li>
+      <li>Subir os arquivos que ele trouxe: exportação de vendas, lista de anúncios, qualquer documento da operação.</li>
+      <li>Refazer <b>exatamente a mesma pergunta</b> do bloco 03, agora dentro do projeto, sem colar contexto nenhum.</li>
+      <li>Deixar ele fazer a pergunta seguinte, a que ele quiser. Esse é o momento em que a ficha cai.</li>
+    </ol>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li><b>Ele digita, você orienta.</b> Se você montar o projeto sozinho, ele não repete depois e a mentoria perde o sentido.</li>
+      <li>Antes de subir arquivo, pergunte em voz alta se tem <b>custo, margem ou dado de terceiro</b> ali. Decisão dele, feita consciente, com a tela ligada.</li>
+      <li>Ao fim, diga com todas as letras: <b>isso aqui continua funcionando amanhã sem mim</b>. É a promessa da proposta, entregue no primeiro dia.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 14 DIVISOR 5 -->
+<section class="slide slide--divisor">
+  <p class="divisor__num">05</p>
+  <h2>Dados de verdade.</h2>
+  <p class="lead">A exportação do Mercado Livre que ninguém abre porque dá preguiça, virando leitura de gestão em um minuto.</p>
+  <p class="divisor__tempo">20h35 · 15 min</p>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Esse é o bloco que costuma gerar o <b>primeiro "peraí, faz isso também?"</b>. Guarde energia para ele.</li>
+      <li>Se a exportação for grande, avise que o Claude pode pedir recorte. Isso é normal e é bom ele ver acontecer.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 15 DEMO 4 -->
+<section class="slide slide--demo">
+  <div class="demo">
+    <span class="demo__tag">Demonstrar</span>
+    <h2>Da planilha à decisão.</h2>
+    <ol class="demo__passos">
+      <li>Usar a exportação que já está no projeto. Três pedidos, em ordem crescente de ambição.</li>
+      <li>Leitura:<span class="fala">O que mudou nas vendas nos últimos 30 dias em relação aos 30 anteriores? Me dá em tabela.</span></li>
+      <li>Diagnóstico:<span class="fala">Quais anúncios caíram mais e o que os três primeiros têm em comum?</span></li>
+      <li>Entrega:<span class="fala">Escreve o resumo do mês que eu mandaria para a diretoria. Quatro linhas, sem enrolação, com os números que importam.</span></li>
+      <li>Perguntar quanto tempo esse relatório costuma tomar dele. <b>Deixe o número no ar.</b></li>
+    </ol>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>A sequência leitura, diagnóstico, entrega é o método. Diga isso: <b>sempre suba um degrau por vez</b>, em vez de pedir tudo de uma vez.</li>
+      <li>O passo 5 é o fecho comercial do bloco, e funciona melhor como pergunta que como afirmação.</li>
+      <li>Se der tempo, peça um gráfico. Impacto visual alto, custo zero.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 16 DIVISOR 6 -->
+<section class="slide slide--divisor">
+  <p class="divisor__num">06</p>
+  <h2>O mapa do que vem.</h2>
+  <p class="lead">Aqui é só mostrar que existe. Cada uma dessas frentes tem uma mentoria inteira pela frente.</p>
+  <p class="divisor__tempo">20h50 · 10 min</p>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li><b>Bloco compressível.</b> Se o relógio apertar, mostre só o mapa e pule as demos.</li>
+      <li>Resista a aprofundar. O valor aqui é ele sair sabendo que tem mais, não entendendo tudo.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 17 AS CINCO FRENTES -->
+<section class="slide">
+  <p class="eyebrow">Bloco 06</p>
+  <h2>Cinco frentes, cinco mentorias.</h2>
+  <ul class="itens itens--2col">
+    <li class="item"><span class="item__mark">⇄</span><div><p class="item__titulo">Conectores</p><p class="item__desc">Ligar o Claude ao Drive, às planilhas e às ferramentas que a empresa já usa, para ele trabalhar com dado vivo.</p></div></li>
+    <li class="item"><span class="item__mark">⌘</span><div><p class="item__titulo">Comandos próprios</p><p class="item__desc">A rotina que você repetiu três vezes vira um comando salvo, com saída sempre igual.</p></div></li>
+    <li class="item"><span class="item__mark">▤</span><div><p class="item__titulo">Artifacts</p><p class="item__desc">Painel, página ou documento gerado pronto, dentro da própria conversa.</p></div></li>
+    <li class="item"><span class="item__mark">▸</span><div><p class="item__titulo">Claude Code</p><p class="item__desc">Construir e manter sistema. É a porta pela qual o ArmazenaHub foi feito.</p></div></li>
+    <li class="item"><span class="item__mark">◎</span><div><p class="item__titulo">Agentes</p><p class="item__desc">Tarefa que roda sozinha, sem você estar na frente da tela.</p></div></li>
+  </ul>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Se sobrar tempo, faça <b>uma</b> demo só: peça um artifact com os números que vocês acabaram de analisar. Rápido e impressiona.</li>
+      <li>No item do Claude Code, amarre com o ArmazenaHub. É o que conecta a mentoria com a conversa que ele tem com o Matheus.</li>
+      <li>Não prometa nada aqui que você ainda não testou no ambiente dele.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 18 FECHAMENTO -->
+<section class="slide">
+  <p class="eyebrow">Fechamento · 21h00</p>
+  <h2>O que fica de hoje.</h2>
+  <ul class="itens">
+    <li class="item"><span class="item__mark">✓</span><div><p class="item__titulo">O Projeto Armazena montado</p><p class="item__desc">Com instruções e arquivos reais, respondendo sobre a operação. Continua funcionando amanhã.</p></div></li>
+    <li class="item"><span class="item__mark">✓</span><div><p class="item__titulo">As duas tarefas escolhidas</p><p class="item__desc">São as que vamos construir juntos nas mentorias 3, 4 e 5.</p></div></li>
+    <li class="item"><span class="item__mark">→</span><div><p class="item__titulo">Até quarta</p><p class="item__desc">Use o projeto na rotina e anote o que travou. O que travar vira pauta da próxima.</p></div></li>
+  </ul>
+  <div class="aviso"><b>Próxima mentoria, quarta às 19h30.</b> Bloco 02 do cronograma: terminar de montar o ambiente e fechar o que faltou da plataforma.</div>
+  <div class="notas">
+    <p class="notas__titulo">Condução</p>
+    <ul>
+      <li>Recapitule <b>mostrando o projeto na tela</b>, não falando. Ver o que construiu vale mais que ouvir o resumo.</li>
+      <li>A lição de casa precisa ser leve. Se ficar pesada ele não faz, e chega na quarta sem nada para discutir.</li>
+      <li>Confirme a data em voz alta antes de encerrar. Sessão que não é reconfirmada é sessão que remarca.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<div class="barra">
+  <button class="barra__btn" id="btn-modo">Ver roteiro</button>
+  <div class="barra__progresso"><div class="barra__barra" id="barra"></div></div>
+  <span class="barra__contador" id="contador">1 / 18</span>
+  <div class="barra__setas">
+    <button class="barra__seta" id="ant" aria-label="Slide anterior"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+    <button class="barra__seta" id="prox" aria-label="Próximo slide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var barra = document.getElementById('barra');
+  var contador = document.getElementById('contador');
+  var ant = document.getElementById('ant');
+  var prox = document.getElementById('prox');
+  var btnModo = document.getElementById('btn-modo');
+  var atual = 0;
+  var roteiro = false;
+
+  function pinta() {
+    slides.forEach(function (s, i) { s.classList.toggle('is-active', i === atual); });
+    contador.textContent = (atual + 1) + ' / ' + slides.length;
+    barra.style.width = ((atual + 1) / slides.length * 100) + '%';
+    ant.disabled = atual === 0;
+    prox.disabled = atual === slides.length - 1;
+  }
+
+  function vai(n) {
+    if (roteiro) return;
+    atual = Math.max(0, Math.min(slides.length - 1, n));
+    pinta();
+  }
+
+  /* No modo roteiro a pagina inteira rola, entao o deck sai do caminho e as
+     notas de conducao aparecem. E a visao para ler antes e para imprimir. */
+  function alternaModo() {
+    roteiro = !roteiro;
+    document.body.classList.toggle('roteiro', roteiro);
+    btnModo.textContent = roteiro ? 'Ver slides' : 'Ver roteiro';
+    if (!roteiro) { pinta(); window.scrollTo(0, 0); }
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); vai(atual + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); vai(atual - 1); }
+    else if (e.key === 'Home') { vai(0); }
+    else if (e.key === 'End') { vai(slides.length - 1); }
+    else if (e.key === 'r' || e.key === 'R') { alternaModo(); }
+  });
+
+  ant.addEventListener('click', function () { vai(atual - 1); });
+  prox.addEventListener('click', function () { vai(atual + 1); });
+  btnModo.addEventListener('click', alternaModo);
+
+  pinta();
+})();
+</script>
+</body>
+</html>
