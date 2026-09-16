@@ -84,7 +84,7 @@ body {
   justify-content: center;
   padding: clamp(1.75rem, 4vw, 3.5rem);
   padding-bottom: clamp(4rem, 7vw, 5.5rem);
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
   overflow-y: auto;
 }
@@ -111,13 +111,13 @@ body {
 .topo {
   display: flex;
   align-items: baseline;
-  gap: 0.85rem;
-  margin-bottom: 0.6rem;
+  gap: 0.9rem;
+  margin-bottom: 0.8rem;
   flex-wrap: wrap;
 }
 
 .topo__bloco {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -126,36 +126,37 @@ body {
 
 .topo__tempo {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   color: var(--color-text-muted);
 }
 
 .slide h1 {
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  font-size: clamp(2.3rem, 5.2vw, 4rem);
   font-weight: 700;
-  line-height: 1.08;
+  line-height: 1.06;
   letter-spacing: -0.03em;
 }
 
 .slide h2 {
   font-family: var(--font-serif);
-  font-size: clamp(1.4rem, 2.9vw, 2.1rem);
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.12;
   letter-spacing: -0.025em;
   margin-bottom: 0.4rem;
 }
 
 .sub {
-  font-size: clamp(0.88rem, 1.15vw, 1rem);
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
   color: var(--color-text-secondary);
-  max-width: 68ch;
-  margin-bottom: 1.4rem;
+  max-width: 74ch;
+  line-height: 1.6;
+  margin-bottom: 1.9rem;
 }
 
 .slide .lead {
-  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
   color: var(--color-text-secondary);
   max-width: 48ch;
   line-height: 1.6;
@@ -163,14 +164,14 @@ body {
 
 /* ── Capa ── */
 .slide--capa h1 { margin-bottom: 1.25rem; }
-.capa__meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.75rem; }
+.capa__meta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2.25rem; }
 
 .chip {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 999px;
-  padding: 0.45rem 0.9rem;
-  font-size: 0.85rem;
+  padding: 0.6rem 1.15rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: var(--color-text-secondary);
 }
@@ -179,14 +180,14 @@ body {
 .trio {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.9rem;
+  gap: 1.15rem;
 }
 
 .carta {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 1.25rem;
+  padding: 1.6rem 1.5rem;
   display: flex;
   flex-direction: column;
 }
@@ -195,10 +196,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 11px;
-  margin-bottom: 0.85rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 13px;
+  margin-bottom: 1.1rem;
 }
 
 .carta__icone--azul  { background: var(--color-accent-light); color: var(--color-accent); }
@@ -206,13 +207,13 @@ body {
 .carta__icone--teal  { background: var(--color-teal-light);    color: var(--color-teal); }
 
 .carta__nome {
-  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .carta__papel {
-  font-size: 0.8rem;
+  font-size: 0.92rem;
   font-weight: 600;
   margin-top: 0.15rem;
   margin-bottom: 0.7rem;
@@ -223,24 +224,24 @@ body {
 .carta__papel--teal  { color: var(--color-teal); }
 
 .carta__texto {
-  font-size: clamp(0.8rem, 1.05vw, 0.9rem);
+  font-size: clamp(0.9rem, 1.15vw, 1.02rem);
   color: var(--color-text-secondary);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .carta__lista {
   list-style: none;
-  margin-top: 0.8rem;
-  padding-top: 0.8rem;
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
   border-top: 1px solid var(--color-border-light);
   display: grid;
-  gap: 0.4rem;
+  gap: 0.6rem;
 }
 
 .carta__lista li {
   position: relative;
-  padding-left: 0.95rem;
-  font-size: clamp(0.76rem, 1vw, 0.85rem);
+  padding-left: 1.05rem;
+  font-size: clamp(0.86rem, 1.08vw, 0.96rem);
   color: var(--color-text-secondary);
   line-height: 1.45;
 }
@@ -265,12 +266,12 @@ body {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  font-size: clamp(0.8rem, 1.05vw, 0.92rem);
+  font-size: clamp(0.92rem, 1.15vw, 1.03rem);
 }
 
 .tabela th {
   text-align: left;
-  padding: 0.7rem 1rem;
+  padding: 0.9rem 1.3rem;
   background: var(--color-bg-alt);
   font-size: 0.7rem;
   font-weight: 800;
@@ -281,7 +282,7 @@ body {
 }
 
 .tabela td {
-  padding: 0.7rem 1rem;
+  padding: 0.9rem 1.3rem;
   border-bottom: 1px solid var(--color-border-light);
   color: var(--color-text-secondary);
   vertical-align: top;
@@ -306,21 +307,21 @@ body {
 /* ── Diagrama de camadas (contexto) ── */
 .camadas {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.6rem;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 1.1rem;
+  padding: 1.4rem;
 }
 
 .camada {
   display: grid;
-  grid-template-columns: 150px 1fr auto;
-  gap: 1rem;
+  grid-template-columns: 190px 1fr auto;
+  gap: 1.25rem;
   align-items: center;
-  border-radius: var(--radius-sm);
-  padding: 0.6rem 0.85rem;
-  font-size: clamp(0.78rem, 1vw, 0.88rem);
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1.15rem;
+  font-size: clamp(0.9rem, 1.15vw, 1.02rem);
 }
 
 .camada__nome { font-weight: 700; color: var(--color-text); }
@@ -328,7 +329,7 @@ body {
 
 .camada__peso {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -347,12 +348,12 @@ body {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 1.25rem;
+  padding: 1.6rem;
 }
 
 .medidor__barra {
   display: flex;
-  height: 34px;
+  height: 52px;
   border-radius: var(--radius-sm);
   overflow: hidden;
   border: 1px solid var(--color-border-light);
@@ -362,7 +363,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
+  font-size: 0.84rem;
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
@@ -377,9 +378,9 @@ body {
 .medidor__legenda {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 0.85rem;
-  font-size: 0.78rem;
+  gap: 1.5rem;
+  margin-top: 1.1rem;
+  font-size: 0.88rem;
   color: var(--color-text-secondary);
 }
 
@@ -391,7 +392,7 @@ body {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  gap: 0.5rem;
+  gap: 0.75rem;
   align-items: stretch;
 }
 
@@ -399,8 +400,8 @@ body {
   position: relative;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 0.9rem;
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.1rem;
   text-align: center;
 }
 
@@ -419,30 +420,30 @@ body {
 
 .fluxo__num {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--color-accent);
 }
 
 .fluxo__titulo {
-  font-size: clamp(0.82rem, 1.05vw, 0.92rem);
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
   font-weight: 700;
   margin: 0.3rem 0 0.2rem;
   line-height: 1.25;
 }
 
 .fluxo__desc {
-  font-size: clamp(0.72rem, 0.95vw, 0.8rem);
+  font-size: clamp(0.84rem, 1.05vw, 0.93rem);
   color: var(--color-text-secondary);
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 /* ── Dois lados (sim / não) ── */
-.lados { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
+.lados { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.15rem; }
 
 .lado {
   border-radius: var(--radius-lg);
-  padding: 1.15rem 1.25rem;
+  padding: 1.5rem 1.6rem;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
 }
@@ -451,7 +452,7 @@ body {
 .lado--ruim { background: var(--color-amber-light); border-color: #EFD9BC; }
 
 .lado__titulo {
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -461,14 +462,14 @@ body {
 .lado--bom .lado__titulo { color: var(--color-green); }
 .lado--ruim .lado__titulo { color: var(--color-amber); }
 
-.lado ul { list-style: none; display: grid; gap: 0.55rem; }
+.lado ul { list-style: none; display: grid; gap: 0.75rem; }
 
 .lado li {
   position: relative;
-  padding-left: 1.4rem;
-  font-size: clamp(0.8rem, 1.05vw, 0.9rem);
+  padding-left: 1.55rem;
+  font-size: clamp(0.92rem, 1.15vw, 1.03rem);
   color: var(--color-text-secondary);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .lado li::before {
@@ -482,54 +483,57 @@ body {
 .lado--ruim li::before { content: '✕'; color: var(--color-amber); }
 
 /* ── Grade de cartões ── */
-.grade { display: grid; gap: 0.9rem; }
+.grade { display: grid; gap: 1.15rem; }
 .grade--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grade--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .grade--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 .mini {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 1rem 1.1rem;
+  border-radius: var(--radius-lg);
+  padding: 1.35rem 1.45rem;
 }
 
 .mini__icone {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px; height: 34px;
-  border-radius: 9px;
+  width: 40px; height: 40px;
+  border-radius: 11px;
   background: var(--color-accent-light);
   color: var(--color-accent);
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 800;
 }
 
 .mini__titulo {
-  font-size: clamp(0.88rem, 1.1vw, 0.98rem);
+  font-size: clamp(1rem, 1.28vw, 1.15rem);
   font-weight: 700;
-  line-height: 1.25;
-  margin-bottom: 0.25rem;
+  line-height: 1.3;
+  margin-bottom: 0.4rem;
 }
 
 .mini__texto {
-  font-size: clamp(0.76rem, 1vw, 0.85rem);
+  font-size: clamp(0.88rem, 1.12vw, 0.99rem);
   color: var(--color-text-secondary);
-  line-height: 1.45;
+  line-height: 1.55;
 }
 
 /* ── Número em destaque ── */
-.numeros { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.9rem; }
+.numeros { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.15rem; }
 
 .numero {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 1.1rem 1.25rem;
+  padding: 1.5rem 1.6rem;
 }
 
 .numero__valor {
   font-family: var(--font-serif);
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-size: clamp(2rem, 3.6vw, 3rem);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -537,10 +541,10 @@ body {
 }
 
 .numero__rotulo {
-  font-size: clamp(0.78rem, 1vw, 0.86rem);
+  font-size: clamp(0.9rem, 1.12vw, 1rem);
   color: var(--color-text-secondary);
-  margin-top: 0.45rem;
-  line-height: 1.45;
+  margin-top: 0.6rem;
+  line-height: 1.55;
 }
 
 /* ── Cartão de demonstração (claro) ── */
@@ -613,9 +617,9 @@ body {
   background: var(--color-accent);
   color: #fff;
   border-radius: 999px;
-  padding: 0.55rem 1.4rem;
+  padding: 0.75rem 1.9rem;
   font-weight: 700;
-  font-size: clamp(0.84rem, 1.1vw, 0.96rem);
+  font-size: clamp(1rem, 1.3vw, 1.18rem);
   position: relative;
 }
 
@@ -654,7 +658,7 @@ body {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 1rem 1.1rem;
+  padding: 1.4rem 1.45rem;
 }
 
 .ramo::before {
@@ -667,18 +671,18 @@ body {
 }
 
 .ramo__se {
-  font-size: clamp(0.76rem, 1vw, 0.84rem);
+  font-size: clamp(0.88rem, 1.12vw, 1rem);
   color: var(--color-text-secondary);
-  line-height: 1.4;
-  min-height: 2.4em;
+  line-height: 1.5;
+  min-height: 3em;
 }
 
 .ramo__destino {
-  font-size: clamp(0.95rem, 1.3vw, 1.12rem);
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
   font-weight: 800;
   letter-spacing: -0.02em;
-  margin: 0.5rem 0 0.6rem;
-  padding-bottom: 0.6rem;
+  margin: 0.7rem 0 0.85rem;
+  padding-bottom: 0.85rem;
   border-bottom: 1px solid var(--color-border-light);
 }
 
@@ -686,14 +690,14 @@ body {
 .ramo--indigo .ramo__destino { color: var(--color-indigo); }
 .ramo--teal .ramo__destino   { color: var(--color-teal); }
 
-.ramo__exemplos { list-style: none; display: grid; gap: 0.35rem; }
+.ramo__exemplos { list-style: none; display: grid; gap: 0.55rem; }
 
 .ramo__exemplos li {
   position: relative;
-  padding-left: 0.9rem;
-  font-size: clamp(0.74rem, 0.98vw, 0.83rem);
+  padding-left: 1.05rem;
+  font-size: clamp(0.86rem, 1.08vw, 0.96rem);
   color: var(--color-text-secondary);
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .ramo__exemplos li::before {
@@ -717,21 +721,21 @@ body {
   background: var(--color-accent);
   color: #fff;
   border-radius: var(--radius-lg);
-  padding: 1.1rem 1.35rem;
+  padding: 1.5rem 1.75rem;
   text-align: center;
-  min-width: 150px;
+  min-width: 185px;
 }
 
 .leque__centro strong {
   display: block;
-  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  font-size: clamp(1.2rem, 1.6vw, 1.45rem);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .leque__centro span {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.87rem;
   color: rgba(255, 255, 255, 0.78);
   margin-top: 0.2rem;
   line-height: 1.35;
@@ -740,7 +744,7 @@ body {
 .leque__itens {
   position: relative;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.7rem;
 }
 
 /* Espinha vertical, do centro do primeiro ao centro do ultimo item. */
@@ -758,12 +762,12 @@ body {
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.75rem;
+  gap: 1rem;
   align-items: center;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 0.6rem 0.9rem;
+  padding: 0.9rem 1.2rem;
 }
 
 .galho::before {
@@ -782,8 +786,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px; height: 30px;
-  border-radius: 8px;
+  width: 38px; height: 38px;
+  border-radius: 10px;
   background: var(--color-accent-light);
   color: var(--color-accent);
   flex-shrink: 0;
@@ -792,15 +796,15 @@ body {
 .galho--destaque .galho__icone { background: var(--color-accent); color: #fff; }
 
 .galho__nome {
-  font-size: clamp(0.82rem, 1.05vw, 0.92rem);
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
   font-weight: 700;
   line-height: 1.25;
 }
 
 .galho__desc {
-  font-size: clamp(0.72rem, 0.95vw, 0.8rem);
+  font-size: clamp(0.85rem, 1.05vw, 0.94rem);
   color: var(--color-text-secondary);
-  line-height: 1.35;
+  line-height: 1.45;
 }
 
 /* ── Arquivo de exemplo ── */
@@ -814,12 +818,12 @@ body {
 .arquivo__topo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   background: var(--color-bg-alt);
   border-bottom: 1px solid var(--color-border);
-  padding: 0.55rem 0.9rem;
+  padding: 0.75rem 1.2rem;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   font-weight: 500;
   color: var(--color-text);
 }
@@ -827,10 +831,10 @@ body {
 .arquivo__ponto { width: 9px; height: 9px; border-radius: 50%; background: var(--color-border); }
 
 .arquivo__corpo {
-  padding: 0.9rem 1rem;
+  padding: 1.25rem 1.4rem;
   font-family: var(--font-mono);
-  font-size: clamp(0.72rem, 0.95vw, 0.8rem);
-  line-height: 1.7;
+  font-size: clamp(0.82rem, 1.02vw, 0.92rem);
+  line-height: 1.8;
   color: var(--color-text-secondary);
 }
 
@@ -843,9 +847,9 @@ body {
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.85rem;
+  gap: 1.1rem;
   align-items: start;
-  padding-bottom: 0.75rem;
+  padding-bottom: 1.1rem;
 }
 
 .versao:last-child { padding-bottom: 0; }
@@ -874,9 +878,9 @@ body {
 .versao__ponto--atual { background: var(--color-accent); }
 
 .versao__texto {
-  font-size: clamp(0.78rem, 1vw, 0.87rem);
+  font-size: clamp(0.9rem, 1.12vw, 1rem);
   color: var(--color-text-secondary);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .versao__texto b { color: var(--color-text); }
@@ -886,30 +890,30 @@ body {
   background: var(--color-accent-light);
   border: 1px solid var(--color-accent-mid);
   border-radius: var(--radius-lg);
-  padding: 1.15rem 1.35rem;
+  padding: 1.6rem 1.8rem;
 }
 
 .perguntas__titulo {
-  font-size: clamp(0.95rem, 1.25vw, 1.1rem);
+  font-size: clamp(1.1rem, 1.45vw, 1.32rem);
   font-weight: 800;
   color: var(--color-accent);
-  letter-spacing: -0.01em;
-  margin-bottom: 0.7rem;
+  letter-spacing: -0.015em;
+  margin-bottom: 1rem;
 }
 
 .perguntas__lista {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.45rem 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem 1.75rem;
 }
 
 .perguntas__lista li {
   position: relative;
-  padding-left: 1.1rem;
-  font-size: clamp(0.78rem, 1vw, 0.87rem);
+  padding-left: 1.3rem;
+  font-size: clamp(0.9rem, 1.12vw, 1rem);
   color: var(--color-text-secondary);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .perguntas__lista li::before {
@@ -922,14 +926,14 @@ body {
 
 /* ── Aviso ── */
 .aviso {
-  border-left: 3px solid var(--color-amber);
+  border-left: 4px solid var(--color-amber);
   background: var(--color-amber-light);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  padding: 0.85rem 1.1rem;
-  font-size: clamp(0.8rem, 1.05vw, 0.9rem);
+  padding: 1.1rem 1.4rem;
+  font-size: clamp(0.92rem, 1.15vw, 1.03rem);
   color: var(--color-text-secondary);
-  line-height: 1.5;
-  margin-top: 1rem;
+  line-height: 1.55;
+  margin-top: 1.3rem;
 }
 
 .aviso b { color: var(--color-text); }
@@ -1002,6 +1006,7 @@ body.roteiro .trio,
 body.roteiro .lados,
 body.roteiro .numeros,
 body.roteiro .grade--2,
+body.roteiro .grade--3,
 body.roteiro .grade--4,
 body.roteiro .arvore__ramos,
 body.roteiro .perguntas__lista { grid-template-columns: 1fr; }
@@ -1064,8 +1069,16 @@ body.roteiro .notas {
     padding-bottom: clamp(3.25rem, 5vw, 4rem);
   }
 
-  .slide h2 { font-size: clamp(1.3rem, 2.4vw, 1.75rem); margin-bottom: 0.25rem; }
-  .sub { margin-bottom: 1rem; }
+  .slide h2 { font-size: clamp(1.45rem, 2.7vw, 2rem); margin-bottom: 0.3rem; }
+  .sub { margin-bottom: 1.15rem; font-size: clamp(0.94rem, 1.2vw, 1.05rem); }
+  .carta { padding: 1.15rem 1.1rem; }
+  .mini { padding: 1rem 1.1rem; }
+  .numero, .lado { padding: 1.1rem 1.2rem; }
+  .camada { padding: 0.7rem 0.95rem; }
+  .medidor { padding: 1.15rem; }
+  .medidor__barra { height: 42px; }
+  .fluxo__passo { padding: 0.95rem 0.85rem; }
+  .arquivo__corpo { line-height: 1.6; }
   .trio, .lados, .numeros, .grade, .fluxo { gap: 0.7rem; }
   .carta, .lado { padding: 1rem; }
   .mini { padding: 0.85rem 0.95rem; }
@@ -1108,7 +1121,7 @@ body.roteiro .notas {
     border-bottom: 1px solid var(--color-border);
   }
   .slide::before { display: none; }
-  .trio, .lados, .numeros, .grade--2, .grade--4,
+  .trio, .lados, .numeros, .grade--2, .grade--3, .grade--4,
   .arvore__ramos, .perguntas__lista { grid-template-columns: 1fr; }
   .arvore__ramos::before, .ramo::before,
   .leque__itens::before, .galho::before { display: none; }
@@ -1128,19 +1141,19 @@ body.roteiro .notas {
 <!-- 1 CAPA -->
 <section class="slide slide--capa is-active">
   <p class="topo__bloco">Mentoria 1 de 6</p>
-  <h1>Conhecendo<br>a plataforma.</h1>
-  <p class="lead">Hoje é só ferramenta. O que existe, como cada parte funciona e como usar bem. Nada de projeto da empresa ainda.</p>
+  <h1>Conhecendo<br>o Claude.</h1>
+  <p class="lead">A plataforma inteira, do come&ccedil;o ao fim, com um objetivo s&oacute;: usar o Claude como ferramenta de trabalho dentro da empresa, para potencializar o que j&aacute; funciona e dar conta do que hoje n&atilde;o cabe no seu dia.</p>
   <div class="capa__meta">
-    <span class="chip">Elias Junior · Armazena</span>
-    <span class="chip">19h30 às 21h</span>
+    <span class="chip">Elias Junior &middot; Armazena</span>
+    <span class="chip">19h30 &agrave;s 21h</span>
     <span class="chip">1h30</span>
   </div>
   <div class="notas">
-    <p class="notas__titulo">Condução</p>
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>Diga logo que hoje <b>não</b> vai entrar dado da Armazena. Tira a expectativa errada e deixa a sessão leve.</li>
-      <li>Pergunte só uma coisa antes de começar: o que ele já usa hoje. Serve para calibrar a velocidade, não para virar diagnóstico.</li>
-      <li>Ritmo: fale menos, mostre mais. Toda vez que der, alterne para a janela do Claude.</li>
+      <li>Diga logo que hoje <b>n&atilde;o</b> vai entrar dado da Armazena. Tira a expectativa errada e deixa a sess&atilde;o leve.</li>
+      <li>A palavra que sustenta a noite &eacute; <b>ferramenta de trabalho</b>. N&atilde;o &eacute; curiosidade sobre IA, &eacute; instrumento para a empresa produzir mais.</li>
+      <li>Pergunte s&oacute; uma coisa antes de come&ccedil;ar: o que ele j&aacute; usa hoje. Serve para calibrar a velocidade, n&atilde;o para virar diagn&oacute;stico.</li>
     </ul>
   </div>
 </section>
@@ -1184,49 +1197,51 @@ body.roteiro .notas {
 
 <!-- 3 OS TRES CLAUDES -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 01 · Os três Claudes</span><span class="topo__tempo">19h35</span></div>
-  <h2>Três produtos, a mesma inteligência.</h2>
-  <p class="sub">A confusão mais comum é achar que são inteligências diferentes. Não são. O que muda é o que cada um consegue alcançar e quanto de trabalho ele faz sozinho.</p>
+  <div class="topo"><span class="topo__bloco">Bloco 01 &middot; Os tr&ecirc;s Claudes</span><span class="topo__tempo">19h35</span></div>
+  <h2>Tr&ecirc;s produtos, a mesma intelig&ecirc;ncia.</h2>
+  <p class="sub">A confus&atilde;o comum &eacute; achar que s&atilde;o intelig&ecirc;ncias diferentes. N&atilde;o s&atilde;o. O que muda &eacute; <b>quem conduz o trabalho</b>: em um voc&ecirc; dirige cada passo, no outro voc&ecirc; d&aacute; o destino e acompanha, no terceiro ele entra dentro do projeto e mexe nos arquivos.</p>
   <div class="trio">
     <article class="carta">
-      <div class="carta__icone carta__icone--azul"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="carta__icone carta__icone--azul"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
       <p class="carta__nome">Claude</p>
-      <p class="carta__papel carta__papel--azul">Você conversa, ele responde</p>
-      <p class="carta__texto">O app e o site. É onde você pergunta, anexa arquivo, analisa planilha e escreve. Todo o trabalho do dia a dia começa aqui.</p>
+      <p class="carta__papel carta__papel--azul">Voc&ecirc; conduz, ele responde</p>
+      <p class="carta__texto">O app e o site. Voc&ecirc; pergunta, anexa arquivo, l&ecirc; a resposta e corrige o rumo. Cada passo passa por voc&ecirc;, e &eacute; isso que faz dele o melhor lugar para pensar junto.</p>
       <ul class="carta__lista">
         <li>Conversas e Projetos</li>
         <li>Leitura de arquivo e planilha</li>
-        <li>Você dirige cada passo</li>
+        <li>Voc&ecirc; decide o pr&oacute;ximo passo</li>
       </ul>
     </article>
     <article class="carta">
-      <div class="carta__icone carta__icone--indigo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></svg></div>
+      <div class="carta__icone carta__icone--indigo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></svg></div>
       <p class="carta__nome">Cowork</p>
-      <p class="carta__papel carta__papel--indigo">Você dá o objetivo, ele executa</p>
-      <p class="carta__texto">Em vez de responder, ele faz. Trabalha nas pastas e ferramentas que você liberar, abre um navegador próprio e entrega o resultado pronto para revisão.</p>
+      <p class="carta__papel carta__papel--indigo">Ele conduz, voc&ecirc; acompanha</p>
+      <p class="carta__texto">Voc&ecirc; d&aacute; o objetivo e ele vai atr&aacute;s. Trabalha nas pastas e ferramentas que voc&ecirc; liberar, tem um navegador pr&oacute;prio para o que precisa ser feito na web, e quebra trabalho grande em partes que correm ao mesmo tempo.</p>
       <ul class="carta__lista">
-        <li>Você dá a meta, não o passo a passo</li>
-        <li>Tarefas agendadas, sem você na frente</li>
-        <li>Mostra cada passo enquanto trabalha</li>
+        <li>Navegador pr&oacute;prio, separado do seu</li>
+        <li>Divide projeto grande em partes paralelas</li>
+        <li>Mostra cada passo e aceita correção no meio</li>
+        <li>Roda sozinho em hor&aacute;rio agendado</li>
       </ul>
     </article>
     <article class="carta">
-      <div class="carta__icone carta__icone--teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+      <div class="carta__icone carta__icone--teal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
       <p class="carta__nome">Claude Code</p>
-      <p class="carta__papel carta__papel--teal">Ele lê e escreve o sistema</p>
-      <p class="carta__texto">Roda no terminal, dentro de uma pasta de projeto. Lê e altera arquivos de verdade. É a porta por onde software é construído e mantido.</p>
+      <p class="carta__papel carta__papel--teal">Ele entra dentro do projeto</p>
+      <p class="carta__texto">Roda no terminal, dentro de uma pasta. L&ecirc; e escreve arquivos de verdade e entende o projeto inteiro, n&atilde;o um arquivo por vez. &Eacute; por onde software &eacute; constru&iacute;do e mantido.</p>
       <ul class="carta__lista">
-        <li>Trabalha no seu computador</li>
-        <li>Projeto inteiro, não um arquivo</li>
+        <li>Trabalha na sua m&aacute;quina</li>
+        <li>Projeto inteiro, n&atilde;o um arquivo</li>
         <li>Foi por aqui que o Hub foi feito</li>
       </ul>
     </article>
   </div>
   <div class="notas">
-    <p class="notas__titulo">Condução</p>
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>A frase que sustenta o bloco: <b>mesma inteligência, alcance diferente.</b> Repita no fim.</li>
-      <li>Fonte da descrição do Cowork: página oficial do produto. <b>Não invente recurso.</b> Se ele perguntar algo que você não sabe, abra a página junto com ele, que já é uma boa prática em si.</li>
+      <li>A frase que sustenta o bloco: <b>muda quem conduz o trabalho, n&atilde;o a intelig&ecirc;ncia.</b> Repita no fim.</li>
+      <li>O erro comum sobre o Cowork &eacute; achar que ele serve s&oacute; para tarefa repetitiva. <b>N&atilde;o &eacute; sobre repeti&ccedil;&atilde;o, &eacute; sobre delega&ccedil;&atilde;o</b>: ele d&aacute; conta de projeto grande e novo, quebrando em partes.</li>
+      <li>Descri&ccedil;&atilde;o tirada da p&aacute;gina oficial do produto. <b>N&atilde;o invente recurso.</b> Se ele perguntar algo que voc&ecirc; n&atilde;o sabe, abram a p&aacute;gina juntos, que j&aacute; &eacute; uma boa pr&aacute;tica em si.</li>
       <li>No Claude Code, cite o Hub de passagem e siga. Aprofundar agora derruba o ritmo.</li>
     </ul>
   </div>
@@ -1236,32 +1251,32 @@ body.roteiro .notas {
 <section class="slide">
   <div class="topo"><span class="topo__bloco">Bloco 01 &middot; Os tr&ecirc;s Claudes</span><span class="topo__tempo">19h45</span></div>
   <h2>Qual abrir para cada coisa.</h2>
-  <p class="sub">Toda vez que voc&ecirc; for come&ccedil;ar alguma coisa, a pergunta &eacute; uma s&oacute;: quanto do trabalho voc&ecirc; quer fazer junto e quanto quer delegar.</p>
+  <p class="sub">Uma pergunta resolve a escolha quase sempre, e n&atilde;o &eacute; sobre o assunto do trabalho. &Eacute; sobre quanto dele voc&ecirc; quer conduzir.</p>
   <div class="arvore">
-    <p class="arvore__raiz">O que voc&ecirc; precisa agora?</p>
+    <p class="arvore__raiz">Quem conduz este trabalho?</p>
     <div class="arvore__ramos">
       <article class="ramo ramo--azul">
-        <p class="ramo__se">Quero pensar junto, ver o resultado e ir corrigindo o rumo</p>
+        <p class="ramo__se">Eu conduzo. Quero ver cada passo, pensar junto e ir corrigindo o rumo.</p>
         <p class="ramo__destino">Claude</p>
         <ul class="ramo__exemplos">
           <li>Entender um n&uacute;mero ou uma planilha</li>
-          <li>Escrever e revisar um texto</li>
+          <li>Escrever, revisar, reescrever</li>
           <li>Comparar op&ccedil;&otilde;es antes de decidir</li>
-          <li>Aprender como alguma coisa funciona</li>
+          <li>Aprender como algo funciona</li>
         </ul>
       </article>
       <article class="ramo ramo--indigo">
-        <p class="ramo__se">J&aacute; sei o resultado que quero e n&atilde;o quero acompanhar o caminho</p>
+        <p class="ramo__se">Ele conduz. Eu dou o objetivo, acompanho de longe e redireciono se sair do rumo.</p>
         <p class="ramo__destino">Cowork</p>
         <ul class="ramo__exemplos">
-          <li>Relat&oacute;rio que se repete toda semana</li>
+          <li>Projeto grande, com muitas partes</li>
           <li>Juntar informa&ccedil;&atilde;o de v&aacute;rias ferramentas</li>
-          <li>Tarefa agendada, sem voc&ecirc; na frente</li>
-          <li>Trabalho longo e repetitivo</li>
+          <li>Trabalho que precisa de navega&ccedil;&atilde;o na web</li>
+          <li>Rotina agendada, sem voc&ecirc; na frente</li>
         </ul>
       </article>
       <article class="ramo ramo--teal">
-        <p class="ramo__se">Preciso mexer em arquivo de verdade, dentro de um sistema</p>
+        <p class="ramo__se">Ele mexe nos arquivos do projeto, comigo revisando o que mudou.</p>
         <p class="ramo__destino">Claude Code</p>
         <ul class="ramo__exemplos">
           <li>Criar ou alterar um sistema</li>
@@ -1272,12 +1287,12 @@ body.roteiro .notas {
       </article>
     </div>
   </div>
-  <div class="aviso"><b>Na d&uacute;vida, comece pelo Claude.</b> &Eacute; o mais f&aacute;cil de corrigir no meio do caminho. Se perceber que a tarefa se repete, ela migra para o Cowork. Se perceber que precisa tocar em arquivo, migra para o Claude Code.</div>
+  <div class="aviso"><b>Na d&uacute;vida, comece pelo Claude.</b> &Eacute; o mais f&aacute;cil de corrigir no meio do caminho. Quando perceber que est&aacute; explicando a mesma coisa toda semana, aquilo migra para o Cowork. Quando perceber que precisa tocar em arquivo, migra para o Claude Code.</div>
   <div class="notas">
     <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>Desenhe a &aacute;rvore com o dedo na tela enquanto fala. <b>A pergunta do topo &eacute; o que ele vai levar para casa</b>, n&atilde;o a lista de exemplos.</li>
-      <li>Pe&ccedil;a para ele citar uma tarefa qualquer e decidir junto em qual ramo cai. Uma s&oacute;, sem virar diagn&oacute;stico.</li>
+      <li>Desenhe a &aacute;rvore com o dedo na tela enquanto fala. <b>A pergunta da raiz &eacute; o que ele leva para casa</b>, n&atilde;o a lista de exemplos.</li>
+      <li>Pe&ccedil;a para ele citar uma tarefa qualquer e decidam juntos em qual ramo cai. Uma s&oacute;, sem virar diagn&oacute;stico.</li>
       <li>A regra do rodap&eacute; evita o travamento mais comum, que &eacute; ficar escolhendo ferramenta em vez de come&ccedil;ar.</li>
     </ul>
   </div>
@@ -1285,76 +1300,81 @@ body.roteiro .notas {
 
 <!-- 5 O QUE E CONTEXTO -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 02 · Contexto</span><span class="topo__tempo">19h55</span></div>
-  <h2>Contexto é tudo que ele enxerga agora.</h2>
-  <p class="sub">O Claude não lembra de você entre conversas e não sabe nada da sua empresa por conta própria. Em cada resposta, ele trabalha com estas quatro camadas, e nada além delas.</p>
+  <div class="topo"><span class="topo__bloco">Bloco 02 &middot; Contexto</span><span class="topo__tempo">19h55</span></div>
+  <h2>Contexto &eacute; tudo que ele enxerga agora.</h2>
+  <p class="sub">O Claude n&atilde;o guarda mem&oacute;ria de voc&ecirc; entre conversas e n&atilde;o sabe nada da sua empresa por conta pr&oacute;pria. A cada resposta ele monta a vis&atilde;o do zero, com o que estiver dentro da janela daquela conversa. Essas s&atilde;o as quatro camadas que entram, e nada al&eacute;m delas.</p>
   <div class="camadas">
     <div class="camada camada--fixa">
-      <span class="camada__nome">Instruções</span>
-      <span class="camada__desc">O que você escreveu nas instruções do Projeto. Vale em toda conversa daquele projeto.</span>
+      <span class="camada__nome">Instru&ccedil;&otilde;es</span>
+      <span class="camada__desc">O que voc&ecirc; escreveu nas instru&ccedil;&otilde;es do Projeto. Entra sozinho em toda conversa daquele projeto, sem voc&ecirc; repetir.</span>
       <span class="camada__peso">fixo</span>
     </div>
     <div class="camada camada--anexo">
       <span class="camada__nome">Arquivos</span>
-      <span class="camada__desc">O que está na base de conhecimento do Projeto e o que você anexou nesta conversa.</span>
+      <span class="camada__desc">A base de conhecimento do Projeto e o que voc&ecirc; anexou nesta conversa. &Eacute; a camada mais pesada de todas.</span>
       <span class="camada__peso">pesado</span>
     </div>
     <div class="camada camada--hist">
-      <span class="camada__nome">Histórico</span>
-      <span class="camada__desc">Tudo que já foi dito nesta conversa, das duas partes. Cresce a cada mensagem.</span>
+      <span class="camada__nome">Hist&oacute;rico</span>
+      <span class="camada__desc">Tudo que j&aacute; foi dito aqui, das duas partes. Come&ccedil;a do nada e cresce a cada troca, sem voc&ecirc; perceber.</span>
       <span class="camada__peso">cresce sempre</span>
     </div>
     <div class="camada camada--agora">
       <span class="camada__nome">Sua mensagem</span>
-      <span class="camada__desc">O que você acabou de escrever. Costuma ser a menor parte de todas.</span>
+      <span class="camada__desc">O que voc&ecirc; acabou de escrever. Quase sempre a menor das quatro, e a &uacute;nica em que a gente costuma pensar.</span>
       <span class="camada__peso">leve</span>
     </div>
   </div>
-  <div class="aviso"><b>A conclusão prática.</b> Resposta ruim quase nunca é falta de capacidade. É falta de contexto, ou contexto demais e bagunçado.</div>
+  <div class="aviso"><b>A conclus&atilde;o pr&aacute;tica.</b> Resposta gen&eacute;rica quase nunca &eacute; limite da ferramenta. &Eacute; contexto faltando, ou contexto demais e bagunçado, que atrapalha do mesmo jeito.</div>
   <div class="notas">
-    <p class="notas__titulo">Condução</p>
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>Esse é o conceito que mais muda o uso de quem já mexe na ferramenta. <b>Gaste tempo aqui.</b></li>
-      <li>Cuide do tom: a ideia não é que ele pergunta errado, é que a ferramenta só trabalha com o que recebe.</li>
-      <li>Amarre com o bloco seguinte: as camadas ocupam espaço, e espaço é finito.</li>
+      <li>Esse &eacute; o conceito que mais muda o uso de quem j&aacute; mexe na ferramenta. <b>Gaste tempo aqui.</b></li>
+      <li>A &uacute;ltima camada tem a observa&ccedil;&atilde;o mais importante do slide: <b>a gente s&oacute; pensa na pr&oacute;pria pergunta</b> e esquece que as outras tr&ecirc;s pesam muito mais.</li>
+      <li>Cuide do tom. A ideia n&atilde;o &eacute; que ele pergunta errado, &eacute; que a ferramenta trabalha s&oacute; com o que recebe.</li>
     </ul>
   </div>
 </section>
 
 <!-- 6 O QUE ENCHE -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 02 · Contexto</span><span class="topo__tempo">20h05</span></div>
-  <h2>Esse espaço é grande, mas acaba.</h2>
-  <p class="sub">Tudo que ele enxerga ocupa lugar numa mesma janela. Anexar planilha grande e conversar por horas enchem essa janela rápido, e é aí que as respostas começam a piorar.</p>
+  <div class="topo"><span class="topo__bloco">Bloco 02 &middot; Contexto</span><span class="topo__tempo">20h05</span></div>
+  <h2>Essa janela &eacute; grande, mas acaba.</h2>
+  <p class="sub">As quatro camadas dividem o mesmo espa&ccedil;o. O hist&oacute;rico &eacute; a parte que cresce sem aviso: cada pergunta e cada resposta ficam guardadas ali, somando, at&eacute; o espa&ccedil;o apertar.</p>
   <div class="medidor">
     <div class="medidor__barra">
-      <div class="medidor__parte medidor__parte--fixa" style="width: 8%;">Instruções</div>
+      <div class="medidor__parte medidor__parte--fixa" style="width: 8%;">Instru&ccedil;&otilde;es</div>
       <div class="medidor__parte medidor__parte--anexo" style="width: 32%;">Arquivos anexados</div>
-      <div class="medidor__parte medidor__parte--hist" style="width: 38%;">Histórico da conversa</div>
+      <div class="medidor__parte medidor__parte--hist" style="width: 38%;">Hist&oacute;rico da conversa</div>
       <div class="medidor__parte medidor__parte--livre" style="width: 22%;">livre</div>
     </div>
     <div class="medidor__legenda">
-      <span><i class="medidor__ponto" style="background: var(--color-accent);"></i>Instruções do projeto</span>
+      <span><i class="medidor__ponto" style="background: var(--color-accent);"></i>Instru&ccedil;&otilde;es do projeto</span>
       <span><i class="medidor__ponto" style="background: var(--color-indigo);"></i>Arquivos</span>
-      <span><i class="medidor__ponto" style="background: #D98324;"></i>Histórico, que só cresce</span>
-      <span><i class="medidor__ponto" style="background: var(--color-bg-alt); border: 1px solid var(--color-border);"></i>Espaço livre</span>
+      <span><i class="medidor__ponto" style="background: #D98324;"></i>Hist&oacute;rico, que s&oacute; cresce</span>
+      <span><i class="medidor__ponto" style="background: var(--color-bg-alt); border: 1px solid var(--color-border);"></i>Espa&ccedil;o livre</span>
     </div>
   </div>
-  <div class="grade grade--2" style="margin-top: 1rem;">
+  <div class="grade grade--3" style="margin-top: 1.15rem;">
     <div class="mini">
-      <p class="mini__titulo">O que acontece quando enche</p>
-      <p class="mini__texto">As partes mais antigas da conversa são resumidas ou saem de cena. Ele não avisa com destaque, você percebe pela resposta que ignora algo que você já disse.</p>
+      <p class="mini__titulo">Como voc&ecirc; percebe</p>
+      <p class="mini__texto">A resposta passa a ignorar algo que voc&ecirc; j&aacute; disse, ou ele repete uma sugest&atilde;o que voc&ecirc; recusou. N&atilde;o vem aviso em vermelho, vem a sensa&ccedil;&atilde;o de que ele esqueceu.</p>
     </div>
     <div class="mini">
-      <p class="mini__titulo">O que fazer antes de encher</p>
-      <p class="mini__texto">Começar conversa nova ao mudar de assunto e deixar o que é permanente nas instruções do Projeto, não no meio do papo.</p>
+      <p class="mini__titulo">O que acontece por dentro</p>
+      <p class="mini__texto">As partes mais antigas s&atilde;o resumidas ou saem de cena para caber o resto. O que ficou para tr&aacute;s continua influenciando menos e menos.</p>
+    </div>
+    <div class="mini">
+      <p class="mini__titulo">O que fazer antes disso</p>
+      <p class="mini__texto">Conversa nova ao mudar de assunto, e o que &eacute; permanente escrito nas instru&ccedil;&otilde;es do Projeto, em vez de repetido no meio do papo.</p>
     </div>
   </div>
   <div class="notas">
-    <p class="notas__titulo">Condução</p>
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>As proporções da barra são ilustrativas, não medida real. Se ele perguntar, diga isso.</li>
-      <li>O sintoma que ele vai reconhecer: <b>"ele esqueceu o que eu falei lá em cima"</b>. Use essa frase, é o momento em que a ficha cai.</li>
+      <li>As propor&ccedil;&otilde;es da barra s&atilde;o ilustrativas, n&atilde;o medida real. Se ele perguntar, diga isso.</li>
+      <li>O sintoma que ele vai reconhecer &eacute; <b>"ele esqueceu o que eu falei l&aacute; em cima"</b>. Use essa frase, &eacute; o momento em que a ficha cai.</li>
+      <li>Emende no bloco seguinte: a r&eacute;gua que mede esse espa&ccedil;o chama token, e &eacute; a mesma que mede o consumo do plano.</li>
     </ul>
   </div>
 </section>
@@ -1741,26 +1761,30 @@ body.roteiro .notas {
     <p class="perguntas__titulo">Agora &eacute; sua vez. O que ficou na cabe&ccedil;a?</p>
     <ul class="perguntas__lista">
       <li>O que passou r&aacute;pido demais e voc&ecirc; quer rever</li>
-      <li>Alguma coisa que voc&ecirc; achou que daria e parece que n&atilde;o d&aacute;</li>
+      <li>Algo que voc&ecirc; achou que daria e parece que n&atilde;o d&aacute;</li>
       <li>Onde voc&ecirc; imagina que vai travar primeiro</li>
-      <li>O que voc&ecirc; j&aacute; usa hoje e ficou em d&uacute;vida se est&aacute; fazendo certo</li>
+      <li>O que voc&ecirc; j&aacute; usa e ficou na d&uacute;vida se faz certo</li>
       <li>Algo que voc&ecirc; viu por a&iacute; e quer saber se &eacute; verdade</li>
-      <li>Qualquer pergunta que pare&ccedil;a b&aacute;sica demais para perguntar</li>
+      <li>Qualquer pergunta que pare&ccedil;a b&aacute;sica demais</li>
     </ul>
   </div>
-  <div class="grade grade--2" style="margin-top: 0.9rem;">
+  <div class="grade grade--3" style="margin-top: 1.15rem;">
     <div class="mini">
-      <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div class="mini__icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
       <p class="mini__titulo">Para fazer at&eacute; l&aacute;</p>
-      <p class="mini__texto">Use o Claude todo dia, em qualquer coisa, sem compromisso de acertar. Anote o que te travou, porque &eacute; isso que vira pauta.</p>
+      <p class="mini__texto">Use o Claude todo dia, em qualquer coisa, sem compromisso de acertar. Anote o que travou, porque &eacute; isso que vira pauta.</p>
     </div>
     <div class="mini">
-      <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+      <div class="mini__icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
       <p class="mini__titulo">O que vem na pr&oacute;xima</p>
       <p class="mini__texto">Montar o ambiente de verdade: o Projeto da Armazena, o primeiro CLAUDE.md, a primeira skill e os conectores que fizerem sentido.</p>
     </div>
+    <div class="mini">
+      <div class="mini__icone"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></div>
+      <p class="mini__titulo">O que trazer</p>
+      <p class="mini__texto">A conta paga confirmada e uma ideia do que voc&ecirc; quer que o Claude saiba sobre a Armazena. N&atilde;o precisa estar organizado.</p>
+    </div>
   </div>
-  <div class="aviso"><b>Para a pr&oacute;xima, traga:</b> a conta paga confirmada e uma ideia do que voc&ecirc; quer que o Claude saiba sobre a Armazena. N&atilde;o precisa estar organizado, &eacute; s&oacute; n&atilde;o chegar do zero.</div>
   <div class="notas">
     <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
