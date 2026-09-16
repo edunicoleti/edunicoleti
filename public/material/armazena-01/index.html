@@ -606,6 +606,320 @@ body {
   line-height: 1.5;
 }
 
+/* ── Árvore de decisão: raiz em cima, três ramos ligados por fio ── */
+.arvore { display: grid; justify-items: center; }
+
+.arvore__raiz {
+  background: var(--color-accent);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.55rem 1.4rem;
+  font-weight: 700;
+  font-size: clamp(0.84rem, 1.1vw, 0.96rem);
+  position: relative;
+}
+
+.arvore__raiz::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 100%;
+  width: 2px; height: 1.3rem;
+  background: var(--color-accent-mid);
+  transform: translateX(-50%);
+}
+
+.arvore__ramos {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  width: 100%;
+  margin-top: 1.3rem;
+  padding-top: 1.1rem;
+}
+
+/* Fio horizontal ligando o centro do primeiro ao centro do ultimo ramo. */
+.arvore__ramos::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 16.6%;
+  right: 16.6%;
+  height: 2px;
+  background: var(--color-accent-mid);
+}
+
+.ramo {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.1rem;
+}
+
+.ramo::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: -1.1rem;
+  width: 2px; height: 1.1rem;
+  background: var(--color-accent-mid);
+  transform: translateX(-50%);
+}
+
+.ramo__se {
+  font-size: clamp(0.76rem, 1vw, 0.84rem);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+  min-height: 2.4em;
+}
+
+.ramo__destino {
+  font-size: clamp(0.95rem, 1.3vw, 1.12rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0.5rem 0 0.6rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.ramo--azul .ramo__destino   { color: var(--color-accent); }
+.ramo--indigo .ramo__destino { color: var(--color-indigo); }
+.ramo--teal .ramo__destino   { color: var(--color-teal); }
+
+.ramo__exemplos { list-style: none; display: grid; gap: 0.35rem; }
+
+.ramo__exemplos li {
+  position: relative;
+  padding-left: 0.9rem;
+  font-size: clamp(0.74rem, 0.98vw, 0.83rem);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.ramo__exemplos li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.48rem;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent-mid);
+}
+
+/* ── Leque: um nó central com ramos à direita ── */
+.leque {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.25rem;
+  align-items: center;
+}
+
+.leque__centro {
+  background: var(--color-accent);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.35rem;
+  text-align: center;
+  min-width: 150px;
+}
+
+.leque__centro strong {
+  display: block;
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.leque__centro span {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.78);
+  margin-top: 0.2rem;
+  line-height: 1.35;
+}
+
+.leque__itens {
+  position: relative;
+  display: grid;
+  gap: 0.5rem;
+}
+
+/* Espinha vertical, do centro do primeiro ao centro do ultimo item. */
+.leque__itens::before {
+  content: '';
+  position: absolute;
+  left: -1.15rem;
+  top: 1.4rem;
+  bottom: 1.4rem;
+  width: 2px;
+  background: var(--color-accent-mid);
+}
+
+.galho {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.9rem;
+}
+
+.galho::before {
+  content: '';
+  position: absolute;
+  left: -1.15rem;
+  top: 50%;
+  width: 1.15rem;
+  height: 2px;
+  background: var(--color-accent-mid);
+}
+
+.galho--destaque { border: 2px solid var(--color-accent); background: var(--color-accent-light); }
+
+.galho__icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.galho--destaque .galho__icone { background: var(--color-accent); color: #fff; }
+
+.galho__nome {
+  font-size: clamp(0.82rem, 1.05vw, 0.92rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.galho__desc {
+  font-size: clamp(0.72rem, 0.95vw, 0.8rem);
+  color: var(--color-text-secondary);
+  line-height: 1.35;
+}
+
+/* ── Arquivo de exemplo ── */
+.arquivo {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.arquivo__topo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-bg-alt);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.55rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.arquivo__ponto { width: 9px; height: 9px; border-radius: 50%; background: var(--color-border); }
+
+.arquivo__corpo {
+  padding: 0.9rem 1rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 0.95vw, 0.8rem);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.arquivo__h { color: var(--color-accent); font-weight: 600; }
+
+/* ── Linha do tempo de versões ── */
+.versoes { display: grid; gap: 0; }
+
+.versao {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  align-items: start;
+  padding-bottom: 0.75rem;
+}
+
+.versao:last-child { padding-bottom: 0; }
+
+.versao::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 20px;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-accent-mid);
+}
+
+.versao:last-child::before { display: none; }
+
+.versao__ponto {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 3px solid var(--color-accent);
+  background: var(--color-surface);
+  margin-top: 2px;
+  z-index: 1;
+}
+
+.versao__ponto--atual { background: var(--color-accent); }
+
+.versao__texto {
+  font-size: clamp(0.78rem, 1vw, 0.87rem);
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+}
+
+.versao__texto b { color: var(--color-text); }
+
+/* ── Bloco de perguntas ── */
+.perguntas {
+  background: var(--color-accent-light);
+  border: 1px solid var(--color-accent-mid);
+  border-radius: var(--radius-lg);
+  padding: 1.15rem 1.35rem;
+}
+
+.perguntas__titulo {
+  font-size: clamp(0.95rem, 1.25vw, 1.1rem);
+  font-weight: 800;
+  color: var(--color-accent);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.7rem;
+}
+
+.perguntas__lista {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 1.25rem;
+}
+
+.perguntas__lista li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: clamp(0.78rem, 1vw, 0.87rem);
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+}
+
+.perguntas__lista li::before {
+  content: '?';
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--color-accent);
+  font-weight: 800;
+}
+
 /* ── Aviso ── */
 .aviso {
   border-left: 3px solid var(--color-amber);
@@ -688,7 +1002,14 @@ body.roteiro .trio,
 body.roteiro .lados,
 body.roteiro .numeros,
 body.roteiro .grade--2,
-body.roteiro .grade--4 { grid-template-columns: 1fr; }
+body.roteiro .grade--4,
+body.roteiro .arvore__ramos,
+body.roteiro .perguntas__lista { grid-template-columns: 1fr; }
+body.roteiro .arvore__ramos::before,
+body.roteiro .ramo::before,
+body.roteiro .leque__itens::before,
+body.roteiro .galho::before { display: none; }
+body.roteiro .leque { grid-template-columns: 1fr; gap: 1rem; }
 body.roteiro .fluxo { grid-auto-flow: row; }
 body.roteiro .fluxo__passo::after { display: none; }
 body.roteiro .barra__progresso,
@@ -752,6 +1073,10 @@ body.roteiro .notas {
   .aviso { margin-top: 0.75rem; padding: 0.7rem 1rem; }
   .tabela th, .tabela td { padding: 0.55rem 0.85rem; }
   .carta__lista { margin-top: 0.6rem; padding-top: 0.6rem; }
+  .ramo, .perguntas { padding: 0.85rem 1rem; }
+  .galho { padding: 0.5rem 0.8rem; }
+  .arvore__ramos { margin-top: 1rem; padding-top: 0.9rem; }
+  .arquivo__corpo { padding: 0.75rem 0.9rem; line-height: 1.55; }
 }
 
 /* ── Impressão ── */
@@ -783,7 +1108,11 @@ body.roteiro .notas {
     border-bottom: 1px solid var(--color-border);
   }
   .slide::before { display: none; }
-  .trio, .lados, .numeros, .grade--2, .grade--4 { grid-template-columns: 1fr; }
+  .trio, .lados, .numeros, .grade--2, .grade--4,
+  .arvore__ramos, .perguntas__lista { grid-template-columns: 1fr; }
+  .arvore__ramos::before, .ramo::before,
+  .leque__itens::before, .galho::before { display: none; }
+  .leque { grid-template-columns: 1fr; gap: 1rem; }
   .fluxo { grid-auto-flow: row; }
   .fluxo__passo::after { display: none; }
   .camada { grid-template-columns: 1fr; gap: 0.2rem; }
@@ -840,10 +1169,9 @@ body.roteiro .notas {
     <div class="mini">
       <div class="mini__icone">04</div>
       <p class="mini__titulo">Boas práticas</p>
-      <p class="mini__texto">Projetos, skills, conectores e GitHub. 25 min</p>
+      <p class="mini__texto">Projetos, CLAUDE.md, skills, conectores e GitHub. 30 min</p>
     </div>
   </div>
-  <div class="aviso"><b>Fora do escopo de hoje:</b> tarefa da sua rotina e dado da Armazena. Isso começa na mentoria 3, quando você já souber operar a ferramenta.</div>
   <div class="notas">
     <p class="notas__titulo">Condução</p>
     <ul>
@@ -906,35 +1234,51 @@ body.roteiro .notas {
 
 <!-- 4 QUAL USAR QUANDO -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 01 · Os três Claudes</span><span class="topo__tempo">19h45</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 01 &middot; Os tr&ecirc;s Claudes</span><span class="topo__tempo">19h45</span></div>
   <h2>Qual abrir para cada coisa.</h2>
-  <p class="sub">A regra prática: se você quer pensar junto, é o Claude. Se você quer que alguém faça e entregue, é o Cowork. Se mexe em arquivo de sistema, é o Claude Code.</p>
-  <table class="tabela">
-    <thead>
-      <tr><th>Quando você quer</th><th>Abra</th><th>Por quê</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Entender um número, analisar uma planilha</td><td><span class="marca marca--azul">Claude</span></td><td>Você vai em frente e para trás na conversa até chegar na resposta</td></tr>
-      <tr><td>Escrever, revisar, reescrever um texto</td><td><span class="marca marca--azul">Claude</span></td><td>Vai e volta rápido, com você corrigindo o rumo</td></tr>
-      <tr><td>Um relatório que se repete toda semana</td><td><span class="marca marca--indigo">Cowork</span></td><td>Roda sozinho no horário combinado e entrega pronto</td></tr>
-      <tr><td>Juntar informação de várias ferramentas</td><td><span class="marca marca--indigo">Cowork</span></td><td>Acessa as ferramentas conectadas e faz várias partes ao mesmo tempo</td></tr>
-      <tr><td>Criar ou alterar um sistema</td><td><span class="marca marca--teal">Claude Code</span></td><td>É o único que escreve nos arquivos do projeto</td></tr>
-    </tbody>
-  </table>
-  <div class="demo" style="margin-top: 1rem;">
-    <span class="demo__tag">Demonstrar · 6 min</span>
-    <ol class="demo__passos">
-      <li>Abra o <b>Claude</b> e faça uma pergunta qualquer, só para mostrar a interface.</li>
-      <li>Abra o <b>Claude Code</b> numa pasta e peça algo que só ele faz.<span class="fala">Liste os arquivos desta pasta e me diga o que cada um faz.</span></li>
-      <li>Mostre <b>onde fica o Cowork</b> e o tipo de tarefa que entra nele. Não precisa rodar uma, só mostrar.</li>
-    </ol>
+  <p class="sub">Toda vez que voc&ecirc; for come&ccedil;ar alguma coisa, a pergunta &eacute; uma s&oacute;: quanto do trabalho voc&ecirc; quer fazer junto e quanto quer delegar.</p>
+  <div class="arvore">
+    <p class="arvore__raiz">O que voc&ecirc; precisa agora?</p>
+    <div class="arvore__ramos">
+      <article class="ramo ramo--azul">
+        <p class="ramo__se">Quero pensar junto, ver o resultado e ir corrigindo o rumo</p>
+        <p class="ramo__destino">Claude</p>
+        <ul class="ramo__exemplos">
+          <li>Entender um n&uacute;mero ou uma planilha</li>
+          <li>Escrever e revisar um texto</li>
+          <li>Comparar op&ccedil;&otilde;es antes de decidir</li>
+          <li>Aprender como alguma coisa funciona</li>
+        </ul>
+      </article>
+      <article class="ramo ramo--indigo">
+        <p class="ramo__se">J&aacute; sei o resultado que quero e n&atilde;o quero acompanhar o caminho</p>
+        <p class="ramo__destino">Cowork</p>
+        <ul class="ramo__exemplos">
+          <li>Relat&oacute;rio que se repete toda semana</li>
+          <li>Juntar informa&ccedil;&atilde;o de v&aacute;rias ferramentas</li>
+          <li>Tarefa agendada, sem voc&ecirc; na frente</li>
+          <li>Trabalho longo e repetitivo</li>
+        </ul>
+      </article>
+      <article class="ramo ramo--teal">
+        <p class="ramo__se">Preciso mexer em arquivo de verdade, dentro de um sistema</p>
+        <p class="ramo__destino">Claude Code</p>
+        <ul class="ramo__exemplos">
+          <li>Criar ou alterar um sistema</li>
+          <li>Entender um projeto inteiro</li>
+          <li>Automatizar algo na sua m&aacute;quina</li>
+          <li>Trabalhar com muitos arquivos juntos</li>
+        </ul>
+      </article>
+    </div>
   </div>
+  <div class="aviso"><b>Na d&uacute;vida, comece pelo Claude.</b> &Eacute; o mais f&aacute;cil de corrigir no meio do caminho. Se perceber que a tarefa se repete, ela migra para o Cowork. Se perceber que precisa tocar em arquivo, migra para o Claude Code.</div>
   <div class="notas">
-    <p class="notas__titulo">Condução</p>
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>Use uma pasta <b>sem nada sensível</b>. Você está com a tela compartilhada.</li>
-      <li>Se ele nunca viu terminal, o objetivo é tirar o mistério, não ensinar a usar. Isso é a mentoria 2.</li>
-      <li>Deixe a tabela na tela enquanto conversa. Ela responde sozinha metade das perguntas.</li>
+      <li>Desenhe a &aacute;rvore com o dedo na tela enquanto fala. <b>A pergunta do topo &eacute; o que ele vai levar para casa</b>, n&atilde;o a lista de exemplos.</li>
+      <li>Pe&ccedil;a para ele citar uma tarefa qualquer e decidir junto em qual ramo cai. Uma s&oacute;, sem virar diagn&oacute;stico.</li>
+      <li>A regra do rodap&eacute; evita o travamento mais comum, que &eacute; ficar escolhendo ferramenta em vez de come&ccedil;ar.</li>
     </ul>
   </div>
 </section>
@@ -1127,30 +1471,6 @@ body.roteiro .notas {
   </div>
 </section>
 
-<!-- 10 DEMO CONTEXTO -->
-<section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 03 · Tokens e sessões</span><span class="topo__tempo">20h38</span></div>
-  <h2>Ver acontecendo.</h2>
-  <div class="demo">
-    <span class="demo__tag">Demonstrar · 7 min</span>
-    <ol class="demo__passos">
-      <li>Numa conversa <b>nova</b>, peça algo que depende de contexto que ele não tem.<span class="fala">Escreva um anúncio para o meu produto.</span></li>
-      <li>Mostre a resposta genérica e explique <b>por quê</b>: nenhuma das quatro camadas tinha informação.</li>
-      <li>Na mesma conversa, dê o contexto e peça de novo. Compare o antes e o depois na tela.</li>
-      <li>Abra uma conversa nova e faça a <b>mesma</b> pergunta do passo 3. Ele volta a não saber, o que prova que o histórico morreu junto com a conversa.</li>
-      <li>Feche a ideia: é exatamente isso que o Projeto resolve, e é o próximo bloco.</li>
-    </ol>
-  </div>
-  <div class="notas">
-    <p class="notas__titulo">Condução</p>
-    <ul>
-      <li>O passo 4 é o que mais ensina e é o que todo mundo pula. <b>Não pule.</b></li>
-      <li>Use um produto genérico, não um da Armazena. Hoje é plataforma.</li>
-      <li>Deixe <b>ele digitar</b>. Quem digita aprende.</li>
-    </ul>
-  </div>
-</section>
-
 <!-- 11 PROJETOS -->
 <section class="slide">
   <div class="topo"><span class="topo__bloco">Bloco 04 · Boas práticas</span><span class="topo__tempo">20h45</span></div>
@@ -1188,105 +1508,190 @@ body.roteiro .notas {
   </div>
 </section>
 
-<!-- 12 SKILLS -->
+<!-- 11B CLAUDE.MD -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 04 · Boas práticas</span><span class="topo__tempo">20h53</span></div>
-  <h2>Skills: a rotina que fica salva.</h2>
-  <p class="sub">Quando você repete o mesmo tipo de pedido pela terceira vez, aquilo devia ser uma skill. É uma instrução guardada que ensina o Claude a fazer aquela tarefa sempre do mesmo jeito, com o mesmo padrão de saída.</p>
-  <div class="fluxo">
-    <div class="fluxo__passo">
-      <p class="fluxo__num">01</p>
-      <p class="fluxo__titulo">Você faz na mão</p>
-      <p class="fluxo__desc">Explicando tudo, do zero, e ajustando até sair como você quer</p>
+  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span><span class="topo__tempo">20h51</span></div>
+  <h2>CLAUDE.md: a mesma ideia, dentro da pasta.</h2>
+  <p class="sub">No Claude Code n&atilde;o existe tela de instru&ccedil;&otilde;es. O que existe &eacute; um arquivo chamado <b>CLAUDE.md</b>, que voc&ecirc; deixa na pasta do projeto e ele l&ecirc; sozinho toda vez que abre ali.</p>
+  <div class="grade grade--2" style="align-items: start;">
+    <div class="arquivo">
+      <div class="arquivo__topo"><span class="arquivo__ponto"></span>CLAUDE.md</div>
+      <div class="arquivo__corpo">
+        <span class="arquivo__h"># O que &eacute; este projeto</span><br>
+        Sistema interno de X, usado pela equipe de Y.<br><br>
+        <span class="arquivo__h">## Como rodar</span><br>
+        npm install e depois npm run dev<br><br>
+        <span class="arquivo__h">## Conven&ccedil;&otilde;es</span><br>
+        Coment&aacute;rio e nome de vari&aacute;vel em portugu&ecirc;s.<br>
+        Nada de biblioteca nova sem combinar antes.<br><br>
+        <span class="arquivo__h">## O que n&atilde;o mexer</span><br>
+        A pasta de integra&ccedil;&atilde;o com o parceiro.
+      </div>
     </div>
-    <div class="fluxo__passo">
-      <p class="fluxo__num">02</p>
-      <p class="fluxo__titulo">Repete</p>
-      <p class="fluxo__desc">E percebe que está reescrevendo quase o mesmo pedido</p>
-    </div>
-    <div class="fluxo__passo">
-      <p class="fluxo__num">03</p>
-      <p class="fluxo__titulo">Vira skill</p>
-      <p class="fluxo__desc">O que funcionou vira instrução guardada, com o passo a passo e o formato</p>
-    </div>
-    <div class="fluxo__passo">
-      <p class="fluxo__num">04</p>
-      <p class="fluxo__titulo">Sai igual sempre</p>
-      <p class="fluxo__desc">Sem depender de você lembrar como pediu da última vez</p>
+    <div>
+      <div class="mini">
+        <p class="mini__titulo">O paralelo que vale guardar</p>
+        <p class="mini__texto">O Projeto tem a tela de instru&ccedil;&otilde;es. A pasta tem o CLAUDE.md. &Eacute; a mesma ideia nos dois lugares: contexto escrito uma vez, que vale sempre.</p>
+      </div>
+      <div class="mini" style="margin-top: 0.85rem;">
+        <p class="mini__titulo">Por que muda tanto</p>
+        <p class="mini__texto">Sem ele, o Claude abre a pasta sem saber o que aquilo &eacute;, e cada conversa come&ccedil;a do zero. Com ele, j&aacute; come&ccedil;a sabendo as regras da casa.</p>
+      </div>
+      <div class="mini" style="margin-top: 0.85rem;">
+        <p class="mini__titulo">Ele vive junto com o c&oacute;digo</p>
+        <p class="mini__texto">Fica no reposit&oacute;rio, como qualquer arquivo. Quem entrar depois pega o contexto junto, e voc&ecirc; vai corrigindo conforme percebe o que faltava.</p>
+      </div>
     </div>
   </div>
-  <div class="aviso"><b>O sinal para criar uma.</b> Se você se pegar procurando uma conversa antiga para copiar o jeito que pediu, é hora de virar skill.</div>
+  <div class="aviso"><b>A regra pr&aacute;tica &eacute; a mesma dos Projetos.</b> Toda vez que voc&ecirc; corrigir o Claude sobre a mesma coisa pela segunda vez, aquilo pertence ao CLAUDE.md.</div>
   <div class="notas">
-    <p class="notas__titulo">Condução</p>
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>Aqui é apresentação, não construção. <b>Criar skill de verdade é mentoria 2.</b></li>
-      <li>Mostre uma skill sua funcionando, se tiver. Ver pronto vale mais que ouvir explicado.</li>
+      <li>Venha direto do slide de Projetos e diga o paralelo em voz alta. <b>&Eacute; a mesma ideia em dois lugares</b>, e entender isso economiza meia hora de explica&ccedil;&atilde;o depois.</li>
+      <li>O arquivo na tela &eacute; exemplo gen&eacute;rico. Escrever o da Armazena &eacute; mentoria 2.</li>
+      <li>Se ele perguntar se o Hub tem um, a resposta honesta &eacute; que voc&ecirc; n&atilde;o sabe e que d&aacute; para olhar junto na pr&oacute;xima.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 12 SKILLS -->
+<section class="slide">
+  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span><span class="topo__tempo">20h58</span></div>
+  <h2>Skills: a rotina que fica salva.</h2>
+  <p class="sub">Skill &eacute; uma instru&ccedil;&atilde;o guardada que ensina o Claude a fazer uma tarefa sempre do mesmo jeito. Voc&ecirc; para de reexplicar e o resultado para de variar.</p>
+  <div class="grade grade--2" style="align-items: start;">
+    <div>
+      <div class="arquivo">
+        <div class="arquivo__topo"><span class="arquivo__ponto"></span>resumo-semanal.md</div>
+        <div class="arquivo__corpo">
+          <span class="arquivo__h">## Quando usar</span><br>
+          Quando eu pedir o resumo da semana.<br><br>
+          <span class="arquivo__h">## Como fazer</span><br>
+          1. Comparar com a semana anterior<br>
+          2. Destacar o que mudou mais<br>
+          3. Apontar o que precisa de decis&atilde;o<br><br>
+          <span class="arquivo__h">## Formato</span><br>
+          Tabela curta, no m&aacute;ximo 5 linhas.<br>
+          Sem introdu&ccedil;&atilde;o e sem conclus&atilde;o.
+        </div>
+      </div>
+      <p class="mini__texto" style="margin-top: 0.6rem;">Uma skill &eacute; basicamente isto: quando usar, como fazer e em que formato entregar.</p>
+    </div>
+    <div>
+      <div class="mini">
+        <p class="mini__titulo">O sinal de que chegou a hora</p>
+        <p class="mini__texto">Voc&ecirc; se pegou procurando uma conversa antiga s&oacute; para copiar o jeito que pediu da &uacute;ltima vez. Isso &eacute; uma skill esperando para nascer.</p>
+      </div>
+      <div class="mini" style="margin-top: 0.85rem;">
+        <p class="mini__titulo">O que ganha</p>
+        <p class="mini__texto">Sai igual toda vez, mesmo meses depois. E quem mais entrar no time usa o mesmo padr&atilde;o sem precisar aprender com voc&ecirc;.</p>
+      </div>
+      <div class="mini" style="margin-top: 0.85rem;">
+        <p class="mini__titulo">Como nasce na pr&aacute;tica</p>
+        <p class="mini__texto">Voc&ecirc; faz na m&atilde;o, ajusta at&eacute; ficar bom, e s&oacute; ent&atilde;o transforma o que funcionou em skill. Nunca o contr&aacute;rio.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
+    <ul>
+      <li>O arquivo na tela &eacute; exemplo did&aacute;tico, escrito para ele entender a estrutura. <b>Criar skill de verdade &eacute; mentoria 2.</b></li>
+      <li>Se voc&ecirc; tiver uma skill sua funcionando, mostre rodando. Ver pronto vale mais que ouvir explicado.</li>
+      <li>Insista no "faz na m&atilde;o primeiro". Quem tenta criar skill antes de dominar a tarefa cria skill ruim.</li>
     </ul>
   </div>
 </section>
 
 <!-- 13 CONECTORES -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 04 · Boas práticas</span><span class="topo__tempo">21h00</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span><span class="topo__tempo">21h05</span></div>
   <h2>Conectores: parar de copiar e colar.</h2>
-  <p class="sub">Conector é uma ligação entre o Claude e uma ferramenta que você já usa. Em vez de exportar, baixar e anexar, ele busca o dado direto na fonte, sempre atualizado.</p>
-  <div class="grade grade--4">
-    <div class="mini">
-      <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
-      <p class="mini__titulo">Arquivos na nuvem</p>
-      <p class="mini__texto">Drive e similares. Ele lê a planilha onde ela já mora.</p>
+  <p class="sub">Conector &eacute; uma liga&ccedil;&atilde;o entre o Claude e uma ferramenta que voc&ecirc; j&aacute; usa. Em vez de exportar, baixar e anexar, ele busca o dado direto na fonte, sempre atualizado.</p>
+  <div class="leque">
+    <div class="leque__centro">
+      <strong>Claude</strong>
+      <span>com os conectores<br>que voc&ecirc; autorizar</span>
     </div>
-    <div class="mini">
-      <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg></div>
-      <p class="mini__titulo">Agenda e e-mail</p>
-      <p class="mini__texto">Para resumo de semana e preparação de reunião.</p>
-    </div>
-    <div class="mini">
-      <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-      <p class="mini__titulo">Comunicação do time</p>
-      <p class="mini__texto">Onde o time conversa, para ele achar o que ficou decidido.</p>
-    </div>
-    <div class="mini">
-      <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-      <p class="mini__titulo">Serviços externos</p>
-      <p class="mini__texto">Ferramentas de mercado que publicam uma porta de conexão.</p>
+    <div class="leque__itens">
+      <div class="galho">
+        <span class="galho__icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span>
+        <div><p class="galho__nome">Arquivos na nuvem</p><p class="galho__desc">Ele l&ecirc; a planilha onde ela j&aacute; mora, sem download</p></div>
+      </div>
+      <div class="galho">
+        <span class="galho__icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg></span>
+        <div><p class="galho__nome">Agenda e e-mail</p><p class="galho__desc">Resumo de semana e prepara&ccedil;&atilde;o de reuni&atilde;o</p></div>
+      </div>
+      <div class="galho">
+        <span class="galho__icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+        <div><p class="galho__nome">Comunica&ccedil;&atilde;o do time</p><p class="galho__desc">Para achar o que ficou decidido e onde parou</p></div>
+      </div>
+      <div class="galho">
+        <span class="galho__icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+        <div><p class="galho__nome">Servi&ccedil;os externos</p><p class="galho__desc">Ferramentas de mercado que publicam uma porta de conex&atilde;o</p></div>
+      </div>
+      <div class="galho galho--destaque">
+        <span class="galho__icone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span>
+        <div><p class="galho__nome">Sistemas pr&oacute;prios da empresa</p><p class="galho__desc">Um sistema feito em casa, como o Hub, tamb&eacute;m pode virar conector</p></div>
+      </div>
     </div>
   </div>
-  <div class="aviso"><b>Cuidado que vale desde já.</b> Conectar dá acesso. Ligue uma ferramenta por vez, veja o que ele consegue ler, e só depois amplie. Nada de conectar tudo na primeira noite.</div>
+  <div class="aviso"><b>Cuidado que vale desde j&aacute;.</b> Conectar d&aacute; acesso. Ligue uma ferramenta por vez, veja o que ele consegue ler, e s&oacute; depois amplie. Nada de conectar tudo na primeira noite.</div>
   <div class="notas">
-    <p class="notas__titulo">Condução</p>
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>Fale de <b>categorias</b>, não de lista fechada. O conjunto disponível muda com o tempo e com o plano, e prometer integração específica que você não testou é o jeito mais rápido de criar problema.</li>
-      <li>Se ele perguntar de uma ferramenta específica, abra a tela de conectores junto e olhem os dois. Não responda de cabeça.</li>
-      <li>O aviso de acesso não é burocracia: é gerente de empresa ligando ferramenta com dado de venda.</li>
+      <li>Fale de <b>categorias</b>, n&atilde;o de lista fechada. O conjunto dispon&iacute;vel muda com o tempo e com o plano, e prometer integra&ccedil;&atilde;o espec&iacute;fica que voc&ecirc; n&atilde;o testou &eacute; o jeito mais r&aacute;pido de criar problema.</li>
+      <li>No ramo em destaque, diga que <b>&eacute; poss&iacute;vel</b>, n&atilde;o que j&aacute; existe. Voc&ecirc; n&atilde;o sabe como o Hub foi feito nem se ele exp&otilde;e uma porta de conex&atilde;o. Quem responde isso &eacute; o Matheus, e essa pergunta &eacute; um bom motivo para o Elias procurar ele.</li>
+      <li>Se ele perguntar de uma ferramenta espec&iacute;fica, abram a tela de conectores juntos. N&atilde;o responda de cabe&ccedil;a.</li>
     </ul>
   </div>
 </section>
 
 <!-- 14 GITHUB -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 04 · Boas práticas</span><span class="topo__tempo">21h07</span></div>
-  <h2>GitHub: o histórico de tudo que mudou.</h2>
-  <p class="sub">GitHub guarda versões. Cada alteração fica registrada, com data, autor e o que exatamente mudou. Para quem trabalha com Claude Code, é o que separa experimentar com segurança de ter medo de mexer.</p>
-  <div class="grade grade--2">
+  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span><span class="topo__tempo">21h12</span></div>
+  <h2>GitHub: onde um sistema vive.</h2>
+  <p class="sub">Aquele &uacute;ltimo ramo do slide anterior, o sistema pr&oacute;prio da empresa, n&atilde;o mora numa pasta solta. Software s&eacute;rio mora num reposit&oacute;rio, e &eacute; isso que um reposit&oacute;rio d&aacute;.</p>
+  <div class="grade grade--2" style="align-items: start;">
     <div class="mini">
-      <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg></div>
-      <p class="mini__titulo">Dá para voltar atrás</p>
-      <p class="mini__texto">Se uma mudança quebrou algo, você volta para a versão anterior sem drama. É a rede de segurança que permite testar.</p>
+      <p class="mini__titulo" style="margin-bottom: 0.7rem;">Cada mudan&ccedil;a fica registrada</p>
+      <div class="versoes">
+        <div class="versao">
+          <span class="versao__ponto versao__ponto--atual"></span>
+          <p class="versao__texto"><b>hoje</b><br>ajuste no c&aacute;lculo do frete</p>
+        </div>
+        <div class="versao">
+          <span class="versao__ponto"></span>
+          <p class="versao__texto"><b>semana passada</b><br>nova tela de pedidos</p>
+        </div>
+        <div class="versao">
+          <span class="versao__ponto"></span>
+          <p class="versao__texto"><b>m&ecirc;s passado</b><br>corre&ccedil;&atilde;o no relat&oacute;rio</p>
+        </div>
+      </div>
+      <p class="mini__texto" style="margin-top: 0.7rem;">Com data, autor e exatamente o que mudou em cada uma.</p>
     </div>
-    <div class="mini">
-      <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg></div>
-      <p class="mini__titulo">Fica claro o que mudou</p>
-      <p class="mini__texto">Você enxerga a diferença entre antes e depois, linha por linha. Conversa com quem mantém o sistema fica outra.</p>
+    <div>
+      <div class="mini">
+        <p class="mini__titulo">D&aacute; para voltar atr&aacute;s</p>
+        <p class="mini__texto">Se uma mudan&ccedil;a quebrou algo, volta para a vers&atilde;o anterior sem drama. &Eacute; a rede de seguran&ccedil;a que deixa experimentar sem medo.</p>
+      </div>
+      <div class="mini" style="margin-top: 0.85rem;">
+        <p class="mini__titulo">O Claude Code trabalha assim</p>
+        <p class="mini__texto">Ele altera arquivos de verdade. O reposit&oacute;rio &eacute; o que garante que voc&ecirc; consegue revisar o que ele fez e desfazer se n&atilde;o gostou.</p>
+      </div>
+      <div class="mini" style="margin-top: 0.85rem;">
+        <p class="mini__titulo">E por que isso te interessa</p>
+        <p class="mini__texto">N&atilde;o &eacute; para voc&ecirc; virar desenvolvedor. &Eacute; para conseguir olhar o que existe na empresa, entender o que est&aacute; vendo e perguntar as coisas certas.</p>
+      </div>
     </div>
   </div>
-  <div class="aviso"><b>Por que isso aparece numa mentoria de gestão.</b> Não é para você virar desenvolvedor. É para quando você olhar o que existe na empresa, entender o que está vendo e conseguir perguntar as coisas certas.</div>
   <div class="notas">
-    <p class="notas__titulo">Condução</p>
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>Fique no conceito. <b>Comando de git é mentoria 2</b>, e só se ele quiser.</li>
-      <li>Se der tempo, abra um repositório qualquer e mostre a tela de histórico de alterações. Ver o antes e depois lado a lado explica sozinho.</li>
-      <li>Não transforme isso em aula de programação. O objetivo é repertório, não habilidade.</li>
+      <li>As tr&ecirc;s vers&otilde;es da linha do tempo s&atilde;o <b>exemplo ilustrativo</b>, n&atilde;o hist&oacute;rico real de nada. Deixe isso claro se ele perguntar.</li>
+      <li>Amarre com o slide anterior logo na primeira frase. A conex&atilde;o entre os dois &eacute; o que faz esse bloco parar de parecer assunto de programador.</li>
+      <li>Fique no conceito. <b>Comando de git &eacute; mentoria 2</b>, e s&oacute; se ele quiser.</li>
+      <li>Se der tempo, abra um reposit&oacute;rio qualquer e mostre a tela de hist&oacute;rico. Ver o antes e depois lado a lado explica sozinho.</li>
     </ul>
   </div>
 </section>
@@ -1331,26 +1736,39 @@ body.roteiro .notas {
 <!-- 16 FECHAMENTO -->
 <section class="slide">
   <div class="topo"><span class="topo__bloco">Fechamento</span><span class="topo__tempo">21h20</span></div>
-  <h2>Até quarta.</h2>
-  <div class="grade grade--2">
+  <h2>At&eacute; a pr&oacute;xima mentoria.</h2>
+  <div class="perguntas">
+    <p class="perguntas__titulo">Agora &eacute; sua vez. O que ficou na cabe&ccedil;a?</p>
+    <ul class="perguntas__lista">
+      <li>O que passou r&aacute;pido demais e voc&ecirc; quer rever</li>
+      <li>Alguma coisa que voc&ecirc; achou que daria e parece que n&atilde;o d&aacute;</li>
+      <li>Onde voc&ecirc; imagina que vai travar primeiro</li>
+      <li>O que voc&ecirc; j&aacute; usa hoje e ficou em d&uacute;vida se est&aacute; fazendo certo</li>
+      <li>Algo que voc&ecirc; viu por a&iacute; e quer saber se &eacute; verdade</li>
+      <li>Qualquer pergunta que pare&ccedil;a b&aacute;sica demais para perguntar</li>
+    </ul>
+  </div>
+  <div class="grade grade--2" style="margin-top: 0.9rem;">
     <div class="mini">
       <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-      <p class="mini__titulo">Para fazer até lá</p>
-      <p class="mini__texto">Use o Claude todo dia, em qualquer coisa, sem compromisso de acertar. Anote o que te travou, porque é isso que vira pauta.</p>
+      <p class="mini__titulo">Para fazer at&eacute; l&aacute;</p>
+      <p class="mini__texto">Use o Claude todo dia, em qualquer coisa, sem compromisso de acertar. Anote o que te travou, porque &eacute; isso que vira pauta.</p>
     </div>
     <div class="mini">
       <div class="mini__icone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
-      <p class="mini__titulo">O que vem na mentoria 2</p>
-      <p class="mini__texto">Montar o ambiente de verdade: o Projeto da Armazena, a primeira skill e os conectores que fizerem sentido.</p>
+      <p class="mini__titulo">O que vem na pr&oacute;xima</p>
+      <p class="mini__texto">Montar o ambiente de verdade: o Projeto da Armazena, o primeiro CLAUDE.md, a primeira skill e os conectores que fizerem sentido.</p>
     </div>
   </div>
-  <div class="aviso"><b>Para a mentoria 2, traga:</b> a conta paga confirmada, e uma ideia do que você quer que o Claude saiba sobre a Armazena. Não precisa estar organizado, é só não chegar do zero.</div>
+  <div class="aviso"><b>Para a pr&oacute;xima, traga:</b> a conta paga confirmada e uma ideia do que voc&ecirc; quer que o Claude saiba sobre a Armazena. N&atilde;o precisa estar organizado, &eacute; s&oacute; n&atilde;o chegar do zero.</div>
   <div class="notas">
-    <p class="notas__titulo">Condução</p>
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
-      <li>A lição de casa precisa ser leve. Se ficar pesada ele não faz e chega na quarta sem nada para discutir.</li>
-      <li><b>Confirme a data em voz alta antes de encerrar.</b> Sessão que não é reconfirmada é sessão que remarca.</li>
-      <li>Peça o retorno enquanto está fresco: o que foi útil e o que passou rápido demais. Ajusta a 2 e mostra que você escuta.</li>
+      <li><b>Reserve 10 minutos de verdade para as perguntas.</b> As seis da lista existem para quebrar o gelo, n&atilde;o para serem lidas uma a uma. Jogue uma e espere.</li>
+      <li>A &uacute;ltima da lista &eacute; a mais importante. Diga em voz alta que <b>n&atilde;o existe pergunta b&aacute;sica demais</b>, porque &eacute; exatamente a b&aacute;sica que trava a pessoa por semanas.</li>
+      <li>Se ele n&atilde;o perguntar nada, n&atilde;o encha o sil&ecirc;ncio. Conte um erro seu de quando come&ccedil;ou e espere de novo.</li>
+      <li>Anote o que ele perguntar. <b>As d&uacute;vidas dele s&atilde;o a pauta da pr&oacute;xima</b>, e abrir a mentoria 2 respondendo o que ele trouxe mostra que voc&ecirc; escuta.</li>
+      <li>Combine a data antes de encerrar. Sess&atilde;o que n&atilde;o &eacute; reconfirmada &eacute; sess&atilde;o que remarca.</li>
     </ul>
   </div>
 </section>
