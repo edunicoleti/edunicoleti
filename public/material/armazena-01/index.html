@@ -124,11 +124,6 @@ body {
   color: var(--color-accent);
 }
 
-.topo__tempo {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-}
 
 .slide h1 {
   font-family: var(--font-serif);
@@ -610,6 +605,85 @@ body {
   line-height: 1.5;
 }
 
+/* ── Capa de bloco: numeral fantasma, titulo e o que vem no bloco ── */
+.divisor {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.divisor__num {
+  font-family: var(--font-serif);
+  font-size: clamp(5rem, 12vw, 9.5rem);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: rgba(32, 71, 201, 0.15);
+  margin-bottom: 0.75rem;
+}
+
+.divisor__rotulo {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+}
+
+.divisor__titulo {
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.85rem;
+}
+
+.divisor__frase {
+  font-size: clamp(0.98rem, 1.3vw, 1.15rem);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 40ch;
+}
+
+.divisor__itens { list-style: none; display: grid; gap: 0.7rem; }
+
+.divisor__item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.1rem;
+  align-items: baseline;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+}
+
+.divisor__marca {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.divisor__item b {
+  display: block;
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.divisor__item span {
+  display: block;
+  font-size: clamp(0.85rem, 1.05vw, 0.95rem);
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+  margin-top: 0.25rem;
+}
+
 /* ── Árvore de decisão: raiz em cima, três ramos ligados por fio ── */
 .arvore { display: grid; justify-items: center; }
 
@@ -1014,7 +1088,9 @@ body.roteiro .arvore__ramos::before,
 body.roteiro .ramo::before,
 body.roteiro .leque__itens::before,
 body.roteiro .galho::before { display: none; }
-body.roteiro .leque { grid-template-columns: 1fr; gap: 1rem; }
+body.roteiro .leque,
+body.roteiro .divisor { grid-template-columns: 1fr; gap: 1rem; }
+body.roteiro .divisor__num { font-size: 3rem; }
 body.roteiro .fluxo { grid-auto-flow: row; }
 body.roteiro .fluxo__passo::after { display: none; }
 body.roteiro .barra__progresso,
@@ -1079,6 +1155,8 @@ body.roteiro .notas {
   .medidor__barra { height: 42px; }
   .fluxo__passo { padding: 0.95rem 0.85rem; }
   .arquivo__corpo { line-height: 1.6; }
+  .divisor__item { padding: 0.8rem 1rem; }
+  .divisor__num { font-size: clamp(4rem, 9vw, 7rem); }
   .trio, .lados, .numeros, .grade, .fluxo { gap: 0.7rem; }
   .carta, .lado { padding: 1rem; }
   .mini { padding: 0.85rem 0.95rem; }
@@ -1125,7 +1203,9 @@ body.roteiro .notas {
   .arvore__ramos, .perguntas__lista { grid-template-columns: 1fr; }
   .arvore__ramos::before, .ramo::before,
   .leque__itens::before, .galho::before { display: none; }
-  .leque { grid-template-columns: 1fr; gap: 1rem; }
+  .leque,
+  .divisor { grid-template-columns: 1fr; gap: 1.25rem; }
+  .divisor__num { font-size: 3.5rem; }
   .fluxo { grid-auto-flow: row; }
   .fluxo__passo::after { display: none; }
   .camada { grid-template-columns: 1fr; gap: 0.2rem; }
@@ -1160,29 +1240,29 @@ body.roteiro .notas {
 
 <!-- 2 ROTEIRO -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Roteiro</span><span class="topo__tempo">90 min</span></div>
+  <div class="topo"><span class="topo__bloco">Roteiro</span></div>
   <h2>O que a gente vê hoje.</h2>
   <p class="sub">Quatro blocos de plataforma e um de boas práticas. Cada um com demonstração na tela.</p>
   <div class="grade grade--4">
     <div class="mini">
       <div class="mini__icone">01</div>
       <p class="mini__titulo">Os três Claudes</p>
-      <p class="mini__texto">Claude, Cowork e Claude Code. O que cada um faz e quando usar. 20 min</p>
+      <p class="mini__texto">Claude, Cowork e Claude Code. O que cada um faz e quando usar cada um.</p>
     </div>
     <div class="mini">
       <div class="mini__icone">02</div>
       <p class="mini__titulo">Contexto</p>
-      <p class="mini__texto">O que ele enxerga e por que isso muda tudo na resposta. 20 min</p>
+      <p class="mini__texto">O que ele enxerga e por que isso muda tudo na resposta.</p>
     </div>
     <div class="mini">
       <div class="mini__icone">03</div>
       <p class="mini__titulo">Tokens e sessões</p>
-      <p class="mini__texto">O limite, o custo e quando começar uma conversa nova. 20 min</p>
+      <p class="mini__texto">O limite, o custo e quando começar uma conversa nova.</p>
     </div>
     <div class="mini">
       <div class="mini__icone">04</div>
       <p class="mini__titulo">Boas práticas</p>
-      <p class="mini__texto">Projetos, CLAUDE.md, skills, conectores e GitHub. 30 min</p>
+      <p class="mini__texto">Projetos, CLAUDE.md, skills, conectores e GitHub.</p>
     </div>
   </div>
   <div class="notas">
@@ -1195,9 +1275,32 @@ body.roteiro .notas {
   </div>
 </section>
 
+<!-- CAPA BLOCO 01 -->
+<section class="slide">
+  <div class="divisor">
+    <div>
+      <p class="divisor__num">01</p>
+      <p class="divisor__rotulo">Bloco 01</p>
+      <h2 class="divisor__titulo">Os tr&ecirc;s Claudes</h2>
+      <p class="divisor__frase">S&atilde;o tr&ecirc;s produtos com a mesma intelig&ecirc;ncia. O que muda entre eles &eacute; quem conduz o trabalho.</p>
+    </div>
+    <ul class="divisor__itens">
+      <li class="divisor__item"><span class="divisor__marca">01</span><div><b>O que cada um faz</b><span>Claude, Cowork e Claude Code lado a lado</span></div></li>
+      <li class="divisor__item"><span class="divisor__marca">02</span><div><b>Qual abrir para cada coisa</b><span>Uma pergunta que resolve a escolha quase sempre</span></div></li>
+    </ul>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
+    <ul>
+      <li>Capa de bloco serve para <b>respirar e recolocar o mapa</b>. Dez segundos, n&atilde;o dois minutos.</li>
+      <li>Leia s&oacute; a frase da esquerda em voz alta e siga. A lista da direita o leitor absorve sozinho.</li>
+    </ul>
+  </div>
+</section>
+
 <!-- 3 OS TRES CLAUDES -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 01 &middot; Os tr&ecirc;s Claudes</span><span class="topo__tempo">19h35</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 01 &middot; Os tr&ecirc;s Claudes</span></div>
   <h2>Tr&ecirc;s produtos, a mesma intelig&ecirc;ncia.</h2>
   <p class="sub">A confus&atilde;o comum &eacute; achar que s&atilde;o intelig&ecirc;ncias diferentes. N&atilde;o s&atilde;o. O que muda &eacute; <b>quem conduz o trabalho</b>: em um voc&ecirc; dirige cada passo, no outro voc&ecirc; d&aacute; o destino e acompanha, no terceiro ele entra dentro do projeto e mexe nos arquivos.</p>
   <div class="trio">
@@ -1249,7 +1352,7 @@ body.roteiro .notas {
 
 <!-- 4 QUAL USAR QUANDO -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 01 &middot; Os tr&ecirc;s Claudes</span><span class="topo__tempo">19h45</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 01 &middot; Os tr&ecirc;s Claudes</span></div>
   <h2>Qual abrir para cada coisa.</h2>
   <p class="sub">Uma pergunta resolve a escolha quase sempre, e n&atilde;o &eacute; sobre o assunto do trabalho. &Eacute; sobre quanto dele voc&ecirc; quer conduzir.</p>
   <div class="arvore">
@@ -1287,7 +1390,6 @@ body.roteiro .notas {
       </article>
     </div>
   </div>
-  <div class="aviso"><b>Na d&uacute;vida, comece pelo Claude.</b> &Eacute; o mais f&aacute;cil de corrigir no meio do caminho. Quando perceber que est&aacute; explicando a mesma coisa toda semana, aquilo migra para o Cowork. Quando perceber que precisa tocar em arquivo, migra para o Claude Code.</div>
   <div class="notas">
     <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
     <ul>
@@ -1298,9 +1400,32 @@ body.roteiro .notas {
   </div>
 </section>
 
+<!-- CAPA BLOCO 02 -->
+<section class="slide">
+  <div class="divisor">
+    <div>
+      <p class="divisor__num">02</p>
+      <p class="divisor__rotulo">Bloco 02</p>
+      <h2 class="divisor__titulo">Contexto</h2>
+      <p class="divisor__frase">O conceito que mais muda o resultado de quem j&aacute; usa a ferramenta todo dia.</p>
+    </div>
+    <ul class="divisor__itens">
+      <li class="divisor__item"><span class="divisor__marca">01</span><div><b>O que ele enxerga</b><span>As quatro camadas que entram em cada resposta</span></div></li>
+      <li class="divisor__item"><span class="divisor__marca">02</span><div><b>Por que o espa&ccedil;o acaba</b><span>O que enche a janela e como voc&ecirc; percebe</span></div></li>
+    </ul>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
+    <ul>
+      <li>Capa de bloco serve para <b>respirar e recolocar o mapa</b>. Dez segundos, n&atilde;o dois minutos.</li>
+      <li>Leia s&oacute; a frase da esquerda em voz alta e siga. A lista da direita o leitor absorve sozinho.</li>
+    </ul>
+  </div>
+</section>
+
 <!-- 5 O QUE E CONTEXTO -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 02 &middot; Contexto</span><span class="topo__tempo">19h55</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 02 &middot; Contexto</span></div>
   <h2>Contexto &eacute; tudo que ele enxerga agora.</h2>
   <p class="sub">O Claude n&atilde;o guarda mem&oacute;ria de voc&ecirc; entre conversas e n&atilde;o sabe nada da sua empresa por conta pr&oacute;pria. A cada resposta ele monta a vis&atilde;o do zero, com o que estiver dentro da janela daquela conversa. Essas s&atilde;o as quatro camadas que entram, e nada al&eacute;m delas.</p>
   <div class="camadas">
@@ -1338,7 +1463,7 @@ body.roteiro .notas {
 
 <!-- 6 O QUE ENCHE -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 02 &middot; Contexto</span><span class="topo__tempo">20h05</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 02 &middot; Contexto</span></div>
   <h2>Essa janela &eacute; grande, mas acaba.</h2>
   <p class="sub">As quatro camadas dividem o mesmo espa&ccedil;o. O hist&oacute;rico &eacute; a parte que cresce sem aviso: cada pergunta e cada resposta ficam guardadas ali, somando, at&eacute; o espa&ccedil;o apertar.</p>
   <div class="medidor">
@@ -1379,9 +1504,33 @@ body.roteiro .notas {
   </div>
 </section>
 
+<!-- CAPA BLOCO 03 -->
+<section class="slide">
+  <div class="divisor">
+    <div>
+      <p class="divisor__num">03</p>
+      <p class="divisor__rotulo">Bloco 03</p>
+      <h2 class="divisor__titulo">Tokens e sess&otilde;es</h2>
+      <p class="divisor__frase">A r&eacute;gua que mede tudo, e o motivo de conversa longa ficar pesada.</p>
+    </div>
+    <ul class="divisor__itens">
+      <li class="divisor__item"><span class="divisor__marca">01</span><div><b>Token</b><span>A unidade que mede contexto e consumo do plano</span></div></li>
+      <li class="divisor__item"><span class="divisor__marca">02</span><div><b>Como funciona uma sess&atilde;o</b><span>Toda mensagem reenvia a conversa inteira</span></div></li>
+      <li class="divisor__item"><span class="divisor__marca">03</span><div><b>Quando come&ccedil;ar uma nova</b><span>Os sinais de que j&aacute; passou da hora</span></div></li>
+    </ul>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
+    <ul>
+      <li>Capa de bloco serve para <b>respirar e recolocar o mapa</b>. Dez segundos, n&atilde;o dois minutos.</li>
+      <li>Leia s&oacute; a frase da esquerda em voz alta e siga. A lista da direita o leitor absorve sozinho.</li>
+    </ul>
+  </div>
+</section>
+
 <!-- 7 TOKENS -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 03 · Tokens e sessões</span><span class="topo__tempo">20h15</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 03 · Tokens e sessões</span></div>
   <h2>Token é a régua de tudo.</h2>
   <p class="sub">Token é o pedaço de texto que o Claude conta. Não é palavra nem letra, é um pedaço. Toda a janela de contexto e todo o consumo do seu plano são medidos nessa régua.</p>
   <div class="numeros">
@@ -1411,7 +1560,7 @@ body.roteiro .notas {
 
 <!-- 8 COMO FUNCIONA UMA SESSAO -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 03 · Tokens e sessões</span><span class="topo__tempo">20h22</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 03 · Tokens e sessões</span></div>
   <h2>Toda mensagem reenvia a conversa inteira.</h2>
   <p class="sub">Essa é a parte que quase ninguém sabe e que explica vários comportamentos estranhos. O Claude não guarda a conversa do lado dele entre uma mensagem e outra: a cada envio, o histórico inteiro vai junto de novo.</p>
   <div class="fluxo">
@@ -1457,7 +1606,7 @@ body.roteiro .notas {
 
 <!-- 9 QUANDO COMECAR NOVA -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 03 · Tokens e sessões</span><span class="topo__tempo">20h30</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 03 · Tokens e sessões</span></div>
   <h2>Quando começar uma conversa nova.</h2>
   <p class="sub">Começar de novo não é perder trabalho. O que é permanente fica no Projeto e continua valendo. Só o histórico daquela conversa fica para trás, que é justamente o que estava atrapalhando.</p>
   <div class="lados">
@@ -1491,9 +1640,34 @@ body.roteiro .notas {
   </div>
 </section>
 
+<!-- CAPA BLOCO 04 -->
+<section class="slide">
+  <div class="divisor">
+    <div>
+      <p class="divisor__num">04</p>
+      <p class="divisor__rotulo">Bloco 04</p>
+      <h2 class="divisor__titulo">Boas pr&aacute;ticas</h2>
+      <p class="divisor__frase">Como transformar o que voc&ecirc; viu at&eacute; aqui em rotina que se sustenta sem esfor&ccedil;o.</p>
+    </div>
+    <ul class="divisor__itens">
+      <li class="divisor__item"><span class="divisor__marca">01</span><div><b>Projetos e CLAUDE.md</b><span>Contexto permanente, um no app e outro na pasta</span></div></li>
+      <li class="divisor__item"><span class="divisor__marca">02</span><div><b>Skills</b><span>A rotina que fica salva e sai igual toda vez</span></div></li>
+      <li class="divisor__item"><span class="divisor__marca">03</span><div><b>Conectores</b><span>Parar de exportar, baixar e anexar</span></div></li>
+      <li class="divisor__item"><span class="divisor__marca">04</span><div><b>GitHub</b><span>Onde um sistema vive e por que isso te interessa</span></div></li>
+    </ul>
+  </div>
+  <div class="notas">
+    <p class="notas__titulo">Condu&ccedil;&atilde;o</p>
+    <ul>
+      <li>Capa de bloco serve para <b>respirar e recolocar o mapa</b>. Dez segundos, n&atilde;o dois minutos.</li>
+      <li>Leia s&oacute; a frase da esquerda em voz alta e siga. A lista da direita o leitor absorve sozinho.</li>
+    </ul>
+  </div>
+</section>
+
 <!-- 11 PROJETOS -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 04 · Boas práticas</span><span class="topo__tempo">20h45</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 04 · Boas práticas</span></div>
   <h2>Projetos: o contexto que não se perde.</h2>
   <p class="sub">Projeto é uma pasta de conversas que compartilham a mesma memória. É a resposta para o problema que você acabou de ver acontecer.</p>
   <div class="grade grade--2">
@@ -1530,7 +1704,7 @@ body.roteiro .notas {
 
 <!-- 11B CLAUDE.MD -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span><span class="topo__tempo">20h51</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span></div>
   <h2>CLAUDE.md: a mesma ideia, dentro da pasta.</h2>
   <p class="sub">No Claude Code n&atilde;o existe tela de instru&ccedil;&otilde;es. O que existe &eacute; um arquivo chamado <b>CLAUDE.md</b>, que voc&ecirc; deixa na pasta do projeto e ele l&ecirc; sozinho toda vez que abre ali.</p>
   <div class="grade grade--2" style="align-items: start;">
@@ -1576,7 +1750,7 @@ body.roteiro .notas {
 
 <!-- 12 SKILLS -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span><span class="topo__tempo">20h58</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span></div>
   <h2>Skills: a rotina que fica salva.</h2>
   <p class="sub">Skill &eacute; uma instru&ccedil;&atilde;o guardada que ensina o Claude a fazer uma tarefa sempre do mesmo jeito. Voc&ecirc; para de reexplicar e o resultado para de variar.</p>
   <div class="grade grade--2" style="align-items: start;">
@@ -1624,7 +1798,7 @@ body.roteiro .notas {
 
 <!-- 13 CONECTORES -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span><span class="topo__tempo">21h05</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span></div>
   <h2>Conectores: parar de copiar e colar.</h2>
   <p class="sub">Conector &eacute; uma liga&ccedil;&atilde;o entre o Claude e uma ferramenta que voc&ecirc; j&aacute; usa. Em vez de exportar, baixar e anexar, ele busca o dado direto na fonte, sempre atualizado.</p>
   <div class="leque">
@@ -1668,7 +1842,7 @@ body.roteiro .notas {
 
 <!-- 14 GITHUB -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span><span class="topo__tempo">21h12</span></div>
+  <div class="topo"><span class="topo__bloco">Bloco 04 &middot; Boas pr&aacute;ticas</span></div>
   <h2>GitHub: onde um sistema vive.</h2>
   <p class="sub">Aquele &uacute;ltimo ramo do slide anterior, o sistema pr&oacute;prio da empresa, n&atilde;o mora numa pasta solta. Software s&eacute;rio mora num reposit&oacute;rio, e &eacute; isso que um reposit&oacute;rio d&aacute;.</p>
   <div class="grade grade--2" style="align-items: start;">
@@ -1718,7 +1892,7 @@ body.roteiro .notas {
 
 <!-- 15 REGRAS DE OURO -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Fechamento</span><span class="topo__tempo">21h15</span></div>
+  <div class="topo"><span class="topo__bloco">Fechamento</span></div>
   <h2>As cinco regras que resolvem quase tudo.</h2>
   <p class="sub">Se você esquecer todo o resto de hoje, guarde estas. Elas cobrem a maior parte dos problemas que aparecem no uso diário.</p>
   <div class="grade grade--2">
@@ -1755,7 +1929,7 @@ body.roteiro .notas {
 
 <!-- 16 FECHAMENTO -->
 <section class="slide">
-  <div class="topo"><span class="topo__bloco">Fechamento</span><span class="topo__tempo">21h20</span></div>
+  <div class="topo"><span class="topo__bloco">Fechamento</span></div>
   <h2>At&eacute; a pr&oacute;xima mentoria.</h2>
   <div class="perguntas">
     <p class="perguntas__titulo">Agora &eacute; sua vez. O que ficou na cabe&ccedil;a?</p>
