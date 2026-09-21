@@ -1,0 +1,126 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Slides novos</title>
+<style>
+@font-face{font-family:'Inter';src:url('fonts/inter/files/inter-latin-400-normal.woff');font-weight:400}
+@font-face{font-family:'Inter';src:url('fonts/inter/files/inter-latin-500-normal.woff');font-weight:500}
+@font-face{font-family:'Inter';src:url('fonts/inter/files/inter-latin-600-normal.woff');font-weight:600}
+@font-face{font-family:'Inter';src:url('fonts/inter/files/inter-latin-700-normal.woff');font-weight:700}
+@font-face{font-family:'FG';src:url('fonts/familjen-grotesk/files/familjen-grotesk-latin-700-normal.woff');font-weight:700}
+:root{
+  --bg:#F7F6F2; --ink:#16150F; --body:#55524A; --muted:#8A8577;
+  --teal:#0B5F6B; --tealsoft:#E2F1F3; --border:#E2DED3;
+  --amber:#9C580B; --amberbg:#FBF0E0; --crimson:#B23052;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+@page{size:960pt 540pt;margin:0}
+html,body{background:var(--bg)}
+body{font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+.slide{width:960pt;height:540pt;background:var(--bg);padding:0 34.3pt;position:relative;
+  page-break-after:always;overflow:hidden;display:flex;flex-direction:column}
+.slide:last-child{page-break-after:auto}
+.eyebrow{font-size:7.35pt;font-weight:700;color:var(--teal);letter-spacing:.145em;
+  text-transform:uppercase;padding-top:66.4pt;line-height:1.15}
+h1{font-family:'FG',sans-serif;font-weight:700;font-size:24.17pt;line-height:27pt;
+  color:var(--ink);letter-spacing:0;margin-top:9.5pt;max-width:760pt}
+.sub{font-size:11.48pt;line-height:18pt;color:var(--body);margin-top:3pt;max-width:700pt}
+.label{font-size:7.35pt;font-weight:700;color:var(--teal);letter-spacing:.145em;
+  text-transform:uppercase;margin-top:20pt}
+
+.grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:9.8pt;margin-top:9pt}
+.card{background:#fff;border:.75pt solid var(--border);border-radius:8pt;
+  padding:10.5pt 12pt 11.5pt}
+.chip{width:18.8pt;height:19.6pt;border-radius:5pt;background:var(--tealsoft);color:var(--teal);
+  font-size:8.26pt;font-weight:700;display:flex;align-items:center;justify-content:center}
+.card h3{font-size:10.2pt;font-weight:700;color:var(--ink);margin-top:7.5pt;line-height:13pt;
+  letter-spacing:.01em}
+.card p{font-size:9.1pt;line-height:13pt;color:var(--body);margin-top:3.5pt}
+
+.row{display:flex;gap:26pt;margin-top:12pt;align-items:stretch}
+.col-a{flex:1 1 auto}
+.arrow{display:flex;gap:9pt;align-items:flex-start;background:#fff;border:.75pt solid var(--border);
+  border-radius:8pt;padding:13.5pt 14pt;margin-bottom:9.5pt}
+.arrow span{color:var(--teal);font-size:11pt;font-weight:600;line-height:15pt}
+.arrow p{font-size:10.4pt;line-height:15pt;color:var(--ink)}
+.qrcard{width:300pt;background:#fff;border:.75pt solid var(--teal);border-radius:12pt;
+  padding:16pt;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.qrcard img{width:146pt;height:146pt}
+.qrcard .t{font-size:11.08pt;font-weight:700;color:var(--ink);margin-top:11pt}
+.qrcard .d{font-size:8.86pt;line-height:12.5pt;color:var(--body);margin-top:4pt;text-align:center}
+.qrtag{font-size:6.44pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--amber);background:var(--amberbg);padding:3pt 7pt;border-radius:4pt;margin-bottom:12pt}
+
+.banner{background:var(--teal);border-radius:8pt;padding:9.5pt 11.3pt;margin-top:auto;margin-bottom:64pt}
+.banner p{font-family:'FG',sans-serif;font-weight:700;font-size:13.09pt;color:#fff;letter-spacing:.016em;line-height:13.5pt}
+
+.darkcard{background:var(--ink);border-radius:12pt;padding:34pt 34pt;margin-top:18pt;
+  display:flex;align-items:center;gap:30pt}
+.darkcard .who{flex:1 1 auto}
+.darkcard h2{font-family:'FG',sans-serif;font-weight:700;font-size:27pt;color:#fff;line-height:31pt}
+.darkcard .role{font-size:10.6pt;font-weight:600;color:#A9D6DC;margin-top:4pt}
+.darkcard .bio{font-size:9.9pt;line-height:15.5pt;color:#C9C5BA;margin-top:11pt;max-width:452pt}
+.contacts{display:flex;gap:48pt;margin-top:20pt;flex-wrap:wrap}
+.contact{display:flex;flex-direction:column;gap:2.5pt}
+.contact .k{font-size:6.9pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8A8577}
+.contact .v{font-size:13pt;font-weight:700;color:#fff;letter-spacing:.005em}
+.wa{background:#fff;border-radius:9pt;padding:11pt;display:flex;flex-direction:column;align-items:center}
+.wa img{width:116pt;height:116pt}
+.wa .c{font-size:6.9pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-top:7pt}
+.foot{font-size:8.06pt;color:var(--muted);margin-top:11pt}
+</style></head><body>
+
+<section class="slide">
+  <div class="eyebrow">Bônus do workshop</div>
+  <h1>Uma análise estratégica e personalizada do seu perfil.</h1>
+  <p class="sub">Como bônus pela sua participação no workshop, você recebe uma análise do seu perfil no Instagram. Vou olhar para o perfil como um todo: não apenas para o que está bonito, mas para o que ele comunica, como posiciona a sua marca e o quanto conecta você com o seu público.</p>
+  <div class="label">O que será analisado</div>
+  <div class="grid6">
+    <div class="card"><div class="chip">01</div><h3>Foto de perfil</h3><p>Clareza, reconhecimento, enquadramento e coerência com o posicionamento da marca.</p></div>
+    <div class="card"><div class="chip">02</div><h3>Bio</h3><p>Se está deixando claro quem você é, o que oferece, para quem e por que a pessoa deveria continuar no seu perfil.</p></div>
+    <div class="card"><div class="chip">03</div><h3>Destaques</h3><p>Organização, identidade visual, informações essenciais e experiência de quem chega ao perfil pela primeira vez.</p></div>
+    <div class="card"><div class="chip">04</div><h3>Conteúdo</h3><p>Formatos, temas, variedade, consistência, conexão com o público e alinhamento com os objetivos do negócio.</p></div>
+    <div class="card"><div class="chip">05</div><h3>Legendas</h3><p>Clareza da comunicação, capacidade de gerar conexão, chamadas para ação e oportunidades de melhorar o texto.</p></div>
+    <div class="card"><div class="chip">06</div><h3>Identidade visual</h3><p>Cores, tipografia, composição, elementos gráficos, consistência e percepção visual da marca.</p></div>
+  </div>
+  <div class="banner"><p>É o seu perfil olhado com calma, por escrito, e sem compromisso nenhum.</p></div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Bônus do workshop</div>
+  <h1>E tem mais: ideias personalizadas para o seu perfil.</h1>
+  <p class="sub">Além da análise, você recebe sugestões práticas, escritas para a sua loja e prontas para colocar em prática.</p>
+  <div class="row">
+    <div class="col-a">
+      <div class="arrow"><span>&#8594;</span><p>Temas de conteúdo que podem fazer sentido para a sua marca.</p></div>
+      <div class="arrow"><span>&#8594;</span><p>Oportunidades de melhorar a sua identidade visual.</p></div>
+      <div class="arrow"><span>&#8594;</span><p>Ajustes que podem deixar o seu perfil mais profissional e estratégico.</p></div>
+      <div class="arrow"><span>&#8594;</span><p>Ideias para tornar a sua comunicação mais clara e diferenciada.</p></div>
+    </div>
+    <div class="qrcard">
+      <div class="qrtag">Inscrição</div>
+      <img src="qr_form.svg" alt="">
+      <div class="t">Aponte a câmera</div>
+      <div class="d">Inscreva-se para receber a análise do seu perfil.</div>
+    </div>
+  </div>
+  <div class="banner"><p>São ideias para a sua loja, não uma lista genérica que serve para qualquer negócio.</p></div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Fechamento</div>
+  <h1>Obrigada por hoje.</h1>
+  <p class="sub">Esta palestra nasceu das perguntas que vocês mandaram, e é assim que ela fica útil de verdade. Se ficou alguma dúvida no caminho, ou se aparecer uma daqui a duas semanas, me chama.</p>
+  <div class="darkcard">
+    <div class="who">
+      <h2>Marina Oliveira</h2>
+      <div class="role">Jornalista, estrategista de marketing digital e social media</div>
+      <div class="bio">Formada em jornalismo, trabalha com marketing, design gráfico e gestão de redes sociais para negócios locais. Cuida da estratégia, do conteúdo e da identidade visual de ponta a ponta: do planejamento do mês ao post que sai na sexta, com a leitura dos números no fim.</div>
+      <div class="contacts">
+        <div class="contact"><div class="k">WhatsApp</div><div class="v">(49) 99935-2131</div></div>
+        <div class="contact"><div class="k">Instagram</div><div class="v">@olv.marina</div></div>
+      </div>
+    </div>
+    <div class="wa"><img src="qr_wa.svg" alt=""><div class="c">Chama no WhatsApp</div></div>
+  </div>
+  <div class="foot">Obrigada ao Núcleo de Ótica da ACIC Chapecó pelo convite e pelo briefing.</div>
+</section>
+
+</body></html>
