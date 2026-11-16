@@ -35,6 +35,8 @@
 
   document.getElementById('sol').innerHTML = ARTE.sol;
   Array.prototype.forEach.call(document.querySelectorAll('.nuvem'), function (n) { n.innerHTML = ARTE.nuvem; });
+  /* Enfeites do cenário: cada <div data-arte="..."> recebe o desenho de mesmo nome. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-arte]'), function (d) { d.innerHTML = ARTE[d.getAttribute('data-arte')] || ''; });
 
   var jogando = false;
   var itens = {};      /* id -> peças do DOM de cada coisa da cena */

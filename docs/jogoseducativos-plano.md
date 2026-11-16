@@ -12,6 +12,12 @@ exagerado e pouco divertido.
 **Versão 2 (atual).** Uma cena só, cores vivas, resposta rápida e chamativa a cada toque,
 fotos e vozes reais da família. A decisão foi do Eduardo, depois de ver a versão 1.
 
+**Versão 3 (ilustração).** Os desenhos da versão 2 eram formas geométricas chapadas e
+pareciam rascunho. Foram redesenhados em estilo de cartoon infantil acabado: contorno na
+versão escura de cada cor, sombra e ponto de luz, olhos com brilho, mãos com dedos, roupas
+com estampa. O cenário ganhou três planos de morro, árvores, flores, arco-íris, borboleta
+e sol com rosto. Continua tudo em SVG, para o bebê seguir apontando e mexendo a boca.
+
 O que ficou da pesquisa da versão 1 e continua valendo:
 
 - **Jogar junto.** A Sociedade Brasileira de Pediatria e a OMS recomendam evitar telas antes
