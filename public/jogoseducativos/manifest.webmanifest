@@ -5,8 +5,8 @@
   "start_url": "/jogoseducativos/",
   "scope": "/jogoseducativos/",
   "display": "standalone",
-  "background_color": "#E4E7E0",
-  "theme_color": "#E4E7E0",
+  "background_color": "#2FA8F0",
+  "theme_color": "#2FA8F0",
   "icons": [
     { "src": "/jogoseducativos/icone-180.png", "sizes": "180x180", "type": "image/png" },
     { "src": "/jogoseducativos/icone-512.png", "sizes": "512x512", "type": "image/png" }

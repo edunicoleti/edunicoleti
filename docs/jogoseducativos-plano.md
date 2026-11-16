@@ -1,101 +1,107 @@
-# Jogos educativos: plano e decisões do MVP
+# Jogos educativos: plano e decisões
 
 Página: `edunicoleti.com.br/jogoseducativos`. Arquivos em `public/jogoseducativos/`.
 Público: bebê de 12 meses, jogando no colo de um adulto, em um iPad de 6ª geração.
 
-## O que a pesquisa diz (e o que fizemos com isso)
+## Histórico de direção
 
-**Tela antes dos 2 anos.** A Sociedade Brasileira de Pediatria e a OMS recomendam evitar
-telas antes dos 2 anos, com exceção de videochamada com a família e sempre com um adulto
-presente. Estudos do grupo de Patricia Kuhl mostram que bebês aprendem sons e palavras com
-uma pessoa ao vivo, e não com o mesmo conteúdo em vídeo. Consequência no produto: o jogo
-não tenta ensinar sozinho. Ele é um roteiro para o adulto falar com o bebê. Por isso a
-sessão é curta, termina sozinha e a tela final manda de volta para o papai e a mamãe de
-verdade.
+**Versão 1 (descartada).** Papai e Mamãe em telas separadas, estilo de baixo estímulo:
+tons pastel, movimentos lentos, sem efeitos, sessão que terminava sozinha. Na prática ficou
+exagerado e pouco divertido.
 
-**Fala dirigida ao bebê (manhês).** Fala lenta, melódica e com vogais alongadas, em
-situação um a um, está associada a mais balbucio e mais palavras aos 14 meses
-(Ramírez-Esparza, García-Sierra e Kuhl, 2014; Ferjan Ramírez, Lytle e Kuhl, 2020).
-Consequência: uma palavra isolada por toque, dita devagar por uma voz só, e um silêncio de
-0,7 s depois para o adulto repetir.
+**Versão 2 (atual).** Uma cena só, cores vivas, resposta rápida e chamativa a cada toque,
+fotos e vozes reais da família. A decisão foi do Eduardo, depois de ver a versão 1.
 
-**Baixo estímulo.** "Low stimulation" é um termo de pais, não uma categoria estudada pela
-ciência do desenvolvimento, então as regras vêm por analogia com estudos sobre ritmo de
-vídeo: cenas longas, poucos cortes, paleta dessaturada, som suave, enredo simples.
-Consequência: nada pisca, não há música nem efeito sonoro, os movimentos de corpo levam
-mais de 1 s, as cenas trocam por fade de mais de 2 s e os fundos têm luminância parecida, para a
-troca nunca virar um clarão.
+O que ficou da pesquisa da versão 1 e continua valendo:
 
-**Motricidade aos 12 meses.** O bebê bate com a mão inteira e ainda não aponta com
-precisão. Não há medidas publicadas de alvo de toque para essa idade, então a regra é a
-mais tolerante possível: a tela inteira é o alvo (ou meia tela, na cena com os dois),
-qualquer toque vale, vários dedos contam como um toque e nenhum gesto é exigido.
+- **Jogar junto.** A Sociedade Brasileira de Pediatria e a OMS recomendam evitar telas antes
+  dos 2 anos, e estudos do grupo de Patricia Kuhl mostram que bebês aprendem palavras com
+  uma pessoa ao vivo, não com a tela sozinha. O jogo é um apoio para o adulto falar com o
+  bebê. A tela de escolha de jogos diz isso.
+- **Fala dirigida ao bebê.** Palavra isolada, dita devagar e com melodia, ajuda (Ramírez-
+  Esparza, García-Sierra e Kuhl, 2014; Ferjan Ramírez, Lytle e Kuhl, 2020). A voz do jogo
+  segue esse estilo.
+- **Motricidade.** Aos 12 meses o bebê bate com a mão inteira e arrasta, não aponta com
+  precisão. Alvos grandes, qualquer toque vale, arrastar também dispara.
+- **Referente real.** A palavra cola melhor na pessoa e no objeto de verdade. Daí as fotos
+  e vozes de casa.
+- **Sem estrobo.** Efeitos vivos, mas nada de tela inteira piscando.
 
-**Rosto.** Bebês dessa idade olham para rostos e, perto de 1 ano, para a boca de quem
-fala. Consequência: figura em busto, rosto grande, boca que abre no ritmo real da voz
-(medido do próprio áudio).
+## Como funciona
 
-## Como funciona a fase 1 (Papai e Mamãe)
+1. Tela de adulto com Começar (o primeiro toque libera o som no iPad) e Fotos e vozes.
+2. Cena única: papai e mamãe atrás, bebê na frente, bola, pato, au-au e banana ao redor,
+   céu com sol e nuvens.
+3. Tocar ou arrastar o dedo sobre uma coisa: ela pula, solta estrelas, e o **bebê da cena
+   aponta o dedo para ela e fala o nome**, com a boca acompanhando o volume da voz.
+   Papai e mamãe acenam.
+4. Todo toque responde: um pulso onde o dedo encostou e um rastro de brilho que segue o
+   dedo. Toque no fundo faz um "plim".
+5. Tocar de novo na mesma coisa enquanto a palavra ainda toca não repete o som. Tocar em
+   outra coisa troca na hora.
+6. Sair exige segurar o botão do canto por 1,3 s.
 
-1. Tela de adulto com o botão Começar. É o adulto que dá o primeiro toque (isso também
-   libera o som no iPad).
-2. Papai sozinho, depois Mamãe sozinha, depois os dois juntos. O ciclo repete uma vez.
-   Uma palavra por rosto antes de comparar os dois.
-3. A cada toque a figura fala o próprio nome, balança devagar e a boca acompanha a voz.
-   Enquanto ela fala, novos toques só deixam uma marca suave na tela: o som não empilha.
-4. Depois de 26 falas ou 5 minutos, a cena some devagar e aparece "Tchau, tchau!".
-5. Sair e jogar de novo exigem segurar o botão por 1,3 s. Toque rápido de bebê não faz nada.
+## Fotos e vozes de casa
 
-Não tem: texto na tela do bebê, placar, estrelas, música, confete, anúncio, cadastro.
+Tela `Fotos e vozes`, dentro do jogo. Tudo fica no IndexedDB do aparelho; nada é enviado.
 
-## Voz
-
-Gerada uma vez com a API do Gemini (`gemini-3.8-flash-tts`, voz Sulafat) e publicada como
-mp3 estático. O iPad nunca chama a API e a chave não entra no repositório.
-Script: `scripts/jogoseducativos/gerar-audio.mjs`. Originais em `scripts/jogoseducativos/vozes/`.
-
-Limite conhecido: no plano gratuito são 10 pedidos de voz por dia. No dia do MVP testamos
-4 vozes; Sulafat foi a mais lenta, calma e clara nas duas palavras.
-
-## Próximas palavras
-
-Critério: fazem parte da rotina do bebê, aparecem nos inventários de primeiras palavras
-(CDI) e usam os sons que surgem primeiro (p, b, m, t, d, n com vogais abertas, de
-preferência com sílaba repetida).
-
-| Palavra | Por quê |
+| O quê | Como a foto entra na cena |
 | --- | --- |
-| bola | objeto favorito, duas sílabas simples |
-| água | pedido diário, vogais abertas |
-| bebê | sílaba repetida, ele se reconhece |
-| au-au | onomatopeia vem antes de "cachorro" |
-| miau | idem para gato |
-| pé | uma sílaba, parte do corpo que ele vê |
-| mão | uma sílaba, usada em "dá a mão" |
-| pão | uma sílaba, rotina de comida |
-| pato | brinquedo de banho, sílabas simples |
-| banana | comida comum, costuma virar "nana" |
+| Papai, Mamãe, Bebê | O rosto recortado em círculo vira a cabeça do corpo desenhado, com um aro da cor da roupa. O corpo continua acenando e apontando. Quando o bebê tem foto, o rosto pulsa com a voz no lugar da boca desenhada. |
+| Bola, pato, au-au, banana | A foto vira um adesivo redondo no lugar do desenho. |
+| Coisas da casa (até 4) | Cada uma vira um balão flutuando no céu. Precisa de foto e de voz gravada. |
 
-Palavras sociais (oi, tchau, não, dá) também estão entre as primeiras, mas pedem uma ação
-e não um objeto. Ficam para um jogo próprio.
+- A foto vem da câmera ou da galeria, é enquadrada em um recorte redondo (arrastar e
+  aproximar) e guardada em 480 x 480 px.
+- A voz é gravada pelo microfone (até 3 s). O jogo corta o silêncio das pontas e nivela o
+  volume sozinho. Exige iPadOS 14.3 ou mais novo.
+- Cuidado: o Safari e o atalho da Tela de Início guardam dados separados. As fotos devem
+  ser enviadas por onde o bebê vai jogar.
+
+## Voz do jogo
+
+Gerada uma vez com a API do Gemini e publicada como mp3 estático. O iPad nunca chama a API
+e a chave não entra no repositório. Script: `scripts/jogoseducativos/gerar-audio.mjs`.
+Originais em `scripts/jogoseducativos/vozes/`.
+
+- Voz Sulafat, estilo de mãe falando devagar com o bebê.
+- Papai e Mamãe: `gemini-3.8-flash-tts`. Bebê, bola, pato, au-au e banana:
+  `gemini-3.8-flash-lite-tts` (cota gratuita separada). Conferidas por transcrição
+  automática: soam como a mesma voz.
+- Cota gratuita: 10 pedidos por dia no primeiro modelo, 3 por minuto no lite.
+- "Bebê." saiu como "vevê" e "Bebê!" como "pepê". O texto que funcionou foi "Bê-bê.".
+
+## Palavras
+
+No jogo: papai, mamãe, bebê, bola, au-au, pato, banana.
+
+Próximas, pelo mesmo critério (rotina do bebê, presentes nos inventários de primeiras
+palavras, sons que surgem cedo: p, b, m, t, d, n com vogais abertas): água, miau, pé, mão,
+pão. Palavras sociais (oi, tchau, não, dá) pedem uma ação e não um objeto; ficam para um
+jogo próprio.
+
+## Arquivos
+
+- `index.html`: tela de escolha de jogos.
+- `arte.js`: desenhos em SVG e a lista de coisas da cena.
+- `primeiras-palavras/index.html`: marcação e estilos do jogo.
+- `primeiras-palavras/jogo.js`: cena, toque, brilho, som.
+- `primeiras-palavras/estudio.js`: tela Fotos e vozes.
+- `primeiras-palavras/armazem.js`: guarda fotos e vozes no aparelho.
 
 ## Ideias para depois
 
-- Foto real do papai e da mamãe no lugar da ilustração (guardada só no aparelho). É a
-  mudança com mais chance de ajudar a palavra a colar na pessoa certa.
-- Gravar a voz dos próprios pais.
 - Funcionar sem internet depois da primeira visita.
+- Mais cenas (hora do banho, hora de comer) com outras palavras.
+- Exportar e importar as fotos e vozes, para não perder ao trocar de aparelho.
 
 ## Fontes
 
-- SBP, Manual de Orientação "Saúde de Crianças e Adolescentes na Era Digital" e
-  atualização "Menos Telas, Mais Saúde".
-- Ramírez-Esparza, García-Sierra, Kuhl (2014), Developmental Science:
-  https://pmc.ncbi.nlm.nih.gov/articles/PMC4188803
-- Ferjan Ramírez, Lytle, Kuhl (2020), PNAS: https://pmc.ncbi.nlm.nih.gov/articles/PMC7035517
-- Sobre "low stimulation" e os limites da evidência:
-  https://thoughtfulparent.com/low-stimulation-shows.html
+- SBP, Manual de Orientação "Saúde de Crianças e Adolescentes na Era Digital".
+- Ramírez-Esparza, García-Sierra, Kuhl (2014): https://pmc.ncbi.nlm.nih.gov/articles/PMC4188803
+- Ferjan Ramírez, Lytle, Kuhl (2020): https://pmc.ncbi.nlm.nih.gov/articles/PMC7035517
 - Toque em crianças pequenas: https://www.nngroup.com/articles/children-ux-physical-development/
   e https://developers.google.com/building-for-kids/designing-engaging-apps
 - CDI em português brasileiro (Palavras e Gestos):
   https://periodicos.ufes.br/contextoslinguisticos/article/download/5230/3906/10610
+- API de voz do Gemini: https://aistudio.google.com/docs/speech-generation

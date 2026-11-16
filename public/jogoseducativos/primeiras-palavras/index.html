@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#DAD9CF">
+<meta name="theme-color" content="#3FB6F2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -12,476 +12,348 @@
 <link rel="apple-touch-icon" href="/jogoseducativos/icone-180.png">
 <link rel="manifest" href="/jogoseducativos/manifest.webmanifest">
 <link rel="icon" type="image/png" href="/jogoseducativos/icone-180.png">
-<title>Primeiras palavras: Papai e Mamãe</title>
+<title>Primeiras palavras: Papai, Mamãe e Bebê</title>
 <!--
-  Primeiras palavras, fase 1: PAPAI e MAMÃE. Feito para bebês de 12 meses
-  jogando no colo de um adulto, em um iPad de 6a geração.
+  Primeiras palavras: uma cena só, com o bebê, o papai, a mamãe e alguns
+  objetos ao redor. Feito para um bebê de 12 meses em um iPad de 6a geração.
 
-  Regras de design que este arquivo segue (ver docs/jogoseducativos-plano.md):
-  - Uma coisa por vez na tela. Sem texto, sem placar, sem prêmio, sem música.
-  - Qualquer toque vale: bebê de 1 ano bate com a mão inteira, não aponta.
-  - Toque gera uma resposta só: a figura fala o próprio nome e se mexe devagar.
-    Enquanto ela fala, novos toques não empilham som.
-  - Nada pisca. Movimentos lentos, trocas de cena por fade longo entre fundos
-    de luminância parecida.
-  - A sessão acaba sozinha em poucos minutos e devolve o bebê para o adulto.
-  - Botões de adulto exigem segurar: o bebê não sai nem reinicia sem querer.
+  Como funciona:
+  - O bebê toca (ou arrasta o dedo) em qualquer coisa e o BEBÊ DA CENA fala o
+    nome dela. A coisa tocada pula; papai e mamãe acenam.
+  - Todo toque responde: um pulso onde o dedo encostou e um rastro de brilho
+    que segue o dedo. Toque no fundo faz um "plim".
+  - Em "Fotos e vozes" o adulto troca qualquer desenho por uma foto real e
+    grava a própria voz. A foto do rosto entra no corpo desenhado; coisas da
+    casa viram balões no céu. Tudo fica guardado só no aparelho.
 
-  Sem framework e sem fontes externas de propósito: o aparelho é antigo.
-  JavaScript em sintaxe conservadora (ES5) pelo mesmo motivo.
+  Arquivos: ../arte.js (desenhos), armazem.js (guarda fotos e vozes),
+  jogo.js (cena, toque, som), estudio.js (tela de adulto).
+  Sem framework, sem fontes externas, JavaScript ES5: o aparelho é antigo.
 -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{
   position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;
-  background:#DAD9CF;color:#2F3A40;
+  background:#3FB6F2;color:#2B2D42;
   font-family:ui-rounded,"SF Pro Rounded","Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
   -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
-  -webkit-tap-highlight-color:transparent;touch-action:none;overscroll-behavior:none;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;overscroll-behavior:none;
   -webkit-text-size-adjust:100%;
 }
-button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;}
+button,input{font:inherit;color:inherit;}
+button{border:0;background:none;cursor:pointer;}
 [hidden]{display:none !important;}
 
-/* ── Cena do bebê ── */
+/* ── Cena ── */
 #cena{
-  position:absolute;top:0;left:0;right:0;bottom:0;display:flex;
-  opacity:0;transition:opacity 1.1s ease-in-out;
+  position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;touch-action:none;
+  background:linear-gradient(#2FA8F0,#8FDCFF 70%);
 }
-#cena.visivel{opacity:1;}
-.painel{flex:1 1 0;min-width:0;min-height:0;position:relative;overflow:hidden;display:none;}
-.painel-papai{background:#CBDDE0;}
-.painel-mamae{background:#EDD9CB;}
-#cena[data-cena="papai"] .painel-papai,
-#cena[data-cena="mamae"] .painel-mamae,
-#cena[data-cena="juntos"] .painel{display:block;}
-@media (orientation:portrait){#cena{flex-direction:column;}}
+#palco{position:absolute;left:50%;top:50%;}
+.morro{position:absolute;border-radius:50%/12%;}
+.morro-fundo{left:-40%;width:180%;top:51%;height:220%;background:#6FD14B;}
+.morro-frente{left:-55%;width:190%;top:74%;height:220%;background:#46B93A;}
+.retrato .morro-fundo{top:45%;}
+.retrato .morro-frente{top:61%;}
 
-.boneco{
-  position:absolute;left:6%;right:6%;top:5%;bottom:0;
-  -webkit-transform-origin:50% 100%;transform-origin:50% 100%;
+.sol{position:absolute;right:4%;top:5%;width:14%;}
+.retrato .sol{width:20%;top:2%;}
+.sol svg,.nuvem svg{display:block;width:100%;height:auto;}
+.sol .je-raios{transform-origin:100px 100px;-webkit-animation:gira 26s linear infinite;animation:gira 26s linear infinite;}
+.nuvem{position:absolute;opacity:.95;-webkit-animation:deriva 11s ease-in-out infinite alternate;animation:deriva 11s ease-in-out infinite alternate;}
+.nuvem.n1{left:7%;top:13%;width:19%;}
+.nuvem.n2{left:50%;top:5%;width:15%;-webkit-animation-duration:14s;animation-duration:14s;}
+.retrato .nuvem.n1{width:28%;top:18%;}
+.retrato .nuvem.n2{width:24%;top:9%;}
+
+/* Cada coisa tocável: .item (posição) > .pulo (salto) > .mexe (balanço parado) > .caixa */
+.item{position:absolute;left:var(--x);bottom:var(--y);width:var(--w);}
+.pulo,.mexe{-webkit-transform-origin:50% 100%;transform-origin:50% 100%;}
+.mexe{-webkit-animation:balanco 2.6s ease-in-out infinite alternate;animation:balanco 2.6s ease-in-out infinite alternate;}
+.item:nth-of-type(2n) .mexe{-webkit-animation-duration:3.1s;animation-duration:3.1s;}
+.item:nth-of-type(3n) .mexe{-webkit-animation-duration:2.2s;animation-duration:2.2s;-webkit-animation-delay:-.8s;animation-delay:-.8s;}
+.pulo.pula{-webkit-animation:pula .6s cubic-bezier(.3,.7,.4,1) 1;animation:pula .6s cubic-bezier(.3,.7,.4,1) 1;}
+.caixa{position:relative;width:100%;}
+.caixa > svg{position:absolute;top:0;left:0;width:100%;height:100%;display:block;overflow:visible;}
+.item.acena .je-braco{-webkit-animation:acena .9s ease-in-out 1;animation:acena .9s ease-in-out 1;}
+/* Bebê apontando: o braço gira até a direção do que foi tocado (ângulo vem do jogo.js) */
+.je-braco-bebe{transition:transform .22s cubic-bezier(.3,1.3,.5,1);-webkit-transition:-webkit-transform .22s cubic-bezier(.3,1.3,.5,1);}
+.je-dedo{opacity:0;transition:opacity .12s;}
+.je-braco-bebe.aponta .je-dedo{opacity:1;}
+
+/* Foto real no lugar da cabeça desenhada */
+.foto-rosto{
+  position:absolute;border-radius:50%;background:#fff center/cover no-repeat;
+  -webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);
+  box-shadow:0 0 0 .7vmin #fff,0 0 0 1.5vmin var(--aro,#FFD23F),0 1.2vmin 2.4vmin rgba(0,0,0,.28);
+  display:none;
 }
-.boneco svg{
-  display:block;width:100%;height:100%;
-  -webkit-transform-origin:50% 100%;transform-origin:50% 100%;
-  -webkit-animation:respira 7s ease-in-out infinite alternate;
-  animation:respira 7s ease-in-out infinite alternate;
-}
-.boneco.fala{-webkit-animation:balanca 1.5s ease-in-out 1;animation:balanca 1.5s ease-in-out 1;}
-@-webkit-keyframes respira{from{-webkit-transform:scale(1);}to{-webkit-transform:scale(1.012);}}
-@keyframes respira{from{transform:scale(1);}to{transform:scale(1.012);}}
-@-webkit-keyframes balanca{
-  0%{-webkit-transform:translateY(0) scale(1);}
-  35%{-webkit-transform:translateY(-1.5%) scale(1.035);}
-  100%{-webkit-transform:translateY(0) scale(1);}
-}
-@keyframes balanca{
-  0%{transform:translateY(0) scale(1);}
-  35%{transform:translateY(-1.5%) scale(1.035);}
-  100%{transform:translateY(0) scale(1);}
+.item.tem-foto .foto-rosto{display:block;}
+.item.tem-foto .je-cabeca{display:none;}
+
+/* Foto real no lugar de um objeto: vira adesivo redondo */
+.adesivo{
+  position:absolute;top:5%;left:5%;right:5%;bottom:5%;border-radius:50%;
+  background:#fff center/cover no-repeat;-webkit-transform:rotate(-6deg);transform:rotate(-6deg);
+  box-shadow:0 0 0 .8vmin #fff,0 1vmin 2vmin rgba(0,0,0,.3);
 }
 
-/* Marca suave onde o dedo tocou: resposta imediata, sem brilho */
-.onda{
-  position:absolute;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;
-  background:rgba(255,255,255,.5);pointer-events:none;
-  -webkit-animation:onda 1.2s ease-out 1 both;animation:onda 1.2s ease-out 1 both;
+/* Coisas da casa: balões no céu */
+.item.balao .mexe{-webkit-animation:flutua 3.4s ease-in-out infinite alternate;animation:flutua 3.4s ease-in-out infinite alternate;-webkit-transform-origin:50% 0;transform-origin:50% 0;}
+.balao-foto{
+  position:absolute;top:2%;left:6%;width:88%;border-radius:50%;
+  background:#fff center/cover no-repeat;
+  box-shadow:inset 0 0 0 .5vmin rgba(255,255,255,.9),0 0 0 1.3vmin var(--aro,#F0443A),0 1.4vmin 2.4vmin rgba(0,0,0,.22);
 }
-@-webkit-keyframes onda{from{-webkit-transform:scale(.35);opacity:.55;}to{-webkit-transform:scale(1.5);opacity:0;}}
-@keyframes onda{from{transform:scale(.35);opacity:.55;}to{transform:scale(1.5);opacity:0;}}
+.balao-foto:before{content:"";display:block;padding-top:100%;}
+/* seletor com .caixa para vencer a regra geral ".caixa > svg" (que estica o SVG na caixa toda) */
+.caixa > svg.balao-fio{top:60%;height:40%;}
+
+/* Quem fala ganha ondas de som ao lado da cabeça */
+.ondas{position:absolute;top:22%;width:20%;opacity:0;transition:opacity .15s;}
+.ondas.e{left:-12%;-webkit-transform:scaleX(-1);transform:scaleX(-1);}
+.ondas.d{right:-12%;}
+.ondas svg{display:block;width:100%;height:auto;}
+.item.falando .ondas{opacity:1;}
+.item.falando .ondas svg{-webkit-animation:onda .45s ease-in-out infinite alternate;animation:onda .45s ease-in-out infinite alternate;}
+
+/* Posições: paisagem (iPad deitado) */
+.paisagem [data-item="papai"]{--x:12%;--y:19%;--w:30%;}
+.paisagem [data-item="mamae"]{--x:58%;--y:19%;--w:30%;}
+.paisagem [data-item="bebe"]{--x:38%;--y:3%;--w:24%;}
+.paisagem [data-item="bola"]{--x:3.5%;--y:4%;--w:13%;}
+.paisagem [data-item="pato"]{--x:83.5%;--y:4%;--w:13%;}
+.paisagem [data-item="auau"]{--x:.5%;--y:27%;--w:11%;}
+.paisagem [data-item="banana"]{--x:89%;--y:30%;--w:10%;}
+.paisagem .balao{--w:13.5%;}
+.paisagem .balao.b0{--x:11%;--y:62%;} .paisagem .balao.b1{--x:28%;--y:68%;}
+.paisagem .balao.b2{--x:45%;--y:63%;} .paisagem .balao.b3{--x:62%;--y:69%;}
+/* Posições: retrato (iPad em pé) */
+.retrato [data-item="papai"]{--x:3%;--y:32%;--w:45%;}
+.retrato [data-item="mamae"]{--x:52%;--y:32%;--w:45%;}
+.retrato [data-item="bebe"]{--x:32%;--y:16.5%;--w:36%;}
+.retrato [data-item="bola"]{--x:3%;--y:2%;--w:20%;}
+.retrato [data-item="auau"]{--x:28%;--y:1.5%;--w:18%;}
+.retrato [data-item="banana"]{--x:53%;--y:2%;--w:19%;}
+.retrato [data-item="pato"]{--x:77%;--y:2%;--w:20%;}
+.retrato .balao{--w:20%;}
+.retrato .balao.b0{--x:4%;--y:69%;} .retrato .balao.b1{--x:28%;--y:73%;}
+.retrato .balao.b2{--x:52%;--y:68%;} .retrato .balao.b3{--x:76%;--y:72%;}
+
+@-webkit-keyframes gira{to{-webkit-transform:rotate(360deg);}}
+@keyframes gira{to{transform:rotate(360deg);}}
+@-webkit-keyframes deriva{from{-webkit-transform:translateX(-12%);}to{-webkit-transform:translateX(12%);}}
+@keyframes deriva{from{transform:translateX(-12%);}to{transform:translateX(12%);}}
+@-webkit-keyframes balanco{from{-webkit-transform:rotate(-1.6deg) scaleY(1);}to{-webkit-transform:rotate(1.6deg) scaleY(1.025);}}
+@keyframes balanco{from{transform:rotate(-1.6deg) scaleY(1);}to{transform:rotate(1.6deg) scaleY(1.025);}}
+@-webkit-keyframes flutua{from{-webkit-transform:translateY(-4%) rotate(-4deg);}to{-webkit-transform:translateY(4%) rotate(4deg);}}
+@keyframes flutua{from{transform:translateY(-4%) rotate(-4deg);}to{transform:translateY(4%) rotate(4deg);}}
+@-webkit-keyframes pula{
+  0%{-webkit-transform:translateY(0) scale(1,1);}
+  14%{-webkit-transform:translateY(0) scale(1.13,.84);}
+  46%{-webkit-transform:translateY(-17%) scale(.93,1.1);}
+  76%{-webkit-transform:translateY(0) scale(1.08,.92);}
+  100%{-webkit-transform:translateY(0) scale(1,1);}
+}
+@keyframes pula{
+  0%{transform:translateY(0) scale(1,1);}
+  14%{transform:translateY(0) scale(1.13,.84);}
+  46%{transform:translateY(-17%) scale(.93,1.1);}
+  76%{transform:translateY(0) scale(1.08,.92);}
+  100%{transform:translateY(0) scale(1,1);}
+}
+@-webkit-keyframes acena{0%,100%{-webkit-transform:rotate(0);}20%,60%{-webkit-transform:rotate(-16deg);}40%,80%{-webkit-transform:rotate(14deg);}}
+@keyframes acena{0%,100%{transform:rotate(0);}20%,60%{transform:rotate(-16deg);}40%,80%{transform:rotate(14deg);}}
+@-webkit-keyframes onda{from{-webkit-transform:scale(.8);opacity:.5;}to{-webkit-transform:scale(1.1);opacity:1;}}
+@keyframes onda{from{transform:scale(.8);opacity:.5;}to{transform:scale(1.1);opacity:1;}}
+
+#brilho{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:4;}
 
 /* ── Botão de adulto: só responde se segurar ── */
 .segurar{position:relative;overflow:hidden;}
 .segurar .carga{
-  position:absolute;top:0;left:0;bottom:0;width:100%;background:rgba(47,58,64,.16);
-  -webkit-transform:scaleX(0);transform:scaleX(0);
-  -webkit-transform-origin:0 50%;transform-origin:0 50%;
+  position:absolute;top:0;left:0;bottom:0;width:100%;background:rgba(43,45,66,.22);
+  -webkit-transform:scaleX(0);transform:scaleX(0);-webkit-transform-origin:0 50%;transform-origin:0 50%;
   transition:transform .2s ease-out;-webkit-transition:-webkit-transform .2s ease-out;
 }
 .segurar.segurando .carga{
   -webkit-transform:scaleX(1);transform:scaleX(1);
   transition:transform 1.3s linear;-webkit-transition:-webkit-transform 1.3s linear;
 }
-.segurar .texto{position:relative;}
-
 #sair{
-  position:absolute;top:14px;left:14px;top:calc(14px + env(safe-area-inset-top));
-  width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.34);z-index:5;
+  position:absolute;left:14px;top:14px;top:calc(14px + env(safe-area-inset-top));
+  width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.5);z-index:5;
 }
-#sair svg{position:relative;display:block;margin:auto;width:20px;height:20px;opacity:.5;}
+#sair svg{position:relative;display:block;margin:auto;width:20px;height:20px;opacity:.6;}
 
-/* ── Telas de adulto (início e fim) ── */
-.tela{
-  position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;background:#DAD9CF;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  padding:24px;padding:max(24px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom));
-  transition:opacity .9s ease-in-out;
+/* ── Telas de adulto ── */
+#inicio{
+  position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;display:flex;align-items:center;justify-content:center;
+  padding:20px;background:rgba(20,60,110,.35);transition:opacity .35s;touch-action:none;
 }
-.tela.some{opacity:0;pointer-events:none;}
-.dupla{display:flex;align-items:flex-end;justify-content:center;width:min(300px,56vw);margin-bottom:22px;}
-.dupla > div{flex:1 1 0;border-radius:26px 26px 0 0;overflow:hidden;padding:12px 8px 0;}
-.dupla > div:first-child{background:#CBDDE0;border-radius:26px 0 0 26px;}
-.dupla > div:last-child{background:#EDD9CB;border-radius:0 26px 26px 0;}
-.dupla svg{display:block;width:100%;height:auto;}
-h1{font-size:clamp(30px,5.4vw,46px);font-weight:700;letter-spacing:-.01em;line-height:1.1;}
-.sub{font-size:clamp(17px,2.4vw,21px);margin-top:6px;color:#57666D;}
-#comecar{
-  margin-top:28px;min-width:230px;padding:20px 40px;border-radius:999px;
-  background:#2F3A40;color:#F3F1EA;font-size:clamp(20px,2.8vw,24px);font-weight:700;
+#inicio.some{opacity:0;pointer-events:none;}
+.cartao-inicio{
+  width:min(460px,100%);padding:clamp(22px,4vw,34px);border-radius:32px;background:#fff;text-align:center;
+  box-shadow:0 18px 50px rgba(10,40,90,.35);
 }
-#comecar:active{background:#1F282D;}
-#comecar:focus-visible,.botao:focus-visible,.volta:focus-visible{outline:3px solid #5E8A88;outline-offset:4px;}
-.dica{max-width:30em;margin-top:26px;font-size:clamp(15px,2vw,17px);line-height:1.5;color:#57666D;}
-.volta{display:inline-block;margin-top:22px;padding:10px 14px;font-size:16px;color:#57666D;text-decoration:underline;text-underline-offset:3px;}
-.botoes{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:30px;}
-.botao{
-  min-width:210px;padding:18px 30px;border-radius:999px;font-size:19px;font-weight:700;
-  background:rgba(255,255,255,.55);
-}
-.botao.forte{background:#2F3A40;color:#F3F1EA;}
-.botao.forte .carga{background:rgba(255,255,255,.28);}
-.aviso{margin-top:14px;font-size:14px;color:#6F7C82;}
+.cartao-inicio h1{font-size:clamp(28px,5vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.08;}
+.cartao-inicio .sub{margin-top:6px;font-size:18px;color:#5B6078;}
+.cartao-inicio .dica{margin-top:18px;font-size:15.5px;line-height:1.45;color:#5B6078;}
+.b{display:block;width:100%;padding:17px 24px;border-radius:999px;font-size:20px;font-weight:800;}
+.b.forte{margin-top:22px;background:#FF7A1A;color:#fff;}
+.b.forte:active{background:#E56500;}
+.b.claro{margin-top:10px;background:#EEF1F8;}
+.b.claro:active{background:#DFE4F0;}
+.b:focus-visible,.volta:focus-visible{outline:3px solid #2B2D42;outline-offset:3px;}
+.volta{display:inline-block;margin-top:16px;padding:8px 12px;font-size:16px;color:#5B6078;text-decoration:underline;text-underline-offset:3px;}
 
-/* Tela baixa (celular deitado): a tela de início abre mão da ilustração. */
-@media (max-height:560px){.dupla{display:none;}.dica{margin-top:16px;}#comecar{margin-top:18px;}}
+/* Estúdio: fotos e vozes */
+#estudio{
+  position:absolute;top:0;left:0;right:0;bottom:0;z-index:20;background:#F4F6FB;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;
+  -webkit-user-select:auto;user-select:auto;
+}
+.est-miolo{width:min(760px,100%);margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 18px 60px;}
+.est-topo{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:2;
+  margin:0 -18px;padding:14px 18px;background:#F4F6FB;}
+.est-topo h2{font-size:28px;font-weight:800;letter-spacing:-.02em;}
+.est-topo .b{width:auto;margin:0;padding:12px 26px;font-size:18px;}
+#estudio h3{margin-top:26px;font-size:20px;font-weight:800;}
+.est-nota{margin-top:4px;font-size:15.5px;line-height:1.45;color:#5B6078;}
+.est-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:12px;}
+.ficha{display:flex;gap:14px;align-items:center;padding:14px;border-radius:22px;background:#fff;}
+.ficha .mini{flex:0 0 84px;width:84px;height:84px;border-radius:50%;background:#DDEEFF center/cover no-repeat;overflow:hidden;position:relative;}
+.ficha .mini svg{position:absolute;left:8%;top:8%;width:84%;height:84%;}
+.ficha .mini.vazia:after{content:"?";position:absolute;top:0;left:0;right:0;line-height:84px;text-align:center;font-size:34px;font-weight:800;color:#9AA3BD;}
+.ficha .corpo{flex:1 1 0;min-width:0;}
+.ficha .nome{font-size:19px;font-weight:800;}
+.ficha input.nome{width:100%;padding:7px 10px;border:2px solid #D5DBEA;border-radius:12px;background:#fff;-webkit-user-select:text;user-select:text;}
+.ficha .estado{margin-top:2px;font-size:14px;color:#5B6078;}
+.ficha .acoes{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.mb{padding:9px 14px;border-radius:999px;background:#EEF1F8;font-size:15px;font-weight:700;}
+.mb:active{background:#DFE4F0;}
+.mb.perigo{background:none;color:#B4323F;padding-left:6px;padding-right:6px;font-weight:600;text-decoration:underline;text-underline-offset:3px;}
+.mb[disabled]{opacity:.4;}
+#est-nova{margin-top:12px;width:auto;display:inline-block;font-size:17px;padding:13px 24px;}
+
+.modal{position:absolute;top:0;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;justify-content:center;
+  padding:16px;background:rgba(20,24,44,.72);}
+.modal .painel{width:min(460px,100%);padding:22px;border-radius:28px;background:#fff;text-align:center;}
+.modal h4{font-size:22px;font-weight:800;}
+.modal p{margin-top:6px;font-size:15.5px;line-height:1.4;color:#5B6078;}
+.modal .linha{display:flex;gap:10px;margin-top:16px;}
+.modal .linha .b{margin:0;font-size:17px;padding:14px 10px;}
+.recorte{position:relative;margin:16px auto 0;border-radius:18px;overflow:hidden;background:#111;touch-action:none;}
+.recorte img{position:absolute;left:50%;top:50%;max-width:none;pointer-events:none;}
+.recorte:after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;border-radius:50%;
+  box-shadow:0 0 0 999px rgba(0,0,0,.55);border:3px solid #fff;pointer-events:none;}
+#zoom{display:block;width:100%;margin-top:16px;}
+/* Escondido da vista, mas presente: o Safari antigo não abre a câmera de um input com display:none */
+#arquivo{position:absolute;left:-200px;top:0;width:1px;height:1px;opacity:0;}
+.est-aviso{margin-top:12px;padding:12px 16px;border-radius:16px;background:#FFE9B8;font-size:15.5px;line-height:1.4;}
+#gravar{
+  display:block;margin:18px auto 0;width:108px;height:108px;border-radius:50%;background:#F0443A;color:#fff;
+  font-size:17px;font-weight:800;box-shadow:0 0 0 8px rgba(240,68,58,.2);
+}
+#gravar.gravando{background:#2B2D42;box-shadow:0 0 0 8px rgba(43,45,66,.2);}
+.barra{height:8px;margin-top:16px;border-radius:99px;background:#EEF1F8;overflow:hidden;}
+.barra i{display:block;height:100%;width:0;background:#F0443A;}
 
 @media (prefers-reduced-motion:reduce){
-  .boneco svg,.boneco.fala{-webkit-animation:none;animation:none;}
-  .onda{display:none;}
+  .mexe,.nuvem,.sol .je-raios{-webkit-animation:none;animation:none;}
 }
 </style>
 </head>
 <body>
 
-<!-- Cena do bebê -->
-<div id="cena" data-cena="papai" aria-live="off">
-  <div class="painel painel-papai" data-palavra="papai"><div class="boneco" id="boneco-papai"></div></div>
-  <div class="painel painel-mamae" data-palavra="mamae"><div class="boneco" id="boneco-mamae"></div></div>
+<div id="cena">
+  <div id="palco" class="paisagem">
+    <div class="sol" id="sol"></div>
+    <div class="nuvem n1"></div>
+    <div class="nuvem n2"></div>
+    <div id="camada-ceu"></div>
+    <div class="morro morro-fundo"></div>
+    <div id="camada-fundo"></div>
+    <div class="morro morro-frente"></div>
+    <div id="camada-frente"></div>
+  </div>
 </div>
+<canvas id="brilho"></canvas>
 
 <button id="sair" class="segurar" type="button" aria-label="Sair do jogo. Segure por um segundo." hidden>
   <span class="carga"></span>
-  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4 L16 16 M16 4 L4 16" fill="none" stroke="#2F3A40" stroke-width="2.6" stroke-linecap="round"/></svg>
+  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4 L16 16 M16 4 L4 16" fill="none" stroke="#2B2D42" stroke-width="2.8" stroke-linecap="round"/></svg>
 </button>
 
 <!-- Início: o adulto dá o primeiro toque (é ele que libera o som no iPad) -->
-<section class="tela" id="inicio">
-  <div class="dupla" aria-hidden="true"><div id="mini-papai"></div><div id="mini-mamae"></div></div>
-  <h1>Papai e Mamãe</h1>
-  <p class="sub">Primeiras palavras, fase 1</p>
-  <button id="comecar" type="button">Começar</button>
-  <p class="dica">Jogue junto, com o bebê no colo. Quando a voz disser a palavra, repita olhando para ele. A sessão dura poucos minutos e termina sozinha.</p>
-  <a class="volta" href="/jogoseducativos/">Todos os jogos</a>
-</section>
-
-<!-- Fim: devolve o bebê para o adulto -->
-<section class="tela some" id="fim" hidden>
-  <h1>Tchau, tchau!</h1>
-  <p class="dica">Por hoje é só. Agora é a vez do papai e da mamãe de verdade: mostre quem é quem e repita as palavras.</p>
-  <div class="botoes">
-    <button class="botao forte segurar" id="de-novo" type="button"><span class="carga"></span><span class="texto">Jogar de novo</span></button>
-    <button class="botao segurar" id="para-jogos" type="button"><span class="carga"></span><span class="texto">Todos os jogos</span></button>
+<section id="inicio">
+  <div class="cartao-inicio">
+    <h1>Papai, Mamãe e Bebê</h1>
+    <p class="sub">Primeiras palavras</p>
+    <button class="b forte" id="comecar" type="button">Começar</button>
+    <button class="b claro" id="abrir-estudio" type="button">Fotos e vozes</button>
+    <p class="dica">O bebê toca e o bebê da cena fala o nome. Jogue junto e repita a palavra. Para sair, segure o botão do canto por um segundo.</p>
+    <a class="volta" href="/jogoseducativos/">Todos os jogos</a>
   </div>
-  <p class="aviso">Segure o botão por um segundo.</p>
 </section>
 
-<script src="/jogoseducativos/arte.js?v=1"></script>
-<script>
-(function () {
-  'use strict';
+<!-- Estúdio: fotos e vozes de casa -->
+<section id="estudio" hidden>
+  <div class="est-miolo">
+    <div class="est-topo">
+      <h2>Fotos e vozes</h2>
+      <button class="b forte" id="est-pronto" type="button">Pronto</button>
+    </div>
+    <p class="est-nota">Troque os desenhos por fotos de verdade e grave a sua voz. Tudo fica guardado só neste aparelho, nada é enviado para a internet. Se você usa o atalho da Tela de Início, envie as fotos por ele: o Safari e o atalho guardam em lugares separados.</p>
+    <p class="est-aviso" id="est-aviso" hidden>Este navegador está em modo privado: as fotos e vozes somem quando a página fechar.</p>
 
-  /* ── Conteúdo da fase ── */
-  var PALAVRAS = {
-    papai: { audio: '/jogoseducativos/audio/papai.mp3?v=1', duracao: 1.45 },
-    mamae: { audio: '/jogoseducativos/audio/mamae.mp3?v=1', duracao: 1.55 }
-  };
-  /* Primeiro cada um sozinho (uma palavra, um rosto), depois os dois juntos. */
-  var ROTEIRO = [
-    { cena: 'papai', toques: 4 },
-    { cena: 'mamae', toques: 4 },
-    { cena: 'juntos', toques: 6 },
-    { cena: 'papai', toques: 3 },
-    { cena: 'mamae', toques: 3 },
-    { cena: 'juntos', toques: 6 }
-  ];
-  var LIMITE_SESSAO_MS = 5 * 60 * 1000;   /* teto de tempo, mesmo com o roteiro pela metade */
-  var PAUSA_APOS_FALA_MS = 700;           /* silêncio para o adulto (e o bebê) repetirem */
-  var TEMPO_SEGURAR_MS = 1300;
+    <h3>Família</h3>
+    <p class="est-nota">A foto do rosto entra no corpo desenhado. Enquadre só o rosto.</p>
+    <div class="est-lista" id="est-pessoas"></div>
 
-  var cena = document.getElementById('cena');
-  var telaInicio = document.getElementById('inicio');
-  var telaFim = document.getElementById('fim');
-  var botaoSair = document.getElementById('sair');
+    <h3>Brinquedos da cena</h3>
+    <p class="est-nota">Fotografe a bola, o pato ou o cachorro de casa. A foto vira um adesivo no lugar do desenho.</p>
+    <div class="est-lista" id="est-objetos"></div>
 
-  /* ── Monta as figuras ── */
-  var bonecos = {};
-  ['papai', 'mamae'].forEach(function (nome) {
-    var el = document.getElementById('boneco-' + nome);
-    el.innerHTML = window.JE_ARTE[nome];
-    document.getElementById('mini-' + nome).innerHTML = window.JE_ARTE[nome];
-    bonecos[nome] = {
-      el: el,
-      olhos: el.querySelector('.je-olhos'),
-      sorriso: el.querySelector('.je-sorriso'),
-      boca: el.querySelector('.je-boca')
-    };
-    abrirBoca(bonecos[nome], 0);
-  });
-  /* As miniaturas do início não falam: boca aberta escondida. */
-  Array.prototype.forEach.call(document.querySelectorAll('.dupla .je-boca'), function (b) {
-    b.setAttribute('transform', 'translate(200 260) scale(1 0) translate(-200 -260)');
-  });
+    <h3>Coisas da casa</h3>
+    <p class="est-nota">Até quatro coisas a mais, como a mamadeira ou o ursinho. Cada uma vira um balão no céu e precisa de foto e de voz.</p>
+    <div class="est-lista" id="est-casa"></div>
+    <button class="b claro" id="est-nova" type="button">Adicionar coisa da casa</button>
+  </div>
+</section>
 
-  function abrirBoca(b, v) {
-    /* Atributo SVG em vez de CSS: funciona igual em qualquer Safari antigo. */
-    /* Abaixo do limiar a boca volta a ser o sorriso, sem meio-termo estranho. */
-    var aberta = v > 0.16;
-    b.boca.setAttribute('transform', 'translate(200 260) scale(1 ' + (aberta ? v.toFixed(3) : '0') + ') translate(-200 -260)');
-    b.sorriso.setAttribute('opacity', aberta ? '0' : '1');
-  }
+<div class="modal" id="modal-foto" hidden>
+  <div class="painel">
+    <h4>Enquadre a foto</h4>
+    <p>Arraste a foto e use o controle para aproximar.</p>
+    <div class="recorte" id="recorte"><img id="recorte-img" alt=""></div>
+    <input type="range" id="zoom" min="1" max="4" step="0.01" value="1" aria-label="Aproximar">
+    <div class="linha">
+      <button class="b claro" id="foto-cancelar" type="button">Cancelar</button>
+      <button class="b forte" id="foto-usar" type="button">Usar foto</button>
+    </div>
+  </div>
+</div>
 
-  /* ── Som ── */
-  var AC = window.AudioContext || window.webkitAudioContext;
-  var ctx = null, analisador = null, amostras = null;
-  var brutos = {}, buffers = {};
+<div class="modal" id="modal-voz" hidden>
+  <div class="painel">
+    <h4 id="voz-titulo">Grave a palavra</h4>
+    <p id="voz-texto"></p>
+    <button id="gravar" type="button">Gravar</button>
+    <div class="barra"><i id="voz-barra"></i></div>
+    <div class="linha">
+      <button class="b claro" id="voz-cancelar" type="button">Cancelar</button>
+      <button class="b claro" id="voz-ouvir" type="button" disabled>Ouvir</button>
+      <button class="b forte" id="voz-usar" type="button" disabled>Usar</button>
+    </div>
+  </div>
+</div>
 
-  Object.keys(PALAVRAS).forEach(function (nome) {
-    var x = new XMLHttpRequest();
-    x.open('GET', PALAVRAS[nome].audio, true);
-    x.responseType = 'arraybuffer';
-    x.onload = function () {
-      if (x.status >= 200 && x.status < 300) { brutos[nome] = x.response; decodificar(nome); }
-    };
-    x.send();
-  });
+<input type="file" id="arquivo" accept="image/*" tabindex="-1" aria-hidden="true">
 
-  function decodificar(nome) {
-    if (!ctx || !brutos[nome] || buffers[nome]) return;
-    /* decodeAudioData consome o ArrayBuffer: decodifica uma cópia. */
-    ctx.decodeAudioData(brutos[nome].slice(0), function (buf) {
-      buffers[nome] = buf;
-      PALAVRAS[nome].duracao = buf.duration;
-    }, function () {});
-  }
-
-  function ligarSom() {
-    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
-    if (!AC) return;
-    if (!ctx) {
-      ctx = new AC();
-      analisador = ctx.createAnalyser();
-      analisador.fftSize = 256;
-      amostras = new Uint8Array(analisador.fftSize);
-      analisador.connect(ctx.destination);
-      Object.keys(PALAVRAS).forEach(decodificar);
-      /* Um buffer mudo tocado dentro do gesto destrava o áudio no iOS. */
-      try {
-        var mudo = ctx.createBufferSource();
-        mudo.buffer = ctx.createBuffer(1, 1, 22050);
-        mudo.connect(ctx.destination);
-        mudo.start(0);
-      } catch (e) {}
-    }
-    if (ctx.state !== 'running' && ctx.resume) ctx.resume();
-  }
-  /* O iOS suspende o áudio ao trocar de app; qualquer toque seguinte retoma. */
-  document.addEventListener('touchend', function () {
-    if (ctx && ctx.state !== 'running' && ctx.resume) ctx.resume();
-  }, true);
-
-  var reserva = {};
-  function tocar(nome) {
-    if (ctx && buffers[nome]) {
-      var fonte = ctx.createBufferSource();
-      fonte.buffer = buffers[nome];
-      fonte.connect(analisador);
-      fonte.start(0);
-      return true;
-    }
-    /* Reserva: elemento <audio>, caso o Web Audio não esteja disponível. */
-    try {
-      if (!reserva[nome]) reserva[nome] = new Audio(PALAVRAS[nome].audio);
-      reserva[nome].currentTime = 0;
-      var p = reserva[nome].play();
-      if (p && p.catch) p.catch(function () {});
-    } catch (e) {}
-    return false;
-  }
-
-  /* ── Estado do jogo ── */
-  var jogando = false, ocupado = false;
-  var passo = 0, toques = 0, inicioSessao = 0;
-  var relogioConvite = null;
-
-  function falar(nome) {
-    var b = bonecos[nome];
-    var comAnalise = tocar(nome);
-    var duracao = PALAVRAS[nome].duracao * 1000;
-    var comecou = Date.now();
-    var suave = 0;
-    ocupado = true;
-
-    b.el.classList.remove('fala');
-    void b.el.offsetWidth;            /* reinicia a animação */
-    b.el.classList.add('fala');
-
-    (function quadro() {
-      var t = Date.now() - comecou;
-      if (t >= duracao) { abrirBoca(b, 0); return; }
-      var alvo;
-      if (comAnalise) {
-        analisador.getByteTimeDomainData(amostras);
-        var soma = 0, i, d;
-        for (i = 0; i < amostras.length; i++) { d = (amostras[i] - 128) / 128; soma += d * d; }
-        alvo = Math.min(1, Math.sqrt(soma / amostras.length) * 5.5);
-      } else {
-        alvo = 0.25 + 0.55 * Math.abs(Math.sin(t / 150));   /* sem análise: abre e fecha */
-      }
-      suave += (alvo - suave) * 0.35;
-      abrirBoca(b, suave);
-      requestAnimationFrame(quadro);
-    })();
-
-    /* Temporizador pela duração (e não pelo evento de fim do áudio), para o
-       jogo nunca travar se o iOS suspender o som no meio. */
-    setTimeout(function () {
-      ocupado = false;
-      toques++;
-      if (toques >= ROTEIRO[passo].toques) avancar();
-      else agendarConvite();
-    }, duracao + PAUSA_APOS_FALA_MS);
-  }
-
-  function avancar() {
-    ocupado = true;
-    clearTimeout(relogioConvite);
-    var proximo = passo + 1;
-    var acabou = proximo >= ROTEIRO.length || (Date.now() - inicioSessao) > LIMITE_SESSAO_MS;
-    setTimeout(function () {
-      cena.classList.remove('visivel');
-      setTimeout(function () {
-        if (acabou) { terminar(); return; }
-        passo = proximo; toques = 0;
-        cena.setAttribute('data-cena', ROTEIRO[passo].cena);
-        cena.classList.add('visivel');
-        setTimeout(function () { ocupado = false; agendarConvite(); }, 1100);
-      }, 1250);
-    }, 900);
-  }
-
-  /* Bebê parado há um tempo: a figura se mexe de leve, sem som, como convite. */
-  function agendarConvite() {
-    clearTimeout(relogioConvite);
-    relogioConvite = setTimeout(function () {
-      if (!jogando || ocupado) return;
-      var nome = ROTEIRO[passo].cena === 'juntos' ? (Math.random() < 0.5 ? 'papai' : 'mamae') : ROTEIRO[passo].cena;
-      var el = bonecos[nome].el;
-      el.classList.remove('fala'); void el.offsetWidth; el.classList.add('fala');
-      agendarConvite();
-    }, 12000);
-  }
-
-  function comecar() {
-    ligarSom();
-    passo = 0; toques = 0; ocupado = true; jogando = true;
-    inicioSessao = Date.now();
-    cena.setAttribute('data-cena', ROTEIRO[0].cena);
-    telaInicio.classList.add('some');
-    telaFim.classList.add('some');
-    botaoSair.hidden = false;
-    setTimeout(function () {
-      telaInicio.hidden = true; telaFim.hidden = true;
-      cena.classList.add('visivel');
-      setTimeout(function () { ocupado = false; agendarConvite(); }, 1100);
-    }, 700);
-  }
-
-  function terminar() {
-    jogando = false;
-    clearTimeout(relogioConvite);
-    botaoSair.hidden = true;
-    telaFim.hidden = false;
-    void telaFim.offsetWidth;
-    telaFim.classList.remove('some');
-  }
-
-  /* ── Toques do bebê ── */
-  function onda(x, y) {
-    var vivas = cena.parentNode.querySelectorAll('.onda');
-    if (vivas.length >= 3) return;
-    var o = document.createElement('div');
-    o.className = 'onda';
-    o.style.left = x + 'px'; o.style.top = y + 'px';
-    document.body.appendChild(o);
-    setTimeout(function () { if (o.parentNode) o.parentNode.removeChild(o); }, 1250);
-  }
-
-  function toque(x, y) {
-    if (!jogando) return;
-    onda(x, y);
-    if (ocupado) return;
-    var nome = ROTEIRO[passo].cena;
-    if (nome === 'juntos') {
-      /* Vale o lado tocado. Mão inteira em cima da divisa cai no mais próximo. */
-      var r = bonecos.papai.el.parentNode.getBoundingClientRect();
-      var dentro = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
-      nome = dentro ? 'papai' : 'mamae';
-    }
-    falar(nome);
-  }
-
-  cena.addEventListener('touchstart', function (e) {
-    e.preventDefault();
-    var t = e.changedTouches[0];
-    toque(t.clientX, t.clientY);
-  }, { passive: false });
-  cena.addEventListener('mousedown', function (e) { toque(e.clientX, e.clientY); });
-
-  /* Sem zoom, rolagem, menu de contexto ou seleção: nada tira o bebê da cena. */
-  ['gesturestart', 'gesturechange', 'contextmenu', 'dblclick', 'selectstart'].forEach(function (ev) {
-    document.addEventListener(ev, function (e) { e.preventDefault(); }, { passive: false });
-  });
-  document.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
-
-  /* ── Piscar: um sinal de vida discreto ── */
-  (function piscar() {
-    setTimeout(function () {
-      if (jogando) {
-        Object.keys(bonecos).forEach(function (n) {
-          var o = bonecos[n].olhos;
-          o.setAttribute('transform', 'translate(0 204) scale(1 .12) translate(0 -204)');
-          setTimeout(function () { o.removeAttribute('transform'); }, 150);
-        });
-      }
-      piscar();
-    }, 4200 + Math.random() * 2600);
-  })();
-
-  /* ── Botões de adulto ── */
-  function aoSegurar(botao, acao) {
-    var relogio = null;
-    function soltar() { clearTimeout(relogio); relogio = null; botao.classList.remove('segurando'); }
-    function apertar(e) {
-      if (e.type === 'touchstart') e.preventDefault();
-      if (relogio) return;
-      botao.classList.add('segurando');
-      relogio = setTimeout(function () { soltar(); acao(); }, TEMPO_SEGURAR_MS);
-    }
-    botao.addEventListener('touchstart', apertar, { passive: false });
-    botao.addEventListener('mousedown', apertar);
-    ['touchend', 'touchcancel', 'mouseup', 'mouseleave'].forEach(function (ev) { botao.addEventListener(ev, soltar); });
-    /* Teclado é coisa de adulto: Enter ou Espaço agem direto. */
-    botao.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); acao(); }
-    });
-  }
-  function irParaJogos() { window.location.href = '/jogoseducativos/'; }
-
-  document.getElementById('comecar').addEventListener('click', comecar);
-  aoSegurar(botaoSair, irParaJogos);
-  aoSegurar(document.getElementById('de-novo'), comecar);
-  aoSegurar(document.getElementById('para-jogos'), irParaJogos);
-})();
-</script>
+<script src="/jogoseducativos/arte.js?v=2"></script>
+<script src="/jogoseducativos/primeiras-palavras/armazem.js?v=2"></script>
+<script src="/jogoseducativos/primeiras-palavras/jogo.js?v=2"></script>
+<script src="/jogoseducativos/primeiras-palavras/estudio.js?v=2"></script>
 </body>
 </html>

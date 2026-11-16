@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#E4E7E0">
+<meta name="theme-color" content="#F4F6FB">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -22,10 +22,7 @@
 -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --chao:#E4E7E0; --tinta:#2F3A40; --tinta-2:#57666D; --linha:rgba(47,58,64,.14);
-  --azul:#CBDDE0; --pessego:#EDD9CB; --papel:#F4F5F0;
-}
+:root{--chao:#F4F6FB;--tinta:#2B2D42;--tinta-2:#5B6078;--linha:rgba(43,45,66,.14);--papel:#fff;--laranja:#FF7A1A;}
 html{-webkit-text-size-adjust:100%;}
 body{
   background:var(--chao);color:var(--tinta);
@@ -44,26 +41,29 @@ h1{font-size:clamp(34px,6vw,52px);font-weight:800;letter-spacing:-.02em;line-hei
 /* ── Cartão do jogo ── */
 .jogo{
   display:flex;margin-top:clamp(26px,5vw,40px);border-radius:32px;overflow:hidden;
-  background:var(--papel);color:inherit;text-decoration:none;
+  background:var(--papel);color:inherit;text-decoration:none;box-shadow:0 10px 30px rgba(43,45,66,.1);
 }
-.jogo:focus-visible{outline:3px solid #5E8A88;outline-offset:4px;}
-.jogo:active .jogar{background:#1F282D;}
-.capa{flex:0 0 46%;display:flex;align-items:flex-end;min-height:230px;}
-.capa > div{flex:1 1 0;align-self:stretch;display:flex;align-items:flex-end;padding:22px 10px 0;}
-.capa > div:first-child{background:var(--azul);}
-.capa > div:last-child{background:var(--pessego);}
-.capa svg{display:block;width:100%;height:auto;}
+.jogo:focus-visible{outline:3px solid var(--tinta);outline-offset:4px;}
+.jogo:active .jogar{background:#E56500;}
+/* A capa é uma miniatura da cena: céu, morro e a família */
+.capa{flex:0 0 48%;position:relative;min-height:250px;overflow:hidden;background:linear-gradient(#2FA8F0,#8FDCFF 75%);}
+.capa:before{content:"";position:absolute;left:-30%;width:160%;top:66%;height:120%;border-radius:50%/14%;background:#6FD14B;}
+.capa:after{content:"";position:absolute;left:-40%;width:170%;top:84%;height:120%;border-radius:50%/14%;background:#46B93A;z-index:2;}
+.capa > div{position:absolute;bottom:8%;width:38%;}
+.capa > div svg{display:block;width:100%;height:auto;overflow:visible;}
+#capa-papai{left:4%;z-index:1;}
+#capa-mamae{right:4%;z-index:1;}
+#capa-bebe{left:35%;width:30%;bottom:2%;z-index:3;}
 .sobre{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;padding:clamp(22px,4vw,36px);}
 .sobre h2{font-size:clamp(26px,4vw,34px);font-weight:800;letter-spacing:-.015em;line-height:1.1;}
 .sobre p{margin-top:8px;color:var(--tinta-2);}
 .jogar{
-  align-self:flex-start;margin-top:22px;padding:15px 34px;border-radius:999px;
-  background:var(--tinta);color:var(--papel);font-size:19px;font-weight:700;
+  align-self:flex-start;margin-top:22px;padding:15px 38px;border-radius:999px;
+  background:var(--laranja);color:#fff;font-size:19px;font-weight:800;
 }
 @media (max-width:640px){
   .jogo{flex-direction:column;}
-  .capa{flex:none;min-height:0;}
-  .capa > div{padding-top:18px;}
+  .capa{flex:none;min-height:0;height:56vw;}
 }
 
 /* ── Colunas de apoio ── */
@@ -71,59 +71,70 @@ h1{font-size:clamp(34px,6vw,52px);font-weight:800;letter-spacing:-.02em;line-hei
 @media (max-width:760px){.apoio{grid-template-columns:1fr;}}
 h3{font-size:21px;font-weight:800;letter-spacing:-.01em;}
 .nota{margin-top:6px;color:var(--tinta-2);font-size:16px;}
-.palavras{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
-.palavras li{padding:7px 15px;border-radius:999px;border:1.5px dashed var(--linha);font-size:17px;font-weight:600;color:var(--tinta-2);}
+.palavras{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.palavras li{padding:7px 15px;border-radius:999px;font-size:17px;font-weight:700;}
+.palavras.tem li{background:#fff;}
+.palavras.vem li{border:1.5px dashed var(--linha);color:var(--tinta-2);font-weight:600;}
+.bloco + .bloco{margin-top:26px;}
 .cuidados{list-style:none;margin-top:6px;}
 .cuidados li{padding:16px 0;border-bottom:1px solid var(--linha);}
 .cuidados li:last-child{border-bottom:0;}
-.cuidados b{display:block;font-weight:700;}
+.cuidados b{display:block;font-weight:800;}
 .cuidados span{display:block;margin-top:2px;color:var(--tinta-2);font-size:16px;}
 </style>
 </head>
 <body>
 <main class="pagina">
   <h1>Jogos educativos</h1>
-  <p class="abre">Jogos calmos para o bebê jogar no colo, junto com você. Uma coisa por vez na tela, voz suave, nada piscando.</p>
+  <p class="abre">Jogos para o bebê tocar, ouvir e repetir as primeiras palavras, junto com você.</p>
 
   <a class="jogo" href="/jogoseducativos/primeiras-palavras/">
-    <div class="capa" aria-hidden="true"><div id="capa-papai"></div><div id="capa-mamae"></div></div>
+    <div class="capa" aria-hidden="true"><div id="capa-papai"></div><div id="capa-mamae"></div><div id="capa-bebe"></div></div>
     <div class="sobre">
-      <h2>Papai e Mamãe</h2>
-      <p>Primeiras palavras, fase 1. O bebê toca e a figura diz o próprio nome, bem devagar.</p>
-      <p>A partir de 12 meses. Dura de 3 a 5 minutos.</p>
+      <h2>Papai, Mamãe e Bebê</h2>
+      <p>Primeiras palavras. O bebê toca na cena e o bebê do desenho aponta e fala o nome. O dedo deixa um rastro de brilho.</p>
+      <p>Dá para trocar os desenhos por fotos da família e das coisas de casa.</p>
       <span class="jogar">Jogar</span>
     </div>
   </a>
 
   <div class="apoio">
     <section>
-      <h3>Próximas palavras</h3>
-      <p class="nota">Ainda não estão no jogo. São palavras do dia a dia, com sons que o bebê consegue fazer cedo.</p>
-      <ul class="palavras">
-        <li>bola</li><li>água</li><li>bebê</li><li>au-au</li><li>miau</li>
-        <li>pé</li><li>mão</li><li>pão</li><li>pato</li><li>banana</li>
-      </ul>
+      <div class="bloco">
+        <h3>Palavras do jogo</h3>
+        <ul class="palavras tem">
+          <li>papai</li><li>mamãe</li><li>bebê</li><li>bola</li><li>au-au</li><li>pato</li><li>banana</li>
+        </ul>
+      </div>
+      <div class="bloco">
+        <h3>Próximas palavras</h3>
+        <p class="nota">Ainda sem voz do jogo. Enquanto isso, você pode criar cada uma em Fotos e vozes, com a sua voz.</p>
+        <ul class="palavras vem">
+          <li>água</li><li>miau</li><li>pé</li><li>mão</li><li>pão</li>
+        </ul>
+      </div>
     </section>
 
     <section>
       <h3>Antes de jogar</h3>
       <ul class="cuidados">
-        <li><b>Jogue junto</b><span>O bebê aprende a palavra com você, não com a tela. Quando a voz falar, repita olhando para ele e aponte para o papai ou a mamãe de verdade.</span></li>
-        <li><b>Pouco tempo</b><span>Uma sessão por vez. A Sociedade Brasileira de Pediatria recomenda evitar telas antes dos 2 anos, então trate o jogo como apoio para a conversa de vocês, nunca como distração sozinho.</span></li>
-        <li><b>Tela cheia e travada</b><span>No Safari, toque em Compartilhar e em Adicionar à Tela de Início. Para o bebê não sair do jogo, ligue o Acesso Guiado em Ajustes, Acessibilidade, e aperte três vezes o botão de Início com o jogo aberto.</span></li>
+        <li><b>Coloque na Tela de Início primeiro</b><span>No Safari, toque em Compartilhar e em Adicionar à Tela de Início. O jogo abre em tela cheia e é ali que as fotos ficam guardadas. Fotos enviadas pelo Safari não aparecem no atalho, e vice-versa.</span></li>
+        <li><b>Use as fotos de casa</b><span>Dentro do jogo, em Fotos e vozes, troque os desenhos pelo rosto de vocês e pelos brinquedos dele. Dá para gravar a sua voz também. Tudo fica só no aparelho.</span></li>
+        <li><b>Jogue junto</b><span>O bebê aprende a palavra com você. Quando o jogo falar, repita olhando para ele e mostre a coisa de verdade. Sessões curtas valem mais do que longas.</span></li>
+        <li><b>Trave a tela</b><span>Para o bebê não sair do jogo, ligue o Acesso Guiado em Ajustes, Acessibilidade, e aperte três vezes o botão de Início com o jogo aberto.</span></li>
       </ul>
     </section>
   </div>
 </main>
 
-<script src="/jogoseducativos/arte.js?v=1"></script>
+<script src="/jogoseducativos/arte.js?v=2"></script>
 <script>
 (function () {
-  ['papai', 'mamae'].forEach(function (nome) {
+  ['papai', 'mamae', 'bebe'].forEach(function (nome) {
     var el = document.getElementById('capa-' + nome);
     el.innerHTML = window.JE_ARTE[nome];
     /* Na capa ninguém fala: esconde a boca aberta. */
-    el.querySelector('.je-boca').setAttribute('transform', 'translate(200 260) scale(1 0) translate(-200 -260)');
+    el.querySelector('.je-boca').setAttribute('transform', 'scale(0)');
   });
 })();
 </script>

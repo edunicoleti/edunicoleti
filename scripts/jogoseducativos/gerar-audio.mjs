@@ -14,8 +14,9 @@
   Cuidados:
   - A chave NUNCA entra no repositório (ele é público). O site só usa os mp3
     prontos; nenhuma chamada ao Gemini acontece no iPad.
-  - No plano gratuito o modelo de voz aceita 10 pedidos por dia. Por isso o
-    script pula o que já tem wav e o original fica versionado.
+  - No plano gratuito cada modelo de voz tem cota própria e pequena (10 pedidos
+    por dia no gemini-3.8-flash-tts; 3 por minuto no lite). Por isso o script
+    pula o que já tem wav e o original fica versionado.
   - O estilo vai em speech_metadata.style, separado do texto. Se a instrução
     for escrita junto do texto, o modelo lê a instrução em voz alta.
 */
@@ -24,26 +25,30 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const MODELO = 'gemini-3.8-flash-tts';
+/* Papai e Mamãe saíram do gemini-3.8-flash-tts; as demais, do lite, que tem
+   cota gratuita separada. Mesma voz e mesmo estilo: soam iguais. */
+const MODELO = process.env.GEMINI_TTS_MODEL || 'gemini-3.8-flash-lite-tts';
 const VOZ = 'Sulafat'; // "warm": a mais calma e clara no teste com Papai e Mamãe
 const ESTILO =
   'mãe brasileira carinhosa falando com seu bebê de um ano: bem devagar, voz doce, calma e sorridente, melodia suave, sílabas bem claras';
 
-/* Uma palavra isolada por arquivo. O id vira o nome do arquivo. */
+/* Uma palavra isolada por arquivo. O id vira o nome do arquivo.
+   Confira sempre o resultado: "Bebê." saiu como "vevê" e "Bebê!" como "pepê";
+   só "Bê-bê." deu os dois B claros. */
 const PALAVRAS = [
   { id: 'papai', texto: 'Papai.' },
   { id: 'mamae', texto: 'Mamãe.' },
-  // Próximas fases (ver docs/jogoseducativos-plano.md):
-  // { id: 'bola', texto: 'Bola.' },
+  { id: 'bebe', texto: 'Bê-bê.' },
+  { id: 'bola', texto: 'Bola.' },
+  { id: 'pato', texto: 'Pato.' },
+  { id: 'au-au', texto: 'Au-au.' },
+  { id: 'banana', texto: 'Banana.' },
+  // Próximas (ver docs/jogoseducativos-plano.md):
   // { id: 'agua', texto: 'Água.' },
-  // { id: 'bebe', texto: 'Bebê.' },
-  // { id: 'au-au', texto: 'Au-au.' },
   // { id: 'miau', texto: 'Miau.' },
   // { id: 'pe', texto: 'Pé.' },
   // { id: 'mao', texto: 'Mão.' },
   // { id: 'pao', texto: 'Pão.' },
-  // { id: 'pato', texto: 'Pato.' },
-  // { id: 'banana', texto: 'Banana.' },
 ];
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
