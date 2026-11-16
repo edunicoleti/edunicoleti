@@ -8,7 +8,7 @@
   "background_color": "#2FA8F0",
   "theme_color": "#2FA8F0",
   "icons": [
-    { "src": "/jogoseducativos/icone-180.png", "sizes": "180x180", "type": "image/png" },
-    { "src": "/jogoseducativos/icone-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "/jogoseducativos/icone-180.png?v=3", "sizes": "180x180", "type": "image/png" },
+    { "src": "/jogoseducativos/icone-512.png?v=3", "sizes": "512x512", "type": "image/png" }
   ]
 }

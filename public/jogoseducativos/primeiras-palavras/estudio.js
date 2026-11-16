@@ -143,28 +143,36 @@
 
   /* ───────── Foto: escolher e enquadrar ───────── */
   var arquivo = $('arquivo'), modalFoto = $('modal-foto'), recorte = $('recorte'), imgRecorte = $('recorte-img'), zoom = $('zoom');
-  var fotoDe = null, urlFoto = null;
+  var fotoDe = null;
   var corte = { w: 1, h: 1, lado: 300, base: 1, z: 1, ox: 0, oy: 0 };
 
   function escolherFoto(id) { fotoDe = id; arquivo.value = ''; arquivo.click(); }
+  function fotoFalhou() { window.alert('Não consegui abrir essa imagem. Tente outra foto, de preferência JPG ou PNG.'); }
 
   arquivo.addEventListener('change', function () {
     var f = arquivo.files && arquivo.files[0];
     if (!f || !fotoDe) return;
-    if (urlFoto) URL.revokeObjectURL(urlFoto);
-    urlFoto = URL.createObjectURL(f);
-    imgRecorte.onload = function () {
-      corte.w = imgRecorte.naturalWidth; corte.h = imgRecorte.naturalHeight;
-      corte.lado = Math.max(180, Math.min(360, window.innerWidth - 80, window.innerHeight - 330));
-      corte.base = corte.lado / Math.min(corte.w, corte.h);   /* zoom 1 = a foto cobre o quadro */
-      corte.z = 1; corte.ox = 0; corte.oy = 0;
-      zoom.value = 1;
-      recorte.style.width = recorte.style.height = corte.lado + 'px';
-      modalFoto.hidden = false;
-      posicionar();
+    /* A foto é lida como data: e não como blob:. A política de segurança do
+       site (CSP em public/.htaccess) só aceita imagens 'self' e data:, então um
+       endereço blob: é bloqueado e a imagem nem chega a abrir. */
+    var leitor = new FileReader();
+    leitor.onerror = fotoFalhou;
+    leitor.onload = function () {
+      imgRecorte.onload = function () {
+        corte.w = imgRecorte.naturalWidth; corte.h = imgRecorte.naturalHeight;
+        if (!corte.w || !corte.h) { fotoFalhou(); return; }
+        corte.lado = Math.max(180, Math.min(360, window.innerWidth - 80, window.innerHeight - 330));
+        corte.base = corte.lado / Math.min(corte.w, corte.h);   /* zoom 1 = a foto cobre o quadro */
+        corte.z = 1; corte.ox = 0; corte.oy = 0;
+        zoom.value = 1;
+        recorte.style.width = recorte.style.height = corte.lado + 'px';
+        modalFoto.hidden = false;
+        posicionar();
+      };
+      imgRecorte.onerror = fotoFalhou;
+      imgRecorte.src = leitor.result;
     };
-    imgRecorte.onerror = function () { window.alert('Não consegui abrir essa imagem. Tente outra foto.'); };
-    imgRecorte.src = urlFoto;
+    leitor.readAsDataURL(f);
   });
 
   function posicionar() {
@@ -211,8 +219,8 @@
 
   function fecharFoto() {
     modalFoto.hidden = true;
+    imgRecorte.onload = imgRecorte.onerror = null;   /* tirar o src não pode disparar o aviso de erro */
     imgRecorte.removeAttribute('src');
-    if (urlFoto) { URL.revokeObjectURL(urlFoto); urlFoto = null; }
     fotoDe = null;
   }
   $('foto-cancelar').addEventListener('click', fecharFoto);
@@ -302,7 +310,7 @@
       fluxo = s;
       if (!modalVoz.hidden) comecarGravacao(); else fecharVoz();
     }, function () {
-      textoVoz.textContent = 'O microfone está bloqueado. Libere em Ajustes, Safari, Microfone e tente de novo.';
+      textoVoz.textContent = 'O microfone está bloqueado. Permita o microfone para este site (no iPad: Ajustes, Safari, Microfone) e tente de novo.';
     });
   });
 

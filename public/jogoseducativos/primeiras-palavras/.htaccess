@@ -1,0 +1,8 @@
+# O site inteiro desliga o microfone (ver public/.htaccess). Só este jogo o
+# libera, e só para o próprio site, porque a tela "Fotos e vozes" grava a voz
+# dos pais dizendo as palavras. A gravação fica no aparelho, não é enviada.
+# Câmera e localização continuam desligadas: a foto vem do seletor de arquivos
+# do sistema, que não depende desta permissão.
+<IfModule mod_headers.c>
+  Header always set Permissions-Policy "geolocation=(), microphone=(self), camera=()"
+</IfModule>
