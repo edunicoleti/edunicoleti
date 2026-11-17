@@ -1,81 +1,78 @@
-# Jogos educativos: plano e decisões
+# Jogos educativos: decisões, feedback e pendências
 
-Página: `edunicoleti.com.br/jogoseducativos`. Arquivos em `public/jogoseducativos/`.
-Público: bebê de 12 meses, jogando no colo de um adulto, em um iPad de 6ª geração.
+Memória do projeto. O agente seguinte não vê as conversas anteriores: o que foi decidido,
+o que o Eduardo achou e o que ficou em aberto mora aqui. Atualize ao fim de cada trabalho.
+Para o funcionamento técnico, veja `docs/jogoseducativos-guia.md`.
 
-## Histórico de direção
+## Estado atual (17/11/2026)
 
-**Versão 1 (descartada).** Papai e Mamãe em telas separadas, estilo de baixo estímulo:
-tons pastel, movimentos lentos, sem efeitos, sessão que terminava sozinha. Na prática ficou
-exagerado e pouco divertido.
+- No ar em `edunicoleti.com.br/jogoseducativos`: tela de escolha de jogos e o jogo
+  Primeiras palavras (papai, mamãe, bebê, bola, au-au, pato, banana).
+- Cena única colorida; o bebê da cena fala o nome e aponta para o que foi tocado; brilho e
+  pulso em todo toque; tela Fotos e vozes funcionando (foto da câmera ou galeria, voz
+  gravada, coisas da casa como balões).
+- Testes automáticos passando no servidor local com cabeçalhos de produção e no site no ar.
+- **Nunca testado em iPad real.** Todo teste foi em navegador com toque simulado.
 
-**Versão 2 (atual).** Uma cena só, cores vivas, resposta rápida e chamativa a cada toque,
-fotos e vozes reais da família. A decisão foi do Eduardo, depois de ver a versão 1.
+## Linha do tempo
 
-**Versão 3 (ilustração).** Os desenhos da versão 2 eram formas geométricas chapadas e
-pareciam rascunho. Foram redesenhados em estilo de cartoon infantil acabado: contorno na
-versão escura de cada cor, sombra e ponto de luz, olhos com brilho, mãos com dedos, roupas
-com estampa. O cenário ganhou três planos de morro, árvores, flores, arco-íris, borboleta
-e sol com rosto. Continua tudo em SVG, para o bebê seguir apontando e mexendo a boca.
+**16/11/2026: MVP (versão 1).** Pedido do Eduardo: jogo para o filho de 1 ano aprender as
+primeiras palavras no iPad de 6ª geração, voz do Gemini, ilustração em SVG, design de baixo
+estímulo, tela de escolha de jogos, publicado no site sem pedir autorização. Saiu: Papai e
+Mamãe em telas separadas, tons pastel, animação lenta, sessão que terminava sozinha.
 
-O que ficou da pesquisa da versão 1 e continua valendo:
+**16/11/2026: feedback 1, versão 2.** O Eduardo achou ruim e pediu:
+- uma cena só com bebê, papai e mamãe; tocar em cada um fala o nome;
+- **o bebê desenhado é quem fala** as palavras, com animação de fala; tocar nele fala o
+  nome dele ("Bê" ou alternativa; ficou "Bebê", e dá para gravar o apelido real em Fotos e
+  vozes);
+- brilho seguindo o dedo, pulso de resposta a cada toque, objetos ao redor (bola etc.);
+- **descartar o baixo estímulo**: "muito exagerado, tons pastéis demais, animações lentas,
+  não será divertido pra ele";
+- enviar fotos dos pais e de objetos de casa pelo iPad, **inseridas de forma criativa na
+  cena**, não só coladas.
+No meio do trabalho acrescentou: **quando o bebê fala, ele aponta o dedo para a pessoa ou o
+objeto.**
+Decisão de como usar as fotos: rosto vira a cabeça do corpo desenhado (que continua
+acenando e apontando), objeto vira adesivo redondo, coisa nova da casa vira balão no céu.
 
-- **Jogar junto.** A Sociedade Brasileira de Pediatria e a OMS recomendam evitar telas antes
-  dos 2 anos, e estudos do grupo de Patricia Kuhl mostram que bebês aprendem palavras com
-  uma pessoa ao vivo, não com a tela sozinha. O jogo é um apoio para o adulto falar com o
-  bebê. A tela de escolha de jogos diz isso.
-- **Fala dirigida ao bebê.** Palavra isolada, dita devagar e com melodia, ajuda (Ramírez-
-  Esparza, García-Sierra e Kuhl, 2014; Ferjan Ramírez, Lytle e Kuhl, 2020). A voz do jogo
-  segue esse estilo.
-- **Motricidade.** Aos 12 meses o bebê bate com a mão inteira e arrasta, não aponta com
-  precisão. Alvos grandes, qualquer toque vale, arrastar também dispara.
-- **Referente real.** A palavra cola melhor na pessoa e no objeto de verdade. Daí as fotos
-  e vozes de casa.
+**16/11/2026: feedback 2, versão 3.** "Desenhos muito básicos e mal feitos", pediu
+ilustração mais polida e profissional. Tudo foi redesenhado em cartoon acabado (contorno,
+sombra, luz, olhos com brilho, mãos com dedos, roupas com estampa) e o cenário ganhou
+profundidade. Ficou em SVG para manter o apontar e a boca sincronizada. Oferecemos arte por
+IA de imagem ou ilustrador como próximo degrau (mais rica, mas perde o apontar preciso e
+pesa mais); **o Eduardo não respondeu a essa oferta**.
+
+**16/11/2026: feedback 3, correção.** Enviar foto dava "Não consegui abrir essa imagem" no
+site publicado. Causa: a CSP do site bloqueia `blob:` em imagens. Corrigido para `data:`. No
+mesmo lugar: a Permissions-Policy do site desligava o microfone; liberado só na pasta do
+jogo. Lição: testar sempre com os cabeçalhos de produção (`testes/servidor.py`).
+
+**17/11/2026.** Guias para agentes (`AGENTS.md`, este documento, o guia técnico) e os testes
+levados para o repositório.
+
+## O que sabemos sobre o Eduardo e o uso
+
+- Quer o jogo **divertido e vivo** para um bebê de 1 ano: cores fortes, resposta imediata,
+  efeitos de brilho. Recusou pastel e lentidão.
+- Exige **acabamento profissional** na ilustração. Formas geométricas simples foram
+  recusadas.
+- Valoriza **fotos e coisas reais da casa** e quer que entrem na cena de um jeito criativo.
+- Testa no computador (Chrome no Windows, pelo print que mandou) e o bebê usa o iPad.
+- Manda feedback com print e frases curtas; pede entrega **publicada e funcionando**.
+- Não use travessão em texto gerado (regra geral dele, ver `AGENTS.md`).
+
+## Pesquisa que embasa (continua valendo)
+
+- **Jogar junto.** A SBP e a OMS recomendam evitar telas antes dos 2 anos; o grupo de
+  Patricia Kuhl mostra que bebês aprendem palavras com uma pessoa ao vivo, não com a tela
+  sozinha. O jogo é apoio para o adulto falar com o bebê, e a tela de escolha diz isso.
+- **Fala dirigida ao bebê.** Palavra isolada, dita devagar e com melodia, ajuda
+  (Ramírez-Esparza, García-Sierra e Kuhl, 2014; Ferjan Ramírez, Lytle e Kuhl, 2020).
+- **Motricidade aos 12 meses.** Bate com a mão inteira e arrasta, não aponta com precisão:
+  alvos grandes, qualquer toque vale, arrastar também dispara.
+- **Referente real.** A palavra cola melhor na pessoa e no objeto de verdade: daí as fotos.
 - **Sem estrobo.** Efeitos vivos, mas nada de tela inteira piscando.
-
-## Como funciona
-
-1. Tela de adulto com Começar (o primeiro toque libera o som no iPad) e Fotos e vozes.
-2. Cena única: papai e mamãe atrás, bebê na frente, bola, pato, au-au e banana ao redor,
-   céu com sol e nuvens.
-3. Tocar ou arrastar o dedo sobre uma coisa: ela pula, solta estrelas, e o **bebê da cena
-   aponta o dedo para ela e fala o nome**, com a boca acompanhando o volume da voz.
-   Papai e mamãe acenam.
-4. Todo toque responde: um pulso onde o dedo encostou e um rastro de brilho que segue o
-   dedo. Toque no fundo faz um "plim".
-5. Tocar de novo na mesma coisa enquanto a palavra ainda toca não repete o som. Tocar em
-   outra coisa troca na hora.
-6. Sair exige segurar o botão do canto por 1,3 s.
-
-## Fotos e vozes de casa
-
-Tela `Fotos e vozes`, dentro do jogo. Tudo fica no IndexedDB do aparelho; nada é enviado.
-
-| O quê | Como a foto entra na cena |
-| --- | --- |
-| Papai, Mamãe, Bebê | O rosto recortado em círculo vira a cabeça do corpo desenhado, com um aro da cor da roupa. O corpo continua acenando e apontando. Quando o bebê tem foto, o rosto pulsa com a voz no lugar da boca desenhada. |
-| Bola, pato, au-au, banana | A foto vira um adesivo redondo no lugar do desenho. |
-| Coisas da casa (até 4) | Cada uma vira um balão flutuando no céu. Precisa de foto e de voz gravada. |
-
-- A foto vem da câmera ou da galeria, é enquadrada em um recorte redondo (arrastar e
-  aproximar) e guardada em 480 x 480 px.
-- A voz é gravada pelo microfone (até 3 s). O jogo corta o silêncio das pontas e nivela o
-  volume sozinho. Exige iPadOS 14.3 ou mais novo.
-- Cuidado: o Safari e o atalho da Tela de Início guardam dados separados. As fotos devem
-  ser enviadas por onde o bebê vai jogar.
-
-## Voz do jogo
-
-Gerada uma vez com a API do Gemini e publicada como mp3 estático. O iPad nunca chama a API
-e a chave não entra no repositório. Script: `scripts/jogoseducativos/gerar-audio.mjs`.
-Originais em `scripts/jogoseducativos/vozes/`.
-
-- Voz Sulafat, estilo de mãe falando devagar com o bebê.
-- Papai e Mamãe: `gemini-3.8-flash-tts`. Bebê, bola, pato, au-au e banana:
-  `gemini-3.8-flash-lite-tts` (cota gratuita separada). Conferidas por transcrição
-  automática: soam como a mesma voz.
-- Cota gratuita: 10 pedidos por dia no primeiro modelo, 3 por minuto no lite.
-- "Bebê." saiu como "vevê" e "Bebê!" como "pepê". O texto que funcionou foi "Bê-bê.".
 
 ## Palavras
 
@@ -83,23 +80,25 @@ No jogo: papai, mamãe, bebê, bola, au-au, pato, banana.
 
 Próximas, pelo mesmo critério (rotina do bebê, presentes nos inventários de primeiras
 palavras, sons que surgem cedo: p, b, m, t, d, n com vogais abertas): água, miau, pé, mão,
-pão. Palavras sociais (oi, tchau, não, dá) pedem uma ação e não um objeto; ficam para um
+pão. Palavras sociais (oi, tchau, não, dá) pedem uma ação, não um objeto; ficam para um
 jogo próprio.
 
-## Arquivos
+## Pendências
 
-- `index.html`: tela de escolha de jogos.
-- `arte.js`: desenhos em SVG e a lista de coisas da cena.
-- `primeiras-palavras/index.html`: marcação e estilos do jogo.
-- `primeiras-palavras/jogo.js`: cena, toque, brilho, som.
-- `primeiras-palavras/estudio.js`: tela Fotos e vozes.
-- `primeiras-palavras/armazem.js`: guarda fotos e vozes no aparelho.
+- Esperando o Eduardo dizer, depois de jogar com o filho, se o brilho e os pulos estão na
+  medida e se o rosto de foto no corpo desenhado ficou bom com fotos reais.
+- Testar em iPad real (som, gravação de voz, Tela de Início, Acesso Guiado).
+- Foto HEIC de iPhone não abre no Chrome do Windows (o Chrome não lê HEIC). No iPad abre.
+- As cores do aro da foto (`AROS` em `jogo.js`) são da paleta antiga e não batem exatamente
+  com as roupas novas.
+- Próximas palavras ainda sem voz do jogo nem desenho.
+- Oferta de arte por IA ou ilustrador sem resposta.
 
 ## Ideias para depois
 
 - Funcionar sem internet depois da primeira visita.
 - Mais cenas (hora do banho, hora de comer) com outras palavras.
-- Exportar e importar as fotos e vozes, para não perder ao trocar de aparelho.
+- Exportar e importar as fotos e vozes, para não perder ao trocar de aparelho ou de navegador.
 
 ## Fontes
 
